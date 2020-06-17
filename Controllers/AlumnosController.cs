@@ -13,97 +13,107 @@ namespace IntranetInstituto.Controllers
     [ApiController]
     public class AlumnosController : ControllerBase
     {
-        private readonly InstitutoDBContext _context;
-
-        public AlumnosController(InstitutoDBContext context)
+        public ActionResult<Alumno> GetAlumnos()
         {
-            _context = context;
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                List<Alumno> alumnos = context.Alumnos
+                                                    .Include("Curso")
+                                                    .ToList<Alumno>();
+
+                return Ok(alumnos);
+            }
         }
 
-        // GET: api/Alumnos
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Alumno>>> GetAlumnos()
+        [Route("{nroLegajo:int}")]
+        public ActionResult<Alumno> GetAlumno(int nroLegajo)
         {
-            return await _context.Alumnos.ToListAsync();
-        }
 
-        // GET: api/Alumnos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Alumno>> GetAlumno(int id)
-        {
-            var alumno = await _context.Alumnos.FindAsync(id);
-
-            if (alumno == null)
+            using (InstitutoDBContext context = new InstitutoDBContext())
             {
-                return NotFound();
-            }
+                Alumno alumnoEncontrado = context.Alumnos.Find(nroLegajo);
 
-            return alumno;
-        }
-
-        // PUT: api/Alumnos/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAlumno(int id, Alumno alumno)
-        {
-            if (id != alumno.NroLegajo)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(alumno).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AlumnoExists(id))
-                {
+                if (alumnoEncontrado is null)
                     return NotFound();
+                else
+                    return Ok(alumnoEncontrado);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CargarAlumno(Alumno alumno)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                try
+                {
+                    context.Alumnos.Add(alumno);
+                    context.SaveChanges();
                 }
+                catch (Exception e)
+                {
+                    return NotFound(e.InnerException.Message);
+                }
+
+                return Ok("El alumno fue cargado exitosamente");
+            }
+
+        }
+
+        [HttpPut]
+        [Route("{nroLegajo:int}")]
+        public IActionResult ActualizarAlumno(int nroLegajo, Alumno alumno)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                Alumno alumnoAActualizar = context.Alumnos.Find(nroLegajo);
+
+                if (alumnoAActualizar is null)
+                    return NotFound();
                 else
                 {
-                    throw;
+                    #region Actualizando alumno
+                    alumnoAActualizar.Nombre = alumno.Nombre;
+                    alumnoAActualizar.Apellido = alumno.Apellido;
+                    alumnoAActualizar.NroDocumento = alumno.NroDocumento;
+                    alumnoAActualizar.Direccion = alumno.Direccion;
+                    alumnoAActualizar.Email = alumno.Email;
+                    alumnoAActualizar.CodCurso = alumno.CodCurso;
+                    alumnoAActualizar.FechaDeNacimiento = alumno.FechaDeNacimiento;
+                    alumnoAActualizar.FechaDeIngreso = alumno.FechaDeIngreso;
+                    #endregion
+
+                    context.SaveChanges();
+                    return Ok($"Se han actualizado los datos del alumno con legajo: {alumnoAActualizar.NroLegajo}");
+                }
+            }
+        }
+
+        public IActionResult DeleteAlumno(int nroLegajo)
+        {
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                Alumno alumnoAEliminar = context.Alumnos.Find(nroLegajo);
+
+                if(alumnoAEliminar is null)
+                    return NotFound();
+                else
+                {
+                    context.Alumnos.Remove(alumnoAEliminar);
+                    context.SaveChanges();
+                    return Ok("El alumno pudo ser eliminado");
                 }
             }
 
-            return NoContent();
-        }
-
-        // POST: api/Alumnos
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Alumno>> PostAlumno(Alumno alumno)
-        {
-            _context.Alumnos.Add(alumno);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAlumno", new { id = alumno.NroLegajo }, alumno);
-        }
-
-        // DELETE: api/Alumnos/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Alumno>> DeleteAlumno(int id)
-        {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
-            {
-                return NotFound();
-            }
-
-            _context.Alumnos.Remove(alumno);
-            await _context.SaveChangesAsync();
-
-            return alumno;
-        }
-
-        private bool AlumnoExists(int id)
-        {
-            return _context.Alumnos.Any(e => e.NroLegajo == id);
         }
     }
 }
+
+
+

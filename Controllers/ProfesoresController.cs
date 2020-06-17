@@ -13,97 +13,111 @@ namespace IntranetInstituto.Controllers
     [ApiController]
     public class ProfesoresController : ControllerBase
     {
-        private readonly InstitutoDBContext _context;
-
-        public ProfesoresController(InstitutoDBContext context)
+        public ActionResult<Profesor> GetProfesores()
         {
-            _context = context;
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                List<Profesor> profesores = context.Profesores
+                                                    .Include("Materia")
+                                                    .ToList<Profesor>();
+
+                return Ok(profesores);
+            }
         }
 
-        // GET: api/Profesores
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Profesor>>> GetProfesores()
+        [Route("{profesorId:int:min(1)}")]
+        public ActionResult<Profesor> GetProfesor(int profesorId)
         {
-            return await _context.Profesores.ToListAsync();
-        }
 
-        // GET: api/Profesores/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profesor>> GetProfesor(int id)
-        {
-            var profesor = await _context.Profesores.FindAsync(id);
-
-            if (profesor == null)
+            using (InstitutoDBContext context = new InstitutoDBContext())
             {
-                return NotFound();
-            }
+                Profesor profesorEncontrado = context.Profesores.Find(profesorId);
 
-            return profesor;
-        }
-
-        // PUT: api/Profesores/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProfesor(int id, Profesor profesor)
-        {
-            if (id != profesor.ProfesorId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(profesor).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfesorExists(id))
-                {
+                if (profesorEncontrado is null)
                     return NotFound();
+                else
+                    return Ok(profesorEncontrado);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CargarProfesor(Profesor profesor)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                try
+                {
+                    context.Profesores.Add(profesor);
+                    context.SaveChanges();
                 }
+                catch (Exception e)
+                {
+                    return NotFound(e.InnerException.InnerException.Message);
+                }
+
+                return Ok("El docente fue cargado exitosamente");
+            }
+
+        }
+
+        [HttpPut]
+        [Route("{profesorId:int:min(1)}")]
+        public IActionResult ActualizarProfesor(int profesorId, Profesor profesor)
+        {
+            if (ModelState.IsValid)
+            {
+                //Condicion particular
+                if (profesorId != profesor.ProfesorId)
+                    ModelState.AddModelError("IdInvalida", "No coincide el id con el profesor a actualizar");
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                Profesor profesorAActualizar = context.Profesores.Find(profesorId);
+
+                if (profesorAActualizar is null)
+                    return NotFound();
                 else
                 {
-                    throw;
+                    #region Actualizando Profesor
+                    profesorAActualizar.Nombre = profesor.Nombre;
+                    profesorAActualizar.Apellido = profesor.Apellido;
+                    profesorAActualizar.NroDocumento = profesor.NroDocumento;
+                    profesorAActualizar.Direccion = profesor.Direccion;
+                    profesorAActualizar.Email = profesor.Email;
+                    profesorAActualizar.FechaDeNacimiento = profesor.FechaDeNacimiento;
+                    profesorAActualizar.CodMateria = profesor.CodMateria;
+                    #endregion
+
+                    context.SaveChanges();
+                    return Ok($"Se han actualizado los datos del docente con id: {profesorAActualizar.ProfesorId}");
+                }
+            }
+        }
+
+        [Route("profesorId:int:min(1)")]
+        public IActionResult DeleteProfesor(int profesorId)
+        {
+            using (InstitutoDBContext context = new InstitutoDBContext())
+            {
+                Profesor profesorAEliminar = context.Profesores.Find(profesorId);
+
+                if(profesorAEliminar is null)
+                    return NotFound();
+                else
+                {
+                    context.Profesores.Remove(profesorAEliminar);
+                    context.SaveChanges();
+                    return Ok("El docente pudo ser eliminado");    
                 }
             }
 
-            return NoContent();
-        }
-
-        // POST: api/Profesores
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Profesor>> PostProfesor(Profesor profesor)
-        {
-            _context.Profesores.Add(profesor);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProfesor", new { id = profesor.ProfesorId }, profesor);
-        }
-
-        // DELETE: api/Profesores/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Profesor>> DeleteProfesor(int id)
-        {
-            var profesor = await _context.Profesores.FindAsync(id);
-            if (profesor == null)
-            {
-                return NotFound();
-            }
-
-            _context.Profesores.Remove(profesor);
-            await _context.SaveChangesAsync();
-
-            return profesor;
-        }
-
-        private bool ProfesorExists(int id)
-        {
-            return _context.Profesores.Any(e => e.ProfesorId == id);
         }
     }
 }

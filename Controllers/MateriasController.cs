@@ -28,10 +28,10 @@ namespace IntranetInstituto.Controllers
         }
 
         // GET: api/Materias/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Materia>> GetMateria(int id)
+        [HttpGet("{codMateria:int:min(1)}")]
+        public async Task<ActionResult<Materia>> GetMateria(int codMateria)
         {
-            var materia = await _context.Materias.FindAsync(id);
+            var materia = await _context.Materias.FindAsync(codMateria);
 
             if (materia == null)
             {
@@ -44,10 +44,10 @@ namespace IntranetInstituto.Controllers
         // PUT: api/Materias/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMateria(int id, Materia materia)
+        [HttpPut("{codMateria:int:min(1)}")]
+        public async Task<IActionResult> PutMateria(int codMateria, Materia materia)
         {
-            if (id != materia.CodMateria)
+            if (codMateria != materia.CodMateria)
             {
                 return BadRequest();
             }
@@ -60,7 +60,7 @@ namespace IntranetInstituto.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MateriaExists(id))
+                if (!MateriaExists(codMateria))
                 {
                     return NotFound();
                 }
@@ -82,14 +82,14 @@ namespace IntranetInstituto.Controllers
             _context.Materias.Add(materia);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMateria", new { id = materia.CodMateria }, materia);
+            return CreatedAtAction("GetMateria", new { codMateria = materia.CodMateria }, materia);
         }
 
         // DELETE: api/Materias/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Materia>> DeleteMateria(int id)
+        [HttpDelete("{codMateria:int:min(1)}")]
+        public async Task<ActionResult<Materia>> DeleteMateria(int codMateria)
         {
-            var materia = await _context.Materias.FindAsync(id);
+            var materia = await _context.Materias.FindAsync(codMateria);
             if (materia == null)
             {
                 return NotFound();
@@ -101,9 +101,9 @@ namespace IntranetInstituto.Controllers
             return materia;
         }
 
-        private bool MateriaExists(int id)
+        private bool MateriaExists(int codMateria)
         {
-            return _context.Materias.Any(e => e.CodMateria == id);
+            return _context.Materias.Any(e => e.CodMateria == codMateria);
         }
     }
 }
