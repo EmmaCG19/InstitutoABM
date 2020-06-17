@@ -9,7 +9,8 @@ namespace IntranetInstituto.Models
     {
         [Key]
         public int CodMateria { get; set; }
-        public int Nombre { get; set; }
+        [Required]
+        public string Nombre { get; set; }
 
         public ICollection<Profesor> Profesores { get; set; }
         public ICollection<EspecialidadMateria> EspecialidadMaterias { get; set; }

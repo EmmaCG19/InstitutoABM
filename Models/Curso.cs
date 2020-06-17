@@ -9,8 +9,9 @@ namespace IntranetInstituto.Models
     {
         [Key]
         public int CodCurso { get; set; }
+        [Required]
         public string Nombre { get; set; }
-        public string Nivel { get; set; }
+        public byte Nivel { get; set; }
         public byte Capacidad { get; set; }
 
         [ForeignKey("Especialidad")]

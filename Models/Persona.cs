@@ -7,13 +7,15 @@ namespace IntranetInstituto.Models
 {
     public class Persona
     {
-        public string Nombre { get; set; }        
+        [Required]
+        public string Nombre { get; set; }  
+        [Required]      
         public string Apellido { get; set; }
         public DateTime FechaDeNacimiento { get; set; }
         public int NroDocumento { get; set; }
         public string Direccion { get; set; }
 
-        [DataType(DataType.EmailAddress)]
+        [Required, DataType(DataType.EmailAddress)]
         public string Email { get; set; }   
     }
 }
