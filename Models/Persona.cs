@@ -12,6 +12,8 @@ namespace IntranetInstituto.Models
         public DateTime FechaDeNacimiento { get; set; }
         public int NroDocumento { get; set; }
         public string Direccion { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }   
     }
 }

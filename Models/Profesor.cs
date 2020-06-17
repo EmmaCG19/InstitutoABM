@@ -8,8 +8,10 @@ namespace IntranetInstituto.Models
     public class Profesor:Persona
     {
         public int ProfesorId { get; set; }
+
+        [ForeignKey("Materia")]
         public int CodMateria { get; set; }
-        public virtual Materia Materia { get; set; }
-        public virtual ICollection<Curso> Cursos { get; set; }
+        public   Materia Materia { get; set; }
+        public   ICollection<Curso> Cursos { get; set; }
     }
 }

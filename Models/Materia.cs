@@ -7,10 +7,12 @@ namespace IntranetInstituto.Models
 {
     public class Materia
     {
+        [Key]
         public int CodMateria { get; set; }
         public int Nombre { get; set; }
-        public virtual ICollection<EspecialidadMateria> EspecialidadMaterias{get;set;}
-        public virtual ICollection<Profesor> Profesores { get; set; }
-        public virtual ICollection<AlumnoMateria> AlumnoMaterias { get; set; }
+
+        public   ICollection<Profesor> Profesores { get; set; }
+        public   ICollection<EspecialidadMateria> EspecialidadMaterias{get;set;}
+        public   ICollection<AlumnoMateria> AlumnoMaterias { get; set; }
     }
 }

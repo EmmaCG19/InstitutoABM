@@ -5,7 +5,7 @@ namespace IntranetInstituto.Models
         public int CodEspecialidad { get; set; }
         public int CodMateria { get; set; }
 
-        public virtual Especialidad Especialidad { get; set; }
-        public virtual Materia Materia { get; set; }
+        public   Especialidad Especialidad { get; set; }
+        public   Materia Materia { get; set; }
     }
 }
