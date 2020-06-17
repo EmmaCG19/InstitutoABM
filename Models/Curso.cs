@@ -16,8 +16,8 @@ namespace IntranetInstituto.Models
         [ForeignKey("Especialidad")]
         public int CodEspecialidad { get; set; }
 
-        public   Especialidad Especialidad { get; set; }
-        public   ICollection<Profesor> Profesores { get; set; }
-        public   ICollection<Alumno> Alumnos { get; set; }
+        public Especialidad Especialidad { get; set; }
+        public ICollection<CursoProfesor> CursoProfesores { get; set; }
+        public ICollection<Alumno> Alumnos { get; set; }
     }
 }

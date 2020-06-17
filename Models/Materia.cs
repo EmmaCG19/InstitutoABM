@@ -11,8 +11,8 @@ namespace IntranetInstituto.Models
         public int CodMateria { get; set; }
         public int Nombre { get; set; }
 
-        public   ICollection<Profesor> Profesores { get; set; }
-        public   ICollection<EspecialidadMateria> EspecialidadMaterias{get;set;}
-        public   ICollection<AlumnoMateria> AlumnoMaterias { get; set; }
+        public ICollection<Profesor> Profesores { get; set; }
+        public ICollection<EspecialidadMateria> EspecialidadMaterias { get; set; }
+        public ICollection<AlumnoMateria> AlumnoMaterias { get; set; }
     }
 }
