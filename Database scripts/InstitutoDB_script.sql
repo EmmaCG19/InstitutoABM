@@ -3,27 +3,25 @@ GO
 
 --SEED DATABASE TABLES
 
---ESPECIALIDAD
-INSERT INTO Especialidades(Nombre) VALUES(N'Informatica') 
-INSERT INTO Especialidades(Nombre) VALUES(N'Quimica')
-INSERT INTO Especialidades(Nombre) VALUES(N'Gestion')
+--CARRERA
+INSERT INTO Carrera(Nombre) VALUES(N'Desarrollo de Software') 
+INSERT INTO Carrera(Nombre) VALUES(N'Infraestructura de Redes')
+INSERT INTO Carrera(Nombre) VALUES(N'Analisis de Sistemas')
 GO
 
 --MATERIAS
-INSERT INTO Materias(Nombre) VALUES(N'Algebra') --1
+INSERT INTO Materias(Nombre) VALUES(N'Matematica I') --1
 INSERT INTO Materias(Nombre) VALUES(N'Sistemas Operativos') --2
 INSERT INTO Materias(Nombre) VALUES(N'Programacion I') --3
-INSERT INTO Materias(Nombre) VALUES(N'Ingles') --4
-INSERT INTO Materias(Nombre) VALUES(N'Contabilidad') --5
-INSERT INTO Materias(Nombre) VALUES(N'Laboratorio') --6
-INSERT INTO Materias(Nombre) VALUES(N'Laboratorio II')
+INSERT INTO Materias(Nombre) VALUES(N'Filosofia') --4
+INSERT INTO Materias(Nombre) VALUES(N'Probabilidad y Estadistica') --5
+INSERT INTO Materias(Nombre) VALUES(N'Arquitectura de las computadoras') --6
+INSERT INTO Materias(Nombre) VALUES(N'Redes')
 GO
 
 --CURSOS
 INSERT INTO Cursos(Nombre, Nivel, Capacidad, CodEspecialidad) VALUES(N'Info I', 1, 30, 1) 
-INSERT INTO Cursos(Nombre, Nivel, Capacidad, CodEspecialidad) VALUES(N'Quimica I', 1, 30, 2) 
-INSERT INTO Cursos(Nombre, Nivel, Capacidad, CodEspecialidad) VALUES(N'Quimica II', 2, 30, 2) 
-INSERT INTO Cursos(Nombre, Nivel, Capacidad, CodEspecialidad) VALUES(N'Gestion III', 3, 20, 3) 
+
 GO
 
 --PROFESORES
@@ -76,6 +74,6 @@ GO
 
 SELECT * FROM Alumnos
 SELECT * FROM Materias
-SELECT * FROM Especialidades
+SELECT * FROM Carrera
 SELECT * FROM Profesores
 SELECT * FROM Cursos
