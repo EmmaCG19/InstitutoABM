@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using IntranetInstituto.Models; //Dbcontext 
+using Microsoft.EntityFrameworkCore; //Configurar el ConnectionString en el appconfig
 
 namespace IntranetInstituto
 {
@@ -20,19 +22,35 @@ namespace IntranetInstituto
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            //Utiliza el connection string del appSettings.json
+            services.AddDbContext<InstitutoDBContext>(o => o.UseSqlServer(Configuration.GetConnectionString("InstitutoConnectionString")));
+
+            //agrego esto para el swagger.
+            services.AddOpenApiDocument(configure => {
+                configure.Title = "Programacion III";
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                //Para utilizar el swagger
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
+
             }
             else
             {

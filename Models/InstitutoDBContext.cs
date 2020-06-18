@@ -6,6 +6,16 @@ namespace IntranetInstituto.Models
 {
     public partial class InstitutoDBContext : DbContext
     {
+        public DbSet<Alumno> Alumnos { get; set; }    
+        public DbSet<Materia> Materias { get; set; }    
+        public DbSet<Curso> Cursos { get; set; }    
+        public DbSet<Profesor> Profesores { get; set; }    
+        public DbSet<Especialidad> Especialidades { get; set; }    
+        public DbSet<AlumnoMateria> AlumnosMaterias { get; set; }    
+        public DbSet<CursoProfesor> CursosProfesores { get; set; }    
+        public DbSet<EspecialidadMateria> EspecialidadesMaterias { get; set; }    
+
+
         public InstitutoDBContext()
         {
         }
@@ -13,19 +23,21 @@ namespace IntranetInstituto.Models
         public InstitutoDBContext(DbContextOptions<InstitutoDBContext> options)
             : base(options)
         {
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
+            // if (!optionsBuilder.IsConfigured)
+            // {
                 //Pasar el ConnectionString al appsettings
-                optionsBuilder.UseSqlServer("Server=localhost\\SQLExpress;Database=InstitutoDB;trusted_connection=true");
-            }
+                // optionsBuilder.UseSqlServer("Server=localhost\\SQLExpress;Database=InstitutoDB;trusted_connection=true");
+            // }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            OnModelCreatingPartial(modelBuilder);
 
             modelBuilder.Entity<AlumnoMateria>().HasKey(am => new{am.NroLegajo, am.CodMateria});
             //Definir las foreign keys
@@ -64,19 +76,9 @@ namespace IntranetInstituto.Models
             .WithMany(p => p.CursoProfesores)
             .HasForeignKey(em => em.ProfesorId);          
 
-            OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        public DbSet<Alumno> Alumnos { get; set; }    
-        public DbSet<Materia> Materias { get; set; }    
-        public DbSet<Curso> Cursos { get; set; }    
-        public DbSet<Profesor> Profesores { get; set; }    
-        public DbSet<Especialidad> Especialidades { get; set; }    
-        public DbSet<AlumnoMateria> AlumnosMaterias { get; set; }    
-        public DbSet<CursoProfesor> CursosProfesores { get; set; }    
-        public DbSet<EspecialidadMateria> EspecialidadesMaterias { get; set; }    
 
     }
 }

@@ -13,102 +13,97 @@ namespace IntranetInstituto.Controllers
     [ApiController]
     public class CursosController : ControllerBase
     {
-        public ActionResult<Curso> GetCursos()
-        {
-            using (InstitutoDBContext context = new InstitutoDBContext())
-            {
-                List<Curso> cursos = context.Cursos
-                                                    .Include("Especialidad")
-                                                    .ToList<Curso>();
+        private readonly InstitutoDBContext _context;
 
-                return Ok(cursos);
-            }
+        public CursosController(InstitutoDBContext context)
+        {
+            _context = context;
         }
 
-        [Route("{codCurso:int:min(1)}")]
-        public ActionResult<Curso> GetCurso(int codCurso)
+        // GET: api/Cursos
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Curso>>> GetCursos()
         {
+            return await _context.Cursos.ToListAsync();
+        }
 
-            using (InstitutoDBContext context = new InstitutoDBContext())
+        // GET: api/Cursos/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Curso>> GetCurso(int id)
+        {
+            var curso = await _context.Cursos.FindAsync(id);
+
+            if (curso == null)
             {
-                Curso cursoEncontrado = context.Cursos.Find(codCurso);
+                return NotFound();
+            }
 
-                if (cursoEncontrado is null)
+            return curso;
+        }
+
+        // PUT: api/Cursos/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCurso(int id, Curso curso)
+        {
+            if (id != curso.CodCurso)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(curso).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CursoExists(id))
+                {
                     return NotFound();
+                }
                 else
-                    return Ok(cursoEncontrado);
+                {
+                    throw;
+                }
             }
+
+            return NoContent();
         }
 
+        // POST: api/Cursos
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public IActionResult CargarCurso(Curso curso)
+        public async Task<ActionResult<Curso>> PostCurso(Curso curso)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            _context.Cursos.Add(curso);
+            await _context.SaveChangesAsync();
 
-            using (InstitutoDBContext context = new InstitutoDBContext())
-            {
-                try
-                {
-                    context.Cursos.Add(curso);
-                    context.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.InnerException.Message);
-                }
-
-                return Ok("El curso fue cargado exitosamente");
-            }
-
+            return CreatedAtAction("GetCurso", new { id = curso.CodCurso }, curso);
         }
 
-        [HttpPut]
-        [Route("{codCurso:int:min(1)}")]
-        public IActionResult ActualizarCurso(int codCurso, Curso curso)
+        // DELETE: api/Cursos/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Curso>> DeleteCurso(int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            using (InstitutoDBContext context = new InstitutoDBContext())
+            var curso = await _context.Cursos.FindAsync(id);
+            if (curso == null)
             {
-                Curso cursoAActualizar = context.Cursos.Find(codCurso);
-
-                if (cursoAActualizar is null)
-                    return NotFound();
-                else
-                {
-                    #region Actualizando curso
-                    cursoAActualizar.CodEspecialidad = curso.CodEspecialidad;
-                    cursoAActualizar.Nombre= curso.Nombre;
-                    cursoAActualizar.Capacidad= curso.Capacidad;
-                    cursoAActualizar.Nivel = curso.Nivel ;
-                    #endregion
-
-                    context.SaveChanges();
-                    return Ok($"Se han actualizado los datos del curso con codigo: {cursoAActualizar.CodCurso}");
-                }
+                return NotFound();
             }
+
+            _context.Cursos.Remove(curso);
+            await _context.SaveChangesAsync();
+
+            return curso;
         }
 
-        [Route("codCurso:int:min(1)")]
-        public IActionResult DeleteCurso(int codCurso)
+        private bool CursoExists(int id)
         {
-            using (InstitutoDBContext context = new InstitutoDBContext())
-            {
-                Curso cursoAEliminar = context.Cursos.Find(codCurso);
-
-                if(cursoAEliminar is null)
-                    return NotFound();
-                else
-                {
-
-                    context.Cursos.Remove(cursoAEliminar);
-                    context.SaveChanges();
-                    return Ok("El curso pudo ser eliminado");
-                }
-            }
-
+            return _context.Cursos.Any(e => e.CodCurso == id);
         }
     }
 }
