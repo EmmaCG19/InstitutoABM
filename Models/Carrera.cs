@@ -5,13 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntranetInstituto.Models
 {
-    public class Especialidad
+    public class Carrera
     {
         [Key]
-        public int CodEspecialidad { get; set; }
+        public int CodCarrera { get; set; }
 
         [Required]
         public string Nombre { get; set; }
-        public ICollection<EspecialidadMateria> EspecialidadMaterias { get; set; }
+
+        public ICollection<CarreraMateria> CarrerasMaterias { get; set; }
+        public ICollection<Alumno> Alumnos { get; set; }
     }
 }

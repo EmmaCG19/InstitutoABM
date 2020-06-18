@@ -11,8 +11,8 @@ namespace IntranetInstituto.Models
 
         [ForeignKey("Materia")]
         public int CodMateria { get; set; }
-        
         public Materia Materia { get; set; }
-        public ICollection<CursoProfesor> CursoProfesores { get; set; }
+
+        public ICollection<Curso> Cursos { get; set; }       
     }
 }

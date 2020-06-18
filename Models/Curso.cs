@@ -9,16 +9,13 @@ namespace IntranetInstituto.Models
     {
         [Key]
         public int CodCurso { get; set; }
-        [Required]
-        public string Nombre { get; set; }
-        public byte Nivel { get; set; }
-        public byte Capacidad { get; set; }
 
-        [ForeignKey("Especialidad")]
-        public int CodEspecialidad { get; set; }
+        [ForeignKey("Profesor")]
+        public int ProfesorId { get; set; }        
+        public Profesor Profesor { get; set; }
+        
+        public DateTime FechaInicio { get; set; }
 
-        public Especialidad Especialidad { get; set; }
-        public ICollection<CursoProfesor> CursoProfesores { get; set; }
-        public ICollection<Alumno> Alumnos { get; set; }
+        public ICollection<AlumnoCurso> AlumnosCursos { get; set; }
     }
 }

@@ -10,11 +10,9 @@ namespace IntranetInstituto.Models
         public DbSet<Materia> Materias { get; set; }    
         public DbSet<Curso> Cursos { get; set; }    
         public DbSet<Profesor> Profesores { get; set; }    
-        public DbSet<Especialidad> Especialidades { get; set; }    
-        public DbSet<AlumnoMateria> AlumnosMaterias { get; set; }    
-        public DbSet<CursoProfesor> CursosProfesores { get; set; }    
-        public DbSet<EspecialidadMateria> EspecialidadesMaterias { get; set; }    
-
+        public DbSet<Carrera> Carreras {get;set;}
+        public DbSet<CarreraMateria> CarrerasMaterias {get;set;}
+        public DbSet<AlumnoCurso> AlumnosCursos {get;set;}
 
         public InstitutoDBContext()
         {
@@ -39,43 +37,38 @@ namespace IntranetInstituto.Models
         {
             OnModelCreatingPartial(modelBuilder);
 
-            modelBuilder.Entity<AlumnoMateria>().HasKey(am => new{am.NroLegajo, am.CodMateria});
+            modelBuilder.Entity<AlumnoCurso>().HasKey(ac => new{ac.NroLegajo, ac.CodCurso});
             //Definir las foreign keys
 
-            modelBuilder.Entity<AlumnoMateria>()
-            .HasOne<Alumno>(am => am.Alumno)    //Refiere a la propiedad de navegacion de referencia 
-            .WithMany(a => a.AlumnoMaterias)    //Refiere a la propiedad de navegacion de coleccion 
-            .HasForeignKey(am => am.NroLegajo); //Refiere a la propiedad definida como FK en la entidad
+            modelBuilder.Entity<AlumnoCurso>()
+            .HasOne<Alumno>(ac => ac.Alumno)    //Refiere a la propiedad de navegacion de referencia 
+            .WithMany(a => a.AlumnosCursos)    //Refiere a la propiedad de navegacion de coleccion 
+            .HasForeignKey(ac => ac.NroLegajo); //Refiere a la propiedad definida como FK en la entidad
 
-            modelBuilder.Entity<AlumnoMateria>()
-            .HasOne<Materia>(am => am.Materia)
-            .WithMany(m => m.AlumnoMaterias)
-            .HasForeignKey(am => am.CodMateria);    
+            modelBuilder.Entity<AlumnoCurso>()
+            .HasOne<Curso>(ac => ac.Curso)
+            .WithMany(m => m.AlumnosCursos)
+            .HasForeignKey(ac => ac.CodCurso);    
 
-            modelBuilder.Entity<EspecialidadMateria>().HasKey(em => new{em.CodEspecialidad, em.CodMateria});                
+            
+            modelBuilder.Entity<CarreraMateria>().HasKey(cm => new{cm.CodCarrera, cm.CodMateria});
 
-            modelBuilder.Entity<EspecialidadMateria>()
-            .HasOne<Especialidad>(em => em.Especialidad)
-            .WithMany(e => e.EspecialidadMaterias)
-            .HasForeignKey(em => em.CodEspecialidad);
+            modelBuilder.Entity<CarreraMateria>()
+            .HasOne<Carrera>(cm => cm.Carrera)   
+            .WithMany(c => c.CarrerasMaterias)    
+            .HasForeignKey(cm => cm.CodCarrera); 
 
-            modelBuilder.Entity<EspecialidadMateria>()
-            .HasOne<Materia>(em => em.Materia)
-            .WithMany(m => m.EspecialidadMaterias)
-            .HasForeignKey(em => em.CodEspecialidad);
+            modelBuilder.Entity<CarreraMateria>()
+            .HasOne<Materia>(cm => cm.Materia)
+            .WithMany(m => m.CarrerasMaterias)
+            .HasForeignKey(cm => cm.CodMateria);    
 
-            modelBuilder.Entity<CursoProfesor>().HasKey(cp => new{cp.CodCurso, cp.ProfesorId});      
-
-            modelBuilder.Entity<CursoProfesor>()
-            .HasOne<Curso>(cp => cp.Curso)
-            .WithMany(c => c.CursoProfesores)
-            .HasForeignKey(em => em.CodCurso);
-
-            modelBuilder.Entity<CursoProfesor>()
-            .HasOne<Profesor>(cp => cp.Profesor)
-            .WithMany(p => p.CursoProfesores)
-            .HasForeignKey(em => em.ProfesorId);          
-
+            //Error al agregar la FK constraint en Alumnos con Data Annotations
+            modelBuilder.Entity<Alumno>()
+            .HasOne<Carrera>(a => a.Carrera)
+            .WithMany(c => c.Alumnos)
+            .HasForeignKey(a => a.CodCarrera);
+           
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
