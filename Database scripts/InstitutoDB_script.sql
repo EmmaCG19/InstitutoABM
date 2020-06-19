@@ -3,10 +3,28 @@ GO
 
 --SEED DATABASE TABLES
 
+--RESET TABLES
+DELETE FROM Alumnos
+DELETE FROM Profesores
+DELETE FROM Materias
+DELETE FROM Cursos
+DELETE FROM AlumnosCursos
+DELETE FROM Carreras
+DELETE FROM CarrerasMaterias
+
+
+--RESEED THE IDENTITY COLUMN
+DBCC CHECKIDENT ('Alumnos', RESEED, 0)  
+DBCC CHECKIDENT ('Profesores', RESEED, 0)  
+DBCC CHECKIDENT ('Materias', RESEED, 0)  
+DBCC CHECKIDENT ('Cursos', RESEED, 0)  
+DBCC CHECKIDENT ('Carreras', RESEED, 0)  
+  
+
 --CARRERA
-INSERT INTO Carrera(Nombre) VALUES(N'Desarrollo de Software') 
-INSERT INTO Carrera(Nombre) VALUES(N'Infraestructura de Redes')
-INSERT INTO Carrera(Nombre) VALUES(N'Analisis de Sistemas')
+INSERT INTO Carreras(Nombre) VALUES(N'Desarrollo de Software') 
+INSERT INTO Carreras(Nombre) VALUES(N'Infraestructura de Redes')
+INSERT INTO Carreras(Nombre) VALUES(N'Analisis de Sistemas')
 GO
 
 --MATERIAS
@@ -34,16 +52,16 @@ INSERT INTO Cursos(ProfesorId, FechaInicio) VALUES(4,N'03/18/2020')
 GO
 
 --ALUMNOS
-INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaDeIngreso,Email) 
+INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaIngreso,Email) 
 VALUES(N'Emmanuel', N'Fernandez', N'06/15/1994', 38396359, N'1123456789',1,N'03/12/2018', N'emmanuel.fernandez@gmail.com') 
-INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaDeIngreso,Email) 
+INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaIngreso,Email) 
 VALUES(N'Nahuel', N'Ferreira', N'06/16/1994', 38721003, N'1123456789',1,N'03/12/2018', N'nahuel.ferreira@gmail.com') 
-INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaDeIngreso,Email) 
+INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaIngreso,Email) 
 VALUES(N'Lucas', N'Rodriguez', N'05/17/1993', 36892333, N'1123456789',2,N'03/12/2019', N'lucas.rodriguez@gmail.com') 
-INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaDeIngreso,Email) 
+INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaIngreso,Email) 
 VALUES(N'Solange', N'Perez', N'04/18/1993', 37212892, N'1123456789',3,N'03/12/2020', N'sol.perez@gmail.com') 
-INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaDeIngreso,Email) 
-VALUES(N'Julieta', N'Estevez', N'03/19/1992', 3621348, N'1123456789',4,N'03/12/2020', N'julis.estevez@gmail.com') 
+INSERT INTO Alumnos(Nombre, Apellido, FechaDeNacimiento, NroDocumento,Contacto, CodCarrera,FechaIngreso,Email) 
+VALUES(N'Julieta', N'Estevez', N'03/19/1992', 3621348, N'1123456789',3,N'03/12/2020', N'julis.estevez@gmail.com') 
 GO
 
 
@@ -66,8 +84,11 @@ INSERT INTO AlumnosCursos(NroLegajo, CodCurso, NotaPrimerParcial, NotaSegundoPar
 INSERT INTO AlumnosCursos(NroLegajo, CodCurso, NotaPrimerParcial, NotaSegundoParcial, NotaFinal) VALUES(5,4,3,4,0)
 GO
 
-SELECT * FROM Alumnos
-SELECT * FROM Materias
-SELECT * FROM Carrera
-SELECT * FROM Profesores
-SELECT * FROM Cursos
+ --SELECT * FROM Alumnos
+ --SELECT * FROM Materias
+ --SELECT * FROM Carreras
+ --SELECT * FROM Profesores
+ --SELECT * FROM Cursos
+ --SELECT * FROM CarrerasMaterias
+ --SELECT * FROM AlumnosCursos
+
