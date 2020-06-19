@@ -42,7 +42,9 @@ import { AlumnosService } from "./alumnos/alumnos.service";
       { path: "fetch-data", component: FetchDataComponent },
       //Paths personalizados
       { path: "alumnos", component: AlumnosComponent },
-      { path: "alumnos-editar", component: AlumnosFormComponent },
+      { path: "alumnos-agregar", component: AlumnosFormComponent },
+      { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
+
       { path: "materias", component: MateriasComponent },
       { path: "cursos", component: CursosComponent },
       { path: "profesores", component: ProfesoresComponent },

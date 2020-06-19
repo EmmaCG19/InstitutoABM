@@ -22,8 +22,13 @@ export class AlumnosService {
     return this.http.get<IAlumno>(this.apiUrl +"/"+ nroLegajo);
   }
 
-  deleteAlumno(nroLegajo:number):Observable<IAlumno>{
+  // actualizarAlumno(nroLegajo:number, alumno: IAlumno): Observable<IAlumno>
+  // {
+  //   console.log(this.apiUrl);
 
+  // }
+
+  deleteAlumno(nroLegajo:number):Observable<IAlumno>{
     console.log(this.apiUrl);
     return this.http.delete<IAlumno>(this.apiUrl +"/"+ nroLegajo);
  }

@@ -101,6 +101,21 @@ namespace IntranetInstituto.Controllers
             return curso;
         }
 
+        [HttpGet, Route("{codCurso:int}/alumnos")]
+        public IActionResult GetAlumnosPorCurso(int codCurso)
+        {       
+               var alumnosEnCurso = _context.AlumnosCursos
+                                                          .Where(ac => ac.CodCurso == codCurso)
+                                                          .ToList();
+
+            if (alumnosEnCurso.Count == 0)
+                return NotFound();
+            else
+                return Ok(alumnosEnCurso); 
+
+        }
+
+
         private bool CursoExists(int id)
         {
             return _context.Cursos.Any(e => e.CodCurso == id);

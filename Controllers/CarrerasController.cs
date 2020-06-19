@@ -105,5 +105,24 @@ namespace IntranetInstituto.Controllers
         {
             return _context.Carreras.Any(e => e.CodCarrera == id);
         }
+
+
+        [HttpGet, Route("{codCarrera:int}/materias")]
+        public IActionResult ObtenerMaterias(int codCarrera)
+        {
+
+            var materiasDeCarrera = _context.CarrerasMaterias
+                                                    .Include("Materia")
+                                                    .Include("Carrera")
+                                                    .Where(cm => cm.CodCarrera == codCarrera)
+                                                    .Select(cm => cm.Materia.Nombre)
+                                                    .ToList<string>();
+                                                    
+
+            if(materiasDeCarrera.Count == 0)
+                return NotFound();                                                
+            else
+                return Ok(materiasDeCarrera);   
+        }
     }
 }
