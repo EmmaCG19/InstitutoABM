@@ -44,7 +44,7 @@ export class AlumnosFormComponent implements OnInit {
       email: "",
       contacto: "",
       fechaIngreso: "",
-      carreraSeleccionada: ""
+      codCarrera: "",
     });
   }
 
@@ -52,7 +52,7 @@ export class AlumnosFormComponent implements OnInit {
     //Me trae el nro de legajo de la otra view
     this.route.paramMap.subscribe((params) => {
       this.legajo = +params.get("nroLegajo");
-      // this.carreraSeleccionada = 0;
+      this.carreraSeleccionada = 0;
     });
 
     if (isNaN(this.legajo)) {
@@ -116,16 +116,15 @@ export class AlumnosFormComponent implements OnInit {
       nroDocumento: alumno.nroDocumento,
       contacto: alumno.contacto,
       email: alumno.email,
-      // codCarrera: alumno.codCarrera,
+      codCarrera: alumno.codCarrera,
       fechaIngreso: this.datePipe.transform(
         alumno.fechaIngreso,
         "yyyy-MM-dd"
       ),
-      carreraSeleccionada: alumno.codCarrera  
     });
 
     debugger;
-    // this.carreraSeleccionada = alumno.codCarrera;
+    this.carreraSeleccionada = alumno.codCarrera;
     // this.carreraSeleccionada = this.formGroup.get("codCarrera").value;
 
   }
@@ -138,10 +137,9 @@ export class AlumnosFormComponent implements OnInit {
   }
 
   //Obtiene el codigo de la carrera seleccionada del combobox de carreras
-  getCarreraSeleccionada() {
+  getCarreraSeleccionada(event) {
     
-    debugger;
-    this.carreraSeleccionada = this.formGroup.get("carreraSeleccionada").value;
+    this.carreraSeleccionada = parseInt(event.target.value);
     
   }
 

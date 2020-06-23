@@ -197,15 +197,6 @@
             
             <!-- INPUT -->
             <div class="col-md-8">
-                <select class="form-control" id="comboCarreras" required formControlName = "carreraSeleccionada"
-                 (change)="getCarreraSeleccionada($event)">
-                    <option value="0">--Seleccione una opcion--</option>
-                    <option *ngFor="let carrera of listaCarreras" [value]="carrera.codCarrera" >
-                           {{carrera.nombre | uppercase}} 
-                    </option>
-                </select>    
-
-            <!-- <div class="col-md-8">
                 <select class="form-control" id="comboCarreras" required name = "comboCarreras"
                     [ngModel]="carreraSeleccionada" [ngModelOptions]="{standalone: true}" (change)="getCarreraSeleccionada($event)"
                 >
@@ -213,16 +204,31 @@
                     <option *ngFor="let carrera of listaCarreras" [value]="carrera.codCarrera" >
                            {{carrera.nombre | uppercase}} 
                     </option>
-                </select> -->
+                </select>
+                <!-- [selected]="this.AlumnoSeleccionado" -->
+
+
+                <!-- <div class="form-inline" >
+                    <label class="font-weight-bolder" for="ComboActividades">Inscribir a la actividad</label>
+                    
+                    <select class="form-control" id="listaCarreras" 
+                    [ngModel]="listadoCarreras" (change)="cambioActividad($event);" 
+                    required name="ComboActividades">
+                      <option *ngFor="let activ of ListadoActividadesCombo" [value]="activ.id">Actividad: {{ activ.descripcion }} - Precio: {{activ.precio}} </option>
+                    </select>
+                    
+                    
+                    <button class="btn btn-primary" (click)='guardarInscripcion()'>Inscribir</button>  
+                </div> -->
 
 
                 <!-- VALIDADOR -->
-                <span class="help-block" *ngIf="( formGroup.get('comboCarreras').touched || formGroup.get('comboCarreras').dirty 
+                <!-- <span class="help-block" *ngIf="( formGroup.get('comboCarreras').touched || formGroup.get('comboCarreras').dirty 
                 && !formGroup.valid ) ">
                     <span class="text-danger" *ngIf="formGroup.get('comboCarreras').errors?.required">
                         El campo es requerido
                     </span>
-                </span>
+                </span> -->
             </div>
         </div>
 
