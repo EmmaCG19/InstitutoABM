@@ -17,7 +17,7 @@ export class AlumnosComponent implements OnInit {
 
   cargarAlumnos() {
     //nos vamos a suscribir al servicio que trae todos los alumnos de la base de datos
-      this.alumnosService.getAlumnos().subscribe(
+    this.alumnosService.getAlumnos().subscribe(
       (alumnosEnApi) => (this.ListadoAlumnos = alumnosEnApi),
       (error) => console.error(error)
     );
@@ -25,7 +25,16 @@ export class AlumnosComponent implements OnInit {
   }
 
   eliminarAlumno(nroLegajo: number) {
-    debugger;
-    this.alumnosService.deleteAlumno(nroLegajo);
+    this.alumnosService.deleteAlumno(nroLegajo).subscribe(
+      (alumno) => this.eliminoOK(alumno.nroLegajo),
+      (error) => console.log(error)
+    );
   }
+
+  private eliminoOK(nroLegajo: number) {
+    console.log(`Se elimino el alumno con id ${nroLegajo}!`);
+    this.ngOnInit();
+  }
+
+  
 }

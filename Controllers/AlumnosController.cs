@@ -47,9 +47,9 @@ namespace IntranetInstituto.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAlumno(int id, Alumno alumno)
         {
-            if (id != alumno.NroLegajo)
+            if (id != alumno.NroLegajo || !ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
             _context.Entry(alumno).State = EntityState.Modified;

@@ -3,10 +3,203 @@
 </div>
 
 <div *ngIf="modoEdicion">
-<h1>Formulario de edicion de alumnos en contrucción...</h1>
-<div>
+    <h1>Formulario de edicion de alumnos en contrucción...</h1>
+</div>
 <div *ngIf="!modoEdicion">
     <h1>Formulario de carga de alumnos en contrucción...</h1>
 </div>
 
 
+<!-- nroLegajo: "",
+        nombre: "",
+        apellido: "",
+        fechaIngreso: "",
+        fechaNac: "",
+        nroDoc: "",
+        email: "", -->
+
+
+<!-- guardar alumno va a cargar el alumno o actualizarlo, dependiendo del id que haya traido desde la view de alumnos -->
+<form class="form-horizontal" novalidate [formGroup]="formGroup" (ngSubmit)="guardarAlumno()">
+
+    <fieldset>
+        <legend>Datos Personales</legend>
+        <!-- FORMGROUP -->
+
+        <div class="form-group" [ngClass]="{ 'has-error': 
+  (
+    formGroup.get('nombre').touched || formGroup.get('nombre').dirty && !formGroup.get('nombre').valid  
+  ) } ">
+
+            <!-- LABEL -->
+            <label class="col-md-2-control-label" for="nombre">Nombre:</label>
+
+            <!-- INPUT -->
+            <div class="col-md-8">
+                <input class="form-control" id="nombre" type="text" required formControlName="nombre" />
+
+                <!-- VALIDADOR -->
+                <span class="help-block" *ngIf="( formGroup.get('nombre').touched || formGroup.get('nombre').dirty 
+                       && !formGroup.valid ) ">
+                    <span class="text-danger" *ngIf="formGroup.get('nombre').errors?.required">
+                        El campo es requerido
+                    </span>
+                </span>
+            </div>
+        </div>
+
+
+        <!----------------------------------------------------------->
+
+        <!-- FORMGROUP -->
+
+        <div class="form-group" [ngClass]="{ 'has-error': 
+(
+  formGroup.get('apellido').touched || formGroup.get('apellido').dirty && !formGroup.get('apellido').valid  
+) } ">
+
+            <!-- LABEL -->
+            <label class="col-md-2-control-label" for="apellido">Apellido:</label>
+
+            <!-- INPUT -->
+            <div class="col-md-8">
+                <input class="form-control" id="apellido" type="text" required formControlName="apellido" />
+
+                <!-- VALIDADOR -->
+                <span class="help-block" *ngIf="( formGroup.get('apellido').touched || formGroup.get('apellido').dirty 
+                     && !formGroup.valid ) ">
+                    <span class="text-danger" *ngIf="formGroup.get('apellido').errors?.required">
+                        El campo es requerido
+                    </span>
+                </span>
+            </div>
+        </div>
+
+
+        <!----------------------------------------------------------->
+
+        <!-- FORMGROUP -->
+
+        <div class="form-group" [ngClass]="{ 'has-error': 
+(
+  formGroup.get('nroDoc').touched || formGroup.get('nroDoc').dirty && !formGroup.get('nroDoc').valid  
+) } ">
+
+            <!-- LABEL -->
+            <label class="col-md-2-control-label" for="nroDoc">DNI:</label>
+
+            <!-- INPUT -->
+            <div class="col-md-8">
+                <input class="form-control" id="nroDoc" type="number" required formControlName="nroDoc" />
+
+                <!-- VALIDADOR -->
+                <span class="help-block" *ngIf="( formGroup.get('nroDoc').touched || formGroup.get('nroDoc').dirty 
+                     && !formGroup.valid ) ">
+                    <span class="text-danger" *ngIf="formGroup.get('nroDoc').errors?.required">
+                        El campo es requerido
+                    </span>
+                </span>
+            </div>
+        </div>
+
+
+        <!----------------------------------------------------------->
+
+        <div class="form-group" [ngClass]="{ 'has-error': 
+  (
+    formGroup.get('email').touched || formGroup.get('email').dirty && !formGroup.get('email').valid  
+  ) } ">
+
+
+
+            <label class="col-md-2-control-label" for="email">Mail:</label>
+
+            <div class="col-md-8">
+                <input class="form-control" id="email" type="email" required formControlName="email" />
+
+                <span class="help-block" *ngIf="( formGroup.get('email').touched || 
+                       formGroup.get('email').dirty 
+                       && !formGroup.valid ) ">
+                    <span class="text-danger" *ngIf="formGroup.get('email').errors?.required">
+                        El campo es requerido
+                    </span>
+                </span>
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+        <div class="form-group" [ngClass]="{ 'has-error': 
+      (
+        formGroup.get('fechaNac').touched || formGroup.get('fechaNac').dirty && !formGroup.get('fechaNac').valid  
+      ) } ">
+
+
+
+            <label class="col-md-2-control-label" for="fechaNac">Fecha de nacimiento:</label>
+
+            <div class="col-md-8">
+                <input class="form-control" id="fechaNac" type="date" required formControlName="fechaNac" />
+
+                <span class="help-block" *ngIf="( formGroup.get('fechaNac').touched || 
+                           formGroup.get('fechaNac').dirty 
+                           && !formGroup.valid ) ">
+                    <span class="text-danger" *ngIf="formGroup.get('fechaNac').errors?.required">
+                        El campo es requerido
+                    </span>
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group" [ngClass]="{ 'has-error': 
+                (
+                  formGroup.get('contacto').touched || formGroup.get('contacto').dirty && !formGroup.get('contacto').valid  
+                ) } ">
+
+            <!-- LABEL -->
+            <label class="col-md-2-control-label" for="contacto">Tel:</label>
+
+            <!-- INPUT -->
+            <div class="col-md-8">
+                <input class="form-control" id="contacto" type="text" required formControlName="contacto" />
+
+                <!-- VALIDADOR -->
+                <span class="help-block" *ngIf="( formGroup.get('contacto').touched || formGroup.get('contacto').dirty 
+                                     && !formGroup.valid ) ">
+                    <span class="text-danger" *ngIf="formGroup.get('contacto').errors?.required">
+                        El campo es requerido
+                    </span>
+                </span>
+            </div>
+        </div>
+
+
+
+        <!---ACCIONES-->
+        <div class="form-group">
+            <div class="col-md-4 col-md-offset-2">
+                <span>
+                    <button class="btn btn-primary" type="submit" [disabled]="!formGroup.valid">
+                        Guardar
+                    </button>
+                </span>
+                <span>
+                    <button class="btn btn-danger" [routerLink]='["/alumnos"]'>
+                        Cancelar
+                    </button>
+                </span>
+            </div>
+        </div>
+
+    </fieldset>
+
+
+</form>

@@ -18,6 +18,7 @@ import { CursosComponent } from './cursos/cursos.component';
 
 //Services
 import { AlumnosService } from "./alumnos/alumnos.service";
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AlumnosService } from "./alumnos/alumnos.service";
     CursosComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
     HttpClientModule,
     FormsModule,
@@ -40,6 +42,7 @@ import { AlumnosService } from "./alumnos/alumnos.service";
       { path: "", component: HomeComponent, pathMatch: "full" },
       { path: "counter", component: CounterComponent },
       { path: "fetch-data", component: FetchDataComponent },
+      
       //Paths personalizados
       { path: "alumnos", component: AlumnosComponent },
       { path: "alumnos-agregar", component: AlumnosFormComponent },
@@ -50,7 +53,7 @@ import { AlumnosService } from "./alumnos/alumnos.service";
       { path: "profesores", component: ProfesoresComponent },
     ]),
   ],
-  providers: [AlumnosService],
+  providers: [AlumnosService, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

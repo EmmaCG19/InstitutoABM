@@ -3,6 +3,6 @@ export interface IPersona {
   apellido: string;
   fechaDeNacimiento: Date;
   nroDocumento: number;
-  nroContacto: string;
+  contacto: string;
   email: string;
 }

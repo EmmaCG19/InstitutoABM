@@ -30,7 +30,7 @@
                 <td>{{ alumno.nroDocumento }}</td>
                 <td>{{ alumno.fechaDeNacimiento | date: 'dd/MM/yyyy'}}</td>
                 <td>{{ alumno.email }}</td>
-                <td><button class="btn btn-danger" (click)="eliminar(alumno.nroLegajo)">Eliminar</button></td>
+                <td><button class="btn btn-danger" (click)="eliminarAlumno(alumno.nroLegajo)">Eliminar</button></td>
                 <td><button class="btn btn-info" [routerLink]='["/alumnos-editar/" + alumno.nroLegajo]'>Editar</button>
                 </td>
             </tr>

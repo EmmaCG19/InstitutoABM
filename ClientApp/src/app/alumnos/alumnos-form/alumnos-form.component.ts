@@ -4,6 +4,8 @@ import { IAlumno } from "../IAlumno";
 import { ICurso } from "src/app/cursos/icurso";
 import { AlumnosService } from "../alumnos.service";
 import { typeofExpr } from "@angular/compiler/src/output/output_ast";
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-alumnos-form",
@@ -12,52 +14,99 @@ import { typeofExpr } from "@angular/compiler/src/output/output_ast";
 })
 export class AlumnosFormComponent implements OnInit {
   modoEdicion: boolean = false;
-  alumnoLegajo: number;
-  Alumno: IAlumno;
+  legajo: number;
+  formGroup: FormGroup;
   ListadoCursos: ICurso[];
-  
-  // Alumno: IAlumno = {nombre:"Test", apellido: "Edicion", codCarrera:1, nroDocumento:1234, email:"algo@gmail.com", fechaDeNacimiento: new Date(), fechaIngreso: new Date(), nroContacto: "1138419140", nroLegajo:10 };
+
   constructor(
     private route: ActivatedRoute,
     private alumnosService: AlumnosService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private datePipe: DatePipe
+  ) {
 
-  ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      this.alumnoLegajo = +params.get("nroLegajo");
-    });
-    this.cargarDatosAlumno();
+    this.traerAlumnoId();
+
   }
 
-  cargarDatosAlumno() {
-    if (isNaN(this.alumnoLegajo)) {
-      //volver al menu alumnos
+  ngOnInit() {
+    this.formGroup = this.formBuilder.group({
+      nroLegajo: "",
+      nombre: "",
+      apellido: "",
+      fechaNac: "",
+      nroDoc: "",
+      email: "",
+      contacto: "",
+      codCarrera:""
+      // 'fechaIngreso':'',
+    });
+
+  }
+
+  traerAlumnoId() {
+
+    //Me trae el nro de legajo de la otra view
+    this.route.paramMap.subscribe((params) => {
+      this.legajo = +params.get("nroLegajo");
+    });
+
+    if (isNaN(this.legajo)) {
+      //Si el formato no es valido
       console.log("El formato del legajo no es valido");
       this.router.navigate(["/alumnos"]);
     } else {
-      //obtener Alumno
-      this.obtenerAlumno(this.alumnoLegajo);
+      this.modoEdicion = true;
 
-      if (this.Alumno) {
-        //editar datos
-        // this.modoEdicion = true;
-      } else {
-        //cargar datos
-      }
+      //Obtiene un alumno y lo settea a otra
+      this.alumnosService.getAlumno(this.legajo).subscribe(
+        (alumnoApi) =>  this.cargarAlumno(alumnoApi),
+        (error) => this.router.navigate(["/alumnos"])
+      );
     }
   }
 
-  obtenerAlumno(nroLegajo: number) {
+  guardarAlumno(){
 
-    console.log("Nro de legajo: " + nroLegajo);
-    
-    this.alumnosService.getAlumno(nroLegajo).subscribe(
-      (alumnoApi) => 
-        {this.Alumno = alumnoApi; console.log(typeof(this.Alumno))},
-      (error) => console.log(error));
+    let nuevoAlumno: IAlumno = Object.assign({}, this.formGroup.value);
 
-      console.log(`El alumno con legajo ${nroLegajo} es: ${this.Alumno}`);
+    if(this.modoEdicion)
+    {
+      //Edicion
+      //Necesito crear un alumno en base a los valores del form
+      this.alumnosService.actualizarAlumno(this.legajo, nuevoAlumno).subscribe(
+        (alumnoApi) => {
+          console.log("Alumno guardado: ", alumnoApi);
+          this.router.navigate(["/alumnos"]);
+        },
+        (error) => console.log(error)
+      );
+
+    }
+    else 
+    {
+      //Carga
+
+    }
+
+
   }
 
+  cargarAlumno(alumno: IAlumno) {
+    //Cargar alumno en form
+
+    this.formGroup.patchValue({
+      nombre: alumno.nombre, 
+      apellido: alumno.apellido,
+      nroLegajo: alumno.nroLegajo,
+      fechaNac: this.datePipe.transform(alumno.fechaDeNacimiento, "yyyy-MM-dd"),
+      nroDoc: alumno.nroDocumento,
+      contacto: alumno.contacto,
+      email: alumno.email, 
+      codCarrera: alumno.codCarrera,
+    });
+
+    console.dir(this.formGroup);
+  }
 }
