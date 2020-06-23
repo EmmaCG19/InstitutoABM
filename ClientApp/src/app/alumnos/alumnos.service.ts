@@ -1,8 +1,7 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { IAlumno } from "./IAlumno";
-import { AlumnosComponent } from "./alumnos.component"; 
+import { IAlumno } from "./ialumno";
 
 @Injectable()
 export class AlumnosService {
@@ -23,6 +22,8 @@ export class AlumnosService {
   }
 
   crearAlumno(alumno: IAlumno):Observable<IAlumno>{
+    alumno.nroLegajo = 0;
+    debugger;
     return this.http.post<IAlumno>(this.apiUrl, alumno);
   }
 

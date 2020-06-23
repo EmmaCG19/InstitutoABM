@@ -10,14 +10,18 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+
+//Components
 import { AlumnosComponent } from './alumnos/alumnos.component';
 import { AlumnosFormComponent } from './alumnos/alumnos-form/alumnos-form.component';
 import { MateriasComponent } from './materias/materias.component';
 import { ProfesoresComponent } from './profesores/profesores.component';
 import { CursosComponent } from './cursos/cursos.component';
+import { CarrerasComponent } from './carreras/carreras.component';
 
 //Services
 import { AlumnosService } from "./alumnos/alumnos.service";
+import { CarrerasService } from "./carreras/carreras.service";
 import { DatePipe } from '@angular/common';
 
 @NgModule({
@@ -32,6 +36,7 @@ import { DatePipe } from '@angular/common';
     MateriasComponent,
     ProfesoresComponent,
     CursosComponent,
+    CarrerasComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -53,7 +58,7 @@ import { DatePipe } from '@angular/common';
       { path: "profesores", component: ProfesoresComponent },
     ]),
   ],
-  providers: [AlumnosService, DatePipe],
+  providers: [AlumnosService, CarrerasService, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
