@@ -4,14 +4,16 @@ using IntranetInstituto.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IntranetInstituto.Migrations
 {
     [DbContext(typeof(InstitutoDBContext))]
-    partial class InstitutoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200623221521_DBlightver")]
+    partial class DBlightver
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +93,7 @@ namespace IntranetInstituto.Migrations
                     b.ToTable("CarrerasMaterias");
                 });
 
-            modelBuilder.Entity("IntranetInstituto.Models.Inscripcion", b =>
+            modelBuilder.Entity("IntranetInstituto.Models.Curso", b =>
                 {
                     b.Property<int>("NroLegajo")
                         .HasColumnType("int");
@@ -99,17 +101,17 @@ namespace IntranetInstituto.Migrations
                     b.Property<int>("CodMateria")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FechaInscripcion")
+                    b.Property<DateTime>("FechaFin")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Pagado")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("NroLegajo", "CodMateria");
 
                     b.HasIndex("CodMateria");
 
-                    b.ToTable("Inscripciones");
+                    b.ToTable("Cursos");
                 });
 
             modelBuilder.Entity("IntranetInstituto.Models.Materia", b =>
@@ -122,9 +124,6 @@ namespace IntranetInstituto.Migrations
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Precio")
-                        .HasColumnType("real");
 
                     b.HasKey("CodMateria");
 
@@ -155,16 +154,16 @@ namespace IntranetInstituto.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("IntranetInstituto.Models.Inscripcion", b =>
+            modelBuilder.Entity("IntranetInstituto.Models.Curso", b =>
                 {
                     b.HasOne("IntranetInstituto.Models.Materia", "Materia")
-                        .WithMany("Inscripciones")
+                        .WithMany("Cursos")
                         .HasForeignKey("CodMateria")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("IntranetInstituto.Models.Alumno", "Alumno")
-                        .WithMany("Inscripciones")
+                        .WithMany("Cursos")
                         .HasForeignKey("NroLegajo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

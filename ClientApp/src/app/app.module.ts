@@ -15,8 +15,6 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AlumnosComponent } from './alumnos/alumnos.component';
 import { AlumnosFormComponent } from './alumnos/alumnos-form/alumnos-form.component';
 import { MateriasComponent } from './materias/materias.component';
-import { ProfesoresComponent } from './profesores/profesores.component';
-import { CursosComponent } from './cursos/cursos.component';
 import { CarrerasComponent } from './carreras/carreras.component';
 
 //Services
@@ -34,8 +32,6 @@ import { DatePipe } from '@angular/common';
     AlumnosComponent,
     AlumnosFormComponent,
     MateriasComponent,
-    ProfesoresComponent,
-    CursosComponent,
     CarrerasComponent,
   ],
   imports: [
@@ -52,10 +48,8 @@ import { DatePipe } from '@angular/common';
       { path: "alumnos", component: AlumnosComponent },
       { path: "alumnos-agregar", component: AlumnosFormComponent },
       { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
-
       { path: "materias", component: MateriasComponent },
-      { path: "cursos", component: CursosComponent },
-      { path: "profesores", component: ProfesoresComponent },
+      
     ]),
   ],
   providers: [AlumnosService, CarrerasService, DatePipe],

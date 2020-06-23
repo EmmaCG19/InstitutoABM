@@ -4,14 +4,16 @@ using IntranetInstituto.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IntranetInstituto.Migrations
 {
     [DbContext(typeof(InstitutoDBContext))]
-    partial class InstitutoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200623224531_SwapInscripcionCursov2")]
+    partial class SwapInscripcionCursov2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +111,7 @@ namespace IntranetInstituto.Migrations
 
                     b.HasIndex("CodMateria");
 
-                    b.ToTable("Inscripciones");
+                    b.ToTable("Cursos");
                 });
 
             modelBuilder.Entity("IntranetInstituto.Models.Materia", b =>

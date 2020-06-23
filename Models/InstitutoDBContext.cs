@@ -8,11 +8,9 @@ namespace IntranetInstituto.Models
     {
         public DbSet<Alumno> Alumnos { get; set; }
         public DbSet<Materia> Materias { get; set; }
-        public DbSet<Curso> Cursos { get; set; }
-        public DbSet<Profesor> Profesores { get; set; }
+        public DbSet<Inscripcion> Inscripciones { get; set; }
         public DbSet<Carrera> Carreras { get; set; }
         public DbSet<CarreraMateria> CarrerasMaterias { get; set; }
-        public DbSet<AlumnoCurso> AlumnosCursos { get; set; }
 
         public InstitutoDBContext()
         {
@@ -37,25 +35,19 @@ namespace IntranetInstituto.Models
         {
             OnModelCreatingPartial(modelBuilder);
 
-            modelBuilder.Entity<AlumnoCurso>().HasKey(ac => new { ac.NroLegajo, ac.CodCurso });
-            //Definir las foreign keys
-
-            modelBuilder.Entity<AlumnoCurso>()
-            .HasOne<Alumno>(ac => ac.Alumno)    //Refiere a la propiedad de navegacion de referencia 
-            .WithMany(a => a.AlumnosCursos)    //Refiere a la propiedad de navegacion de coleccion 
-            .HasForeignKey(ac => ac.NroLegajo); //Refiere a la propiedad definida como FK en la entidad
-
-            modelBuilder.Entity<AlumnoCurso>()
-            .HasOne<Curso>(ac => ac.Curso)
-            .WithMany(m => m.AlumnosCursos)
-            .HasForeignKey(ac => ac.CodCurso);
+             //Error al agregar la FK constraint en Alumnos con Data Annotations
+            modelBuilder.Entity<Alumno>()
+            .HasOne<Carrera>(a => a.Carrera)
+            .WithMany(i => i.Alumnos)
+            .HasForeignKey(a => a.CodCarrera);
 
 
+            //CARRERAS-MATERIAS
             modelBuilder.Entity<CarreraMateria>().HasKey(cm => new { cm.CodCarrera, cm.CodMateria });
 
             modelBuilder.Entity<CarreraMateria>()
             .HasOne<Carrera>(cm => cm.Carrera)
-            .WithMany(c => c.CarrerasMaterias)
+            .WithMany(i => i.CarrerasMaterias)
             .HasForeignKey(cm => cm.CodCarrera);
 
             modelBuilder.Entity<CarreraMateria>()
@@ -63,11 +55,19 @@ namespace IntranetInstituto.Models
             .WithMany(m => m.CarrerasMaterias)
             .HasForeignKey(cm => cm.CodMateria);
 
-            //Error al agregar la FK constraint en Alumnos con Data Annotations
-            modelBuilder.Entity<Alumno>()
-            .HasOne<Carrera>(a => a.Carrera)
-            .WithMany(c => c.Alumnos)
-            .HasForeignKey(a => a.CodCarrera);
+
+            //CURSOS
+            modelBuilder.Entity<Inscripcion>().HasKey(i => new{ i.NroLegajo, i.CodMateria});
+
+            modelBuilder.Entity<Inscripcion>()
+            .HasOne<Alumno>(i => i.Alumno)
+            .WithMany(a => a.Inscripciones)
+            .HasForeignKey(i => i.NroLegajo);
+
+            modelBuilder.Entity<Inscripcion>()
+            .HasOne<Materia>(i => i.Materia)
+            .WithMany(m => m.Inscripciones)
+            .HasForeignKey(i => i.CodMateria);
 
         }
 

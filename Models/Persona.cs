@@ -13,10 +13,12 @@ namespace IntranetInstituto.Models
         [Required]      
         public string Apellido { get; set; }
 
+        [Required]      
         public DateTime FechaDeNacimiento { get; set; }
+        
+        [Required]      
         public int NroDocumento { get; set; }
         
-        [Required]
         public string Contacto { get; set; }
 
         [Required, DataType(DataType.EmailAddress)]

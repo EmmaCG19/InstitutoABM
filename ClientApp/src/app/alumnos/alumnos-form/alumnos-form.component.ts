@@ -78,8 +78,6 @@ export class AlumnosFormComponent implements OnInit {
     nuevoAlumno.codCarrera = this.carreraSeleccionada;
     console.dir(nuevoAlumno);
 
-    debugger;
-
     if (this.modoEdicion) {
       //Edicion
       this.alumnosService.actualizarAlumno(this.legajo, nuevoAlumno).subscribe(
@@ -123,9 +121,7 @@ export class AlumnosFormComponent implements OnInit {
       ),
     });
 
-    debugger;
     this.carreraSeleccionada = alumno.codCarrera;
-    // this.carreraSeleccionada = this.formGroup.get("codCarrera").value;
 
   }
 

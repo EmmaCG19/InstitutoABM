@@ -101,9 +101,43 @@ namespace IntranetInstituto.Controllers
             return alumno;
         }
 
+        // [HttpGet, Route("{id:int}/materias")]
+        // public async Task<ActionResult<IEnumerable<Materia>>> ObtenerMateriasCursadas(int id)
+        // {
+        //     //Para que un alumno curse una materia tiene que estar en un curso
+        //     return await _context.Cursos.Include("Materia")
+        //                                         .Where(c => c.NroLegajo == id)
+        //                                         .Select(c => c.Materia)
+        //                                         .ToListAsync();
+
+        //     // // if(materias.Count != 0)
+        //     //     return Ok(materias);
+        //     // // else
+        //     // //     return NotFound();
+
+        // }
+
+        [HttpGet, Route("{id:int}/materias")]
+        public IActionResult ObtenerMateriasInscriptas(int id)
+        {
+            //Para que un alumno curse una materia tiene que estar en un curso
+            var materias =  _context.Inscripciones.Include("Materia")
+                                                .Where(c => c.NroLegajo == id)
+                                                .Select(c => c.Materia)
+                                                .ToList<Materia>();
+
+            if(materias.Count != 0)
+                return Ok(materias);
+            else
+                return NotFound();
+
+        }
+
         private bool AlumnoExists(int id)
         {
             return _context.Alumnos.Any(e => e.NroLegajo == id);
         }
+
+        
     }
 }

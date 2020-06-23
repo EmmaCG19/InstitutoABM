@@ -9,11 +9,13 @@ namespace IntranetInstituto.Models
     {
         [Key]
         public int NroLegajo { get; set; }
+
+        [Required]
         public DateTime FechaIngreso { get; set; }
 
         public int CodCarrera { get; set; }
         public Carrera Carrera { get; set; }
 
-        public ICollection<AlumnoCurso> AlumnosCursos { get; set; }
+        public ICollection<Inscripcion> Inscripciones { get; set; }
     }
 }

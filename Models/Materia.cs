@@ -9,10 +9,14 @@ namespace IntranetInstituto.Models
     {
         [Key]
         public int CodMateria { get; set; }
+
         [Required]
         public string Nombre { get; set; }
 
+        [Required]
+        public float Precio { get; set; }
+
+        public ICollection<Inscripcion> Inscripciones { get; set; }
         public ICollection<CarreraMateria> CarrerasMaterias { get; set; }
-        public ICollection<Profesor> Profesores { get; set; }
     }
 }

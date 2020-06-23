@@ -13,7 +13,7 @@ namespace IntranetInstituto.Models
         [Required]
         public string Nombre { get; set; }
 
-        public ICollection<CarreraMateria> CarrerasMaterias { get; set; }
         public ICollection<Alumno> Alumnos { get; set; }
+        public ICollection<CarreraMateria> CarrerasMaterias { get; set; }
     }
 }
