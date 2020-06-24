@@ -108,17 +108,53 @@ namespace IntranetInstituto.Controllers
 
 
         [HttpGet, Route("{codCarrera:int}/materias")]
-        public IActionResult ObtenerMaterias(int codCarrera)
+        public async Task<IActionResult> ObtenerMaterias(int codCarrera)
         {
 
-            var materiasDeCarrera = _context.CarrerasMaterias
+            var materiasDeCarrera = await _context.CarrerasMaterias
                                                     .Include("Materia")
                                                     .Where(cm => cm.CodCarrera == codCarrera)
                                                     .Select(cm => cm.Materia)
-                                                    .ToList();
+                                                    .ToListAsync();
 
 
             return Ok(materiasDeCarrera);
+        }
+
+
+        [HttpDelete, Route("{codCarrera:int}/materias/{codMateria:int}")]
+        public async Task<IActionResult> EliminarMateriaCarrera(int codCarrera, int codMateria)
+        {
+
+            var carreraMateria = await _context.CarrerasMaterias.Where(cm => cm.CodCarrera == codCarrera
+                                                                && cm.CodMateria == codMateria)
+                                                            .FirstOrDefaultAsync<CarreraMateria>();
+
+            if (carreraMateria is null)
+                return NotFound();
+
+            _context.CarrerasMaterias.Remove(carreraMateria);
+            await _context.SaveChangesAsync();
+            return Ok(carreraMateria);
+        }
+
+        [HttpPost, Route("{codCarrera:int}/materias")]
+        public async Task<IActionResult> CargarMateriaCarrera(CarreraMateria carreraMateria)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                _context.CarrerasMaterias.Add(carreraMateria);
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception e)
+            {
+                return NotFound(e);
+            }
+
+            return Ok(carreraMateria);
         }
     }
 }

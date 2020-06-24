@@ -1,7 +1,12 @@
+<div>
+    <h1 class="text-primary">Carreras</h1>
+</div>
+
 <!-- COMBOBOX DE CARRERAS -->
 <div class="form-group">
+    <label for="comboCarreras">Seleccione una carrera:</label>
     <select class="form-control" id="comboCarreras" required name="comboCarreras" [ngModel]="carreraSeleccionada"
-        [ngModelOptions]="{standalone: true}" (change)="mostrarListaMaterias($event)">
+        [ngModelOptions]="{standalone: true}" (change)="cargarInfoCarrera($event)">
         <option value="0">--Seleccione una opcion--</option>
         <option *ngFor="let carrera of listaCarreras" [value]="carrera.codCarrera">
             {{carrera.nombre | uppercase}}
@@ -14,12 +19,12 @@
     <h3 class="text-info">No se ha seleccionado ninguna carrera</h3>
 </div>
 
-<div *ngIf="(!listaMaterias || listaMaterias.length == 0) && carreraSeleccionada != 0">
+<div *ngIf="(!materiasPorCarrera || materiasPorCarrera.length == 0) && carreraSeleccionada">
     <h3 class="text-info">No existen materias cargadas para esta carrera</h3>
 </div>
 
-<div *ngIf="(listaMaterias && listaMaterias.length)">
-    <table class="table table-hover">
+<div *ngIf="(materiasPorCarrera && materiasPorCarrera.length)">
+    <table class="table table-hover table-striped">
         <thead>
             <tr>
                 <th>Codigo</th>
@@ -29,14 +34,29 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let materia of listaMaterias">
+            <tr *ngFor="let materia of materiasPorCarrera">
                 <td>{{materia.codMateria}}</td>
                 <td>{{materia.nombre}}</td>
                 <td>{{materia.precio | currency}}</td>
-                <td><button class="btn btn-danger" (click)="alert('Se elimino el alumno!')">Eliminar</button></td>
-                <td><button class="btn btn-info" [routerLink]='["/"]'>Editar</button>
+                <td><button class="btn btn-danger" (click)="eliminarMateria(materia.codMateria)">Quitar</button></td>
             </tr>
         </tbody>
     </table>
-
 </div>
+
+<hr/>
+
+    <div class="form-group" *ngIf="carreraSeleccionada && !estaCompleto">
+        <label for="comboDisponibles">Asigne una materia a la carrera: </label>
+        <select class="form-control" id="comboDisponibles" required name="comboDisponibles" [ngModel]="materiaSeleccionada"
+            [ngModelOptions]="{standalone: true}" (change)="getMateriaSeleccionada($event)">
+            <option value="0">--Seleccione una opcion--</option>
+            <option *ngFor="let materia of materiasDisponibles" [value]="materia.codMateria">
+                {{materia.nombre | uppercase}}
+            </option>
+        </select>
+        <div>
+            <button class="btn btn-primary" [disabled]="!sePuedeCargar" (click)="cargarMateria()">Cargar
+                Materia</button>
+        </div>
+    </div>

@@ -124,7 +124,7 @@ namespace IntranetInstituto.Controllers
             var materiasInscriptas = _context.Inscripciones.Include("Materia")
                                                 .Where(c => c.NroLegajo == id)
                                                 .Select(c => c.Materia)
-                                                .ToList<Materia>();
+                                                .ToListAsync();
 
             return Ok(materiasInscriptas);
 

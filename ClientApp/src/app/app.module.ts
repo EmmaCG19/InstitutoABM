@@ -15,6 +15,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AlumnosComponent } from './alumnos/alumnos.component';
 import { AlumnosFormComponent } from './alumnos/alumnos-form/alumnos-form.component';
 import { MateriasComponent } from './materias/materias.component';
+import { MateriasFormComponent } from './materias/materias-form/materias-form.component';
 import { CarrerasComponent } from './carreras/carreras.component';
 
 //Services
@@ -22,6 +23,7 @@ import { AlumnosService } from "./alumnos/alumnos.service";
 import { CarrerasService } from "./carreras/carreras.service";
 import { DatePipe } from '@angular/common';
 import { MateriasService } from "./materias/materias.service";
+import { CarrerasMateriasComponent } from './carreras/carreras-materias/carreras-materias.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { MateriasService } from "./materias/materias.service";
     AlumnosFormComponent,
     MateriasComponent,
     CarrerasComponent,
+    MateriasFormComponent,
+    CarrerasMateriasComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -50,8 +54,8 @@ import { MateriasService } from "./materias/materias.service";
       { path: "alumnos-agregar", component: AlumnosFormComponent },
       { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
       { path: "materias", component: MateriasComponent },
-      // { path: "materias-agregar", component: MateriasFormComponent}
-      // { path: "materias-editar", component: MateriasFormComponent}
+      { path: "materias-agregar", component: MateriasFormComponent},
+      { path: "materias-editar/:codMateria", component: MateriasFormComponent},
       { path: "carreras", component: CarrerasComponent },
       
     ]),

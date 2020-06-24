@@ -24,4 +24,12 @@ export class MateriasComponent implements OnInit {
       (error) => console.log(error)
     );
   }
+
+  eliminarMateria(codMateria: number) {
+    this.materiasService.deleteMateria(codMateria).subscribe(
+      (materiaApi) => console.log(materiaApi),
+      (error) => console.log(error)
+    );
+    this.ngOnInit();
+  }
 }

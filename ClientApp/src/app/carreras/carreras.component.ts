@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {CarrerasService} from './carreras.service';
-import {MateriasService} from '../materias/materias.service';
-import { IMateria } from '../materias/imateria';
-import { ICarrera } from './icarrera';
+import { Component, OnInit } from "@angular/core";
+import { CarrerasService } from "./carreras.service";
+import { MateriasService } from "../materias/materias.service";
+import { IMateria } from "../materias/imateria";
+import { ICarrera } from "./icarrera";
+import { ICarreraMateria } from "../icarrera-materia";
+import { ThrowStmt } from "@angular/compiler";
 
 @Component({
   selector: "app-carreras",
@@ -10,18 +12,33 @@ import { ICarrera } from './icarrera';
   styleUrls: ["./carreras.component.css"],
 })
 export class CarrerasComponent implements OnInit {
-  listaMaterias: IMateria[];
-  listaCarreras: ICarrera[];
   carreraSeleccionada: number;
+  materiaSeleccionada: number;
+  sePuedeCargar: boolean;
+  estaCompleto: boolean;
+  listaCarreras: ICarrera[];
+  listaMaterias: IMateria[];
+  materiasPorCarrera: IMateria[];
+  materiasDisponibles: IMateria[];
 
   constructor(
     private carrerasService: CarrerasService,
     private materiasService: MateriasService
   ) {}
 
-  ngOnInit() {  
+  ngOnInit() {
     this.cargarCarreras();
+    this.cargarMaterias();
     this.carreraSeleccionada = 0;
+    this.materiaSeleccionada = 0;
+  }
+
+
+  resetear(){
+     //Vuelvo a resetear el combobox
+     this.getMateriasCarrera(this.carreraSeleccionada);
+     this.materiaSeleccionada = 0;
+     this.sePuedeCargar = false;
   }
 
   cargarCarreras() {
@@ -31,14 +48,68 @@ export class CarrerasComponent implements OnInit {
     );
   }
 
-  mostrarListaMaterias(event) {
-    //Voy a recibir la opcion que se selecciono en el combo y con ese codigo voy a ir a buscar las materias
-    debugger;
-    this.carreraSeleccionada = parseInt(event.target.value);
-    this.carrerasService.getMaterias(this.carreraSeleccionada).subscribe(
-      (apiMaterias) => {this.listaMaterias = apiMaterias; console.log(apiMaterias)},
+  cargarMaterias() {
+    this.materiasService.getMaterias().subscribe(
+      (materiasApi) => (this.listaMaterias = materiasApi),
       (error) => console.log(error)
     );
+  }
 
+  cargarInfoCarrera(event) {
+    this.carreraSeleccionada = parseInt(event.target.value);
+    this.getMateriasCarrera(this.carreraSeleccionada);
+  }
+
+  getMateriasCarrera(codCarrera: number) {
+    this.carrerasService.getMaterias(codCarrera).subscribe(
+      (apiMaterias) => {
+        this.materiasPorCarrera = apiMaterias;
+        this.getMateriasDisponibles(apiMaterias);
+      },
+      (error) => console.log(error)
+    );
+  }
+
+  //Una lista de las materias que todavia se pueden anotar
+  getMateriasDisponibles(materiasCarrera: IMateria[]) {
+    this.materiasDisponibles = this.listaMaterias.filter(
+      (m) => !this.estaAsignada(m, materiasCarrera)
+    );
+  }
+
+  private estaAsignada(materia: IMateria, materias: IMateria[]): boolean {
+    for (let materiaCarrera of materias) {
+      if (materia.codMateria === materiaCarrera.codMateria) return true;
+    }
+    return false;
+  }
+
+  eliminarMateria(codMateria: number) {
+    this.carrerasService
+      .eliminarMateriaDeCarrera(this.carreraSeleccionada, codMateria)
+      .subscribe(
+        (materiaCarreraApi) => console.log(materiaCarreraApi),
+        (error) => console.log(error)
+      );
+
+    this.resetear();
+  }
+
+  getMateriaSeleccionada(event) {
+    this.materiaSeleccionada = parseInt(event.target.value);
+    this.sePuedeCargar = this.materiaSeleccionada ? true : false;
+  }
+
+  //Tengo que obtener el codigo de la materia de la select list de materias disponibles
+  cargarMateria() {
+    let nuevaMateria: ICarreraMateria = {
+      codCarrera: this.carreraSeleccionada,
+      codMateria: this.materiaSeleccionada,
+    };
+    this.carrerasService.cargarMateriaEnCarrera(nuevaMateria).subscribe();
+    this.estaCompleto = (this.materiasPorCarrera.length == this.listaMaterias.length)? true: false;
+    this.resetear();
+
+    console.log(this.estaCompleto);
   }
 }

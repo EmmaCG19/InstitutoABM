@@ -33,7 +33,6 @@ export class MateriasService {
     materia: IMateria
   ): Observable<IMateria> {
     console.log(this.apiUrl);
-    console.log(codMateria, materia);
     materia.codMateria = +codMateria;
     return this.http.put<IMateria>(this.apiUrl + "/" + codMateria, materia);
   }

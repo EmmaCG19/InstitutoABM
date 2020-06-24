@@ -1,59 +1,44 @@
-<div class="col-md-4">
-    <button class="btn btn-primary" [routerLink]='["/alumnos"]'>Volver a alumnos</button>
-</div>
-
 <div *ngIf="modoEdicion">
-    <h1>Formulario de edicion de alumnos en contrucción...</h1>
+    <h1>Edicion - Legajo: {{legajo}}</h1>
 </div>
 <div *ngIf="!modoEdicion">
-    <h1>Formulario de carga de alumnos en contrucción...</h1>
+    <h1>Cargar Alumno: </h1>
 </div>
 
-
-<!-- nroLegajo: "",
-        nombre: "",
-        apellido: "",
-        fechaIngreso: "",
-        fechaDeNacimiento: "",
-        nroDocumento: "",
-        email: "", -->
-
-
-<!-- guardar alumno va a cargar el alumno o actualizarlo, dependiendo del id que haya traido desde la view de alumnos -->
 <form class="form-horizontal" novalidate [formGroup]="formGroup" (ngSubmit)="guardarAlumno()">
 
     <fieldset>
         <legend>Datos Personales</legend>
         <!-- FORMGROUP -->
-
+        
         <!--NOMBRE BEGIN-->
         <div class="form-group" [ngClass]="{ 'has-error': 
-                (
-                    formGroup.get('nombre').touched || formGroup.get('nombre').dirty && !formGroup.get('nombre').valid  
+        (
+            formGroup.get('nombre').touched || formGroup.get('nombre').dirty && !formGroup.get('nombre').valid  
                     ) } ">
-
-            <!-- LABEL -->
-            <label class="col-md-2-control-label" for="nombre">Nombre:<span class="text-danger"> (*)</span></label>
-
-            <!-- INPUT -->
-            <div class="col-md-8">
-                <input class="form-control" id="nombre" type="text" required formControlName="nombre" />
-
-                <!-- VALIDADOR -->
-                <span class="help-block" *ngIf="( formGroup.get('nombre').touched || formGroup.get('nombre').dirty 
+                    
+                    <!-- LABEL -->
+                    <label class="col-md-2-control-label" for="nombre">Nombre:<span class="text-danger"> (*)</span></label>
+                    
+                    <!-- INPUT -->
+                    <div class="col-md-8">
+                        <input class="form-control" id="nombre" type="text" required formControlName="nombre" />
+                        
+                        <!-- VALIDADOR -->
+                        <span class="help-block" *ngIf="( formGroup.get('nombre').touched || formGroup.get('nombre').dirty 
                         && !formGroup.valid ) ">
-                    <span class="text-danger" *ngIf="formGroup.get('nombre').errors?.required">
-                        El campo es requerido
+                        <span class="text-danger" *ngIf="formGroup.get('nombre').errors?.required">
+                            El campo es requerido
+                        </span>
                     </span>
-                </span>
-            </div>
+                </div>
         </div>
         <!--NOMBRE END-->
 
 
-
+        
         <!--APELLIDO BEGIN-->
-
+        
         <div class="form-group" [ngClass]="{ 'has-error': 
         (
             formGroup.get('apellido').touched || formGroup.get('apellido').dirty && !formGroup.get('apellido').valid  
@@ -61,42 +46,42 @@
 
             <!-- LABEL -->
             <label class="col-md-2-control-label" for="apellido">Apellido:<span class="text-danger"> (*)</span></label>
-
+            
             <!-- INPUT -->
             <div class="col-md-8">
                 <input class="form-control" id="apellido" type="text" required formControlName="apellido" />
-
+                
                 <!-- VALIDADOR -->
                 <span class="help-block" *ngIf="( formGroup.get('apellido').touched || formGroup.get('apellido').dirty 
                 && !formGroup.valid ) ">
-                    <span class="text-danger" *ngIf="formGroup.get('apellido').errors?.required">
-                        El campo es requerido
-                    </span>
+                <span class="text-danger" *ngIf="formGroup.get('apellido').errors?.required">
+                    El campo es requerido
                 </span>
-            </div>
+            </span>
         </div>
+    </div>
         <!--APELLIDO END-->
-
+        
 
 
 
         <!--DOCUMENTO BEGIN-->
-
+        
         <div class="form-group" [ngClass]="{ 'has-error': 
                 (
                     formGroup.get('nroDocumento').touched || formGroup.get('nroDocumento').dirty && !formGroup.get('nroDocumento').valid  
                     ) } ">
-
+                    
             <!-- LABEL -->
             <label class="col-md-2-control-label" for="nroDocumento">DNI:<span class="text-danger"> (*)</span></label>
 
             <!-- INPUT -->
             <div class="col-md-8">
                 <input class="form-control" id="nroDocumento" type="number" required formControlName="nroDocumento" />
-
+                
                 <!-- VALIDADOR -->
                 <span class="help-block" *ngIf="( formGroup.get('nroDocumento').touched || formGroup.get('nroDocumento').dirty 
-                                                                && !formGroup.valid ) ">
+                && !formGroup.valid ) ">
                     <span class="text-danger" *ngIf="formGroup.get('nroDocumento').errors?.required">
                         El campo es requerido
                     </span>
@@ -104,28 +89,28 @@
             </div>
         </div>
         <!--DOCUMENTO END-->
+        
+        
 
-
-
-
+        
         <!--EMAIL BEGIN-->
         <div class="form-group" [ngClass]="{ 'has-error': 
         (
             formGroup.get('email').touched || formGroup.get('email').dirty && !formGroup.get('email').valid  
             ) } ">
-
-
-
+            
+            
+            
             <label class="col-md-2-control-label" for="email">Mail:<span class="text-danger"> (*)</span></label>
-
+            
             <div class="col-md-8">
                 <input class="form-control" id="email" type="email" required formControlName="email" />
-
+                
                 <span class="help-block" *ngIf="( formGroup.get('email').touched || 
-                       formGroup.get('email').dirty 
-                       && !formGroup.valid ) ">
-                    <span class="text-danger" *ngIf="formGroup.get('email').errors?.required">
-                        El campo es requerido
+                formGroup.get('email').dirty 
+                && !formGroup.valid ) ">
+                <span class="text-danger" *ngIf="formGroup.get('email').errors?.required">
+                    El campo es requerido
                     </span>
                     <span class="text-danger" *ngIf="formGroup.get('email').dirty && !mailValido()">
                         El formato del email no es valido
@@ -167,7 +152,7 @@
 
         </div>
         <!--FECHANAC END-->
-
+        
         <!--CONTACTO BEGIN-->
         <div class="form-group" [ngClass]="{ 'has-error': 
         (
@@ -176,7 +161,7 @@
 
             <!-- LABEL -->
             <label class="col-md-2-control-label" for="contacto">Nro. Contacto:</label>
-
+            
             <!-- INPUT -->
             <div class="col-md-8">
                 <input class="form-control" id="contacto" type="text" formControlName="contacto" />
@@ -184,25 +169,26 @@
                 <!-- VALIDADOR -->
                 <span class="help-block" *ngIf="( formGroup.get('contacto').touched || formGroup.get('contacto').dirty 
                 && !formGroup.valid ) ">
-                    <span class="text-danger" *ngIf="formGroup.get('contacto').errors?.required">
-                        El campo es requerido
+                <span class="text-danger" *ngIf="formGroup.get('contacto').errors?.required">
+                    El campo es requerido
                     </span>
                 </span>
             </div>
         </div>
         <!--CONTACTO END-->
 
-
+        
+        <legend>Datos académicos:</legend>
         <!--CARRERAS BEGIN-->
         <div class="form-group">
             <!-- LABEL -->
             <label class="col-md-2-control-label" for="comboCarreras">Carrera:<span class="text-danger">
-                    (*)</span></label>
+                (*)</span></label>
 
-            <!-- INPUT -->
+                <!-- INPUT -->
             <div class="col-md-8">
                 <select class="form-control" id="comboCarreras" required name="comboCarreras"
-                    [ngModel]="carreraSeleccionada" [ngModelOptions]="{standalone: true}"
+                [ngModel]="carreraSeleccionada" [ngModelOptions]="{standalone: true}"
                     (change)="getCarreraSeleccionada($event)">
                     <option value="0">--Seleccione una opcion--</option>
                     <option *ngFor="let carrera of listaCarreras" [value]="carrera.codCarrera">

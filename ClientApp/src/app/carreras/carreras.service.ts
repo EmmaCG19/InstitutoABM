@@ -3,10 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ICarrera } from "./icarrera";
 import { IMateria } from "../materias/imateria";
+import { ICarreraMateria } from "../icarrera-materia";
 
 @Injectable()
 export class CarrerasService {
-  
   private apiUrl = this.baseUrl + "api/carreras";
   constructor(
     private http: HttpClient,
@@ -23,18 +23,18 @@ export class CarrerasService {
     return this.http.get<ICarrera>(this.apiUrl + "/" + codCarrera);
   }
 
-  crearCarrera(carrera: ICarrera):Observable<ICarrera>{
-    debugger;
+  crearCarrera(carrera: ICarrera): Observable<ICarrera> {
     carrera.codCarrera = 0;
     return this.http.post<ICarrera>(this.apiUrl, carrera);
   }
 
-  actualizarCarrera(codCarrera:number, carrera: ICarrera): Observable<ICarrera>
-  {
-    debugger;
+  actualizarCarrera(
+    codCarrera: number,
+    carrera: ICarrera
+  ): Observable<ICarrera> {
     console.log(codCarrera, carrera);
     console.log(this.apiUrl);
-    carrera.codCarrera =+ codCarrera;
+    carrera.codCarrera = +codCarrera;
     return this.http.put<ICarrera>(this.apiUrl + "/" + codCarrera, carrera);
   }
 
@@ -43,7 +43,25 @@ export class CarrerasService {
     return this.http.delete<ICarrera>(this.apiUrl + "/" + codCarrera);
   }
 
-  getMaterias(codCarrera:number):Observable<IMateria[]>{
+  getMaterias(codCarrera: number): Observable<IMateria[]> {
     return this.http.get<IMateria[]>(`${this.apiUrl}/${codCarrera}/materias`);
+  }
+
+  eliminarMateriaDeCarrera(
+    codCarrera: number,
+    codMateria: number
+  ): Observable<ICarreraMateria> {
+    return this.http.delete<ICarreraMateria>(
+      `${this.apiUrl}/${codCarrera}/materias/${codMateria}`
+    );
+  }
+
+  cargarMateriaEnCarrera(
+    carreraMateria: ICarreraMateria
+  ): Observable<ICarreraMateria> {
+    return this.http.post<ICarreraMateria>(
+      this.apiUrl + "/" + carreraMateria.codCarrera + "/materias",
+      carreraMateria
+    );
   }
 }
