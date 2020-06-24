@@ -28,7 +28,7 @@ export class MateriasComponent implements OnInit {
   }
 
   eliminarMateria(codMateria: number) {
-    
+
       setTimeout((f) => this.ngOnInit(), 1000);
 
       this.materiasService.deleteMateria(codMateria).subscribe(
