@@ -1,19 +1,18 @@
-<div class="row">
-    <div class="col-md-6">
-        <h1 class="text-primary">Seccion de Alumnos:</h1>
+<div class="row mb-3">
+    <div class="col pl-0">
+        <h1 class="text-primary text-left">Seccion de Alumnos:</h1>
     </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-4">
-        <button class="btn btn-primary" [routerLink]='["/alumnos-agregar"]'>Cargar Alumno</button>
+    <div class="col-md-12 pl-0">
+        <button class="btn btn-primary btn-lg" [routerLink]='["/alumnos-agregar"]'>Cargar Alumno</button>
     </div>
 </div>
-<hr />
-<div *ngIf="!ListadoAlumnos || ListadoAlumnos.length == 0" class="text-danger row">
-    <strong>No existen alumnos cargados</strong>
+
+<div *ngIf="!ListadoAlumnos || !ListadoAlumnos.length" class="text-danger row">
+    <h3 class="text-info">No existen alumnos cargados</h3>
 </div>
 <div class="row">
-    <table class="table table-striped table-hover" *ngIf="(ListadoAlumnos && ListadoAlumnos.length)">
-        <thead>
+    <table class="table table-striped table-hover table-responsive" *ngIf="(ListadoAlumnos && ListadoAlumnos.length)">
+        <thead class="thead thead-dark">
             <tr>
                 <th>NroLegajo</th>
                 <th>Nombre</th>

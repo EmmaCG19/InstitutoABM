@@ -9,6 +9,7 @@ import { DatePipe } from "@angular/common";
 import { AlumnosService } from "../alumnos.service";
 import { CarrerasService } from "../../carreras/carreras.service";
 import { ICarrera } from "../../carreras/icarrera";
+import { stringify } from "querystring";
 
 @Component({
   selector: "app-alumnos-form",
@@ -21,6 +22,9 @@ export class AlumnosFormComponent implements OnInit {
   formGroup: FormGroup;
   carreraSeleccionada: number;
   listaCarreras: ICarrera[];
+  alumnosCargados: IAlumno[];
+  dniExistente: boolean;
+  mailValido:boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,11 +35,15 @@ export class AlumnosFormComponent implements OnInit {
     private datePipe: DatePipe
   ) {
     this.obtenerCarreras();
+    this.obtenerAlumnos();
     this.cargarFormAlumno();
   }
 
   ngOnInit() {
     //Inicializa los valores del form
+    this.mailValido = true;
+    this.dniExistente = false;
+
     this.formGroup = this.formBuilder.group({
       nroLegajo: "",
       nombre: "",
@@ -69,7 +77,7 @@ export class AlumnosFormComponent implements OnInit {
           (alumnoApi) => this.cargarAlumno(alumnoApi),
           (error) => this.router.navigate(["/alumnos"])
         );
-        }
+      }
     }
   }
 
@@ -77,6 +85,10 @@ export class AlumnosFormComponent implements OnInit {
     //Necesito crear un alumno en base a los valores del form
     let nuevoAlumno: IAlumno = Object.assign({}, this.formGroup.value);
     nuevoAlumno.codCarrera = this.carreraSeleccionada;
+    nuevoAlumno.contacto = nuevoAlumno.contacto.trim().length
+      ? "11" + nuevoAlumno.contacto
+      : ""; 
+
     console.dir(nuevoAlumno);
 
     if (this.modoEdicion) {
@@ -102,7 +114,6 @@ export class AlumnosFormComponent implements OnInit {
 
   //Cargar datos del alumno en el form
   cargarAlumno(alumno: IAlumno) {
-    
     this.formGroup.patchValue({
       nombre: alumno.nombre,
       apellido: alumno.apellido,
@@ -113,17 +124,13 @@ export class AlumnosFormComponent implements OnInit {
         "yyyy-MM-dd"
       ),
       nroDocumento: alumno.nroDocumento,
-      contacto: alumno.contacto,
+      contacto: alumno.contacto.slice(2, alumno.contacto.length),
       email: alumno.email,
       codCarrera: alumno.codCarrera,
-      fechaIngreso: this.datePipe.transform(
-        alumno.fechaIngreso,
-        "yyyy-MM-dd"
-      ),
+      fechaIngreso: this.datePipe.transform(alumno.fechaIngreso, "yyyy-MM-dd"),
     });
 
     this.carreraSeleccionada = alumno.codCarrera;
-
   }
 
   obtenerCarreras() {
@@ -135,20 +142,39 @@ export class AlumnosFormComponent implements OnInit {
 
   //Obtiene el codigo de la carrera seleccionada del combobox de carreras
   getCarreraSeleccionada(event) {
-    
     this.carreraSeleccionada = parseInt(event.target.value);
+  }
+
+
+  obtenerAlumnos() {
+    //Obtener todos los alumnos
+    this.alumnosService.getAlumnos().subscribe(
+      (alumnosApi) => (this.alumnosCargados = alumnosApi),
+      (error) => console.log(error)
+    );
+  }
+
+  //Validar el formato del mail
+  validarMail() {
+    this.mailValido = false;
+
+    let email: string = this.formGroup.get("email").value;
+
+    if (email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$") != -1)
+      this.mailValido = true;
+  }
+
+  //Validar la existencia del DNI
+  validarDNI() {
+    this.dniExistente = false;
+    
+    let dni: number = this.formGroup.get("nroDocumento").value;
+    let dniCargados = this.alumnosCargados.map((a) => a.nroDocumento);
+
+    if (dniCargados.includes(dni)) 
+      this.dniExistente = true;
     
   }
 
-  mailValido():boolean{
-
-    let email:string = this.formGroup.get('email').value;
-
-    debugger;
-    if(email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$") != -1)
-      return true;
-
-    return false;
-  }
-  //Al editar, tengo que traer el codigo de la carrera y que sea cargado como seleccionado en la select list
+  
 }

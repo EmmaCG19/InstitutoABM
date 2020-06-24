@@ -1,8 +1,8 @@
 <div *ngIf="modoEdicion">
-    <h1>Edicion - Código: {{codMateria}}</h1>
+    <h2>Editar Materia</h2>
 </div>
 <div *ngIf="!modoEdicion">
-    <h1>Cargar Materia: </h1>
+    <h2>Cargar Materia</h2>
 </div>
 
 <form class="form-horizontal" novalidate [formGroup]="formGroup" (ngSubmit)="guardarMateria()">
@@ -16,13 +16,17 @@
             <label class="col-md-2-control-label" for="nombre">Nombre:<span class="text-danger"> (*)</span></label>
             
             <div class="col-md-8">
-                <input class="form-control" id="nombre" type="text" required formControlName="nombre"/>
+                <input class="form-control" id="nombre" type="text" placeholder="Ingrese el nombre de la materia"
+                required formControlName="nombre" (change)="validarNombre()"/>
 
 
                 <span class="help-block" *ngIf="( formGroup.get('nombre').touched || formGroup.get('nombre').dirty 
                         && !formGroup.valid ) ">
                     <span class="text-danger" *ngIf="formGroup.get('nombre').errors?.required">
                         El campo es requerido
+                    </span>
+                    <span class="text-danger" *ngIf="nombreExiste">
+                        El nombre ya existe, ingrese otro.
                     </span>
                 </span>
             </div>
@@ -31,39 +35,45 @@
 
 
         <div class="form-group" [ngClass]="{ 'has-error': 
-                (
-                    formGroup.get('precio').touched || formGroup.get('precio').dirty && !formGroup.get('precio').valid  
-                    ) } ">
-
+                                (
+                                    formGroup.get('precio').touched || formGroup.get('precio').dirty && !formGroup.get('precio').valid  
+                                    ) } ">
+        
             <label class="col-md-2-control-label" for="precio">Precio:<span class="text-danger"> (*)</span></label>
-            
+        
             <div class="col-md-8">
-                <input class="form-control" id="precio" type="number" required formControlName="precio" />
-
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                    </div>
+                    <input class="form-control" id="precio" type="number" placeholder="Ingrese el precio de la materia" required
+                        formControlName="precio" />
+                </div>
                 <span class="help-block" *ngIf="( formGroup.get('precio').touched || formGroup.get('precio').dirty 
-                                                                && !formGroup.valid ) ">
+                                    && !formGroup.valid ) ">
                     <span class="text-danger" *ngIf="formGroup.get('precio').errors?.required">
                         El campo es requerido
                     </span>
+                    
                 </span>
             </div>
         </div>
     
 
 
-        <div class="form-group">
-            <div class="col-md-4">
-                <span>
-                    <button class="btn btn-primary" type="submit" [disabled]="!formGroup.valid">
-                        Guardar
-                    </button>
-                </span>
-                <span>
-                    <button class="btn btn-danger" [routerLink]='["/materias"]'>
-                        Cancelar
-                    </button>
-                </span>
-            </div>
+        <div class="form-group mt-4 ml-1">
+            <!--Validaciones del form-->
+            <span>
+                <button class="btn btn-primary btn-lg" type="submit"
+                    [disabled]="!formGroup.valid || nombreExiste">
+                    Guardar
+                </button>
+            </span>
+            <span>
+                <button class="btn btn-danger btn-lg ml-3" [routerLink]='["/materias"]'>
+                    Cancelar
+                </button>
+            </span>
         </div>
 
     </fieldset>

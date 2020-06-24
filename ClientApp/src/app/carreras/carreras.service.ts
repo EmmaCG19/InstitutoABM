@@ -43,7 +43,7 @@ export class CarrerasService {
     return this.http.delete<ICarrera>(this.apiUrl + "/" + codCarrera);
   }
 
-  getMaterias(codCarrera: number): Observable<IMateria[]> {
+  getMateriasCarrera(codCarrera: number): Observable<IMateria[]> {
     return this.http.get<IMateria[]>(`${this.apiUrl}/${codCarrera}/materias`);
   }
 

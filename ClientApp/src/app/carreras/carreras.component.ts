@@ -33,12 +33,11 @@ export class CarrerasComponent implements OnInit {
     this.materiaSeleccionada = 0;
   }
 
-
-  resetear(){
-     //Vuelvo a resetear el combobox
-     this.getMateriasCarrera(this.carreraSeleccionada);
-     this.materiaSeleccionada = 0;
-     this.sePuedeCargar = false;
+  resetear() {
+    //Vuelvo a resetear el combobox
+    this.getMateriasCarrera(this.carreraSeleccionada);
+    this.materiaSeleccionada = 0;
+    // this.sePuedeCargar = false;
   }
 
   cargarCarreras() {
@@ -61,7 +60,7 @@ export class CarrerasComponent implements OnInit {
   }
 
   getMateriasCarrera(codCarrera: number) {
-    this.carrerasService.getMaterias(codCarrera).subscribe(
+    this.carrerasService.getMateriasCarrera(codCarrera).subscribe(
       (apiMaterias) => {
         this.materiasPorCarrera = apiMaterias;
         this.getMateriasDisponibles(apiMaterias);
@@ -97,7 +96,7 @@ export class CarrerasComponent implements OnInit {
 
   getMateriaSeleccionada(event) {
     this.materiaSeleccionada = parseInt(event.target.value);
-    this.sePuedeCargar = this.materiaSeleccionada ? true : false;
+    // this.sePuedeCargar = this.materiaSeleccionada ? true : false;
   }
 
   //Tengo que obtener el codigo de la materia de la select list de materias disponibles
@@ -106,10 +105,11 @@ export class CarrerasComponent implements OnInit {
       codCarrera: this.carreraSeleccionada,
       codMateria: this.materiaSeleccionada,
     };
-    this.carrerasService.cargarMateriaEnCarrera(nuevaMateria).subscribe();
-    this.estaCompleto = (this.materiasPorCarrera.length == this.listaMaterias.length)? true: false;
-    this.resetear();
 
-    console.log(this.estaCompleto);
+    this.carrerasService.cargarMateriaEnCarrera(nuevaMateria).subscribe();
+    console.log("long materias carrera", this.materiasPorCarrera.length);
+    console.log("long materias total", this.listaMaterias.length);
+
+    this.resetear();
   }
 }

@@ -1,3 +1,17 @@
+/* body { 
+  background: url("../images/bg-01.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: white;
+} */
+
+
+.bg-main{
+  background-color: #490a4fd6;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;

@@ -17,13 +17,13 @@ import { AlumnosFormComponent } from './alumnos/alumnos-form/alumnos-form.compon
 import { MateriasComponent } from './materias/materias.component';
 import { MateriasFormComponent } from './materias/materias-form/materias-form.component';
 import { CarrerasComponent } from './carreras/carreras.component';
+import { CarrerasMateriasComponent } from './carreras/carreras-materias/carreras-materias.component';
 
 //Services
 import { AlumnosService } from "./alumnos/alumnos.service";
 import { CarrerasService } from "./carreras/carreras.service";
 import { DatePipe } from '@angular/common';
 import { MateriasService } from "./materias/materias.service";
-import { CarrerasMateriasComponent } from './carreras/carreras-materias/carreras-materias.component';
 
 @NgModule({
   declarations: [

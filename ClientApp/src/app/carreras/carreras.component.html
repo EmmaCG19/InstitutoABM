@@ -4,7 +4,7 @@
 
 <!-- COMBOBOX DE CARRERAS -->
 <div class="form-group">
-    <label for="comboCarreras">Seleccione una carrera:</label>
+    <label class="control-label" for="comboCarreras">Seleccione una carrera:</label>
     <select class="form-control" id="comboCarreras" required name="comboCarreras" [ngModel]="carreraSeleccionada"
         [ngModelOptions]="{standalone: true}" (change)="cargarInfoCarrera($event)">
         <option value="0">--Seleccione una opcion--</option>
@@ -44,19 +44,19 @@
     </table>
 </div>
 
-<hr/>
+<hr />
 
-    <div class="form-group" *ngIf="carreraSeleccionada && !estaCompleto">
-        <label for="comboDisponibles">Asigne una materia a la carrera: </label>
-        <select class="form-control" id="comboDisponibles" required name="comboDisponibles" [ngModel]="materiaSeleccionada"
-            [ngModelOptions]="{standalone: true}" (change)="getMateriaSeleccionada($event)">
-            <option value="0">--Seleccione una opcion--</option>
-            <option *ngFor="let materia of materiasDisponibles" [value]="materia.codMateria">
-                {{materia.nombre | uppercase}}
-            </option>
-        </select>
-        <div>
-            <button class="btn btn-primary" [disabled]="!sePuedeCargar" (click)="cargarMateria()">Cargar
-                Materia</button>
-        </div>
+<div class="form-group" *ngIf="carreraSeleccionada && !estaCompleto">
+    <label for="comboDisponibles">Asigne una materia a la carrera: </label>
+    <select class="form-control" id="comboDisponibles" required name="comboDisponibles" [ngModel]="materiaSeleccionada"
+        [ngModelOptions]="{standalone: true}" (change)="getMateriaSeleccionada($event)">
+        <option value="0">--Seleccione una opcion--</option>
+        <option *ngFor="let materia of materiasDisponibles" [value]="materia.codMateria">
+            {{materia.nombre | uppercase}}
+        </option>
+    </select>
+    <div>
+        <button class="btn btn-primary" [disabled]="!materiaSeleccionada" (click)="cargarMateria()">Cargar
+            Materia</button>
     </div>
+</div>

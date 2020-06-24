@@ -23,13 +23,11 @@ export class AlumnosService {
 
   crearAlumno(alumno: IAlumno):Observable<IAlumno>{
     alumno.nroLegajo = 0;
-    debugger;
     return this.http.post<IAlumno>(this.apiUrl, alumno);
   }
 
   actualizarAlumno(nroLegajo:number, alumno: IAlumno): Observable<IAlumno>
   {
-    debugger;
     console.log(nroLegajo, alumno);
     console.log(this.apiUrl);
     alumno.nroLegajo =+ nroLegajo;

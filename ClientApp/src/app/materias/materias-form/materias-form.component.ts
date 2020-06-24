@@ -12,6 +12,7 @@ import { MateriasService } from "../materias.service";
 })
 export class MateriasFormComponent implements OnInit {
   modoEdicion: boolean = false;
+  nombreExiste:boolean;
   codMateria: number;
   formGroup: FormGroup;
   listaMaterias: IMateria[];
@@ -27,6 +28,7 @@ export class MateriasFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.nombreExiste = false;
     this.formGroup = this.formBuilder.group({
       codMateria: "",
       nombre: "",
@@ -93,5 +95,15 @@ export class MateriasFormComponent implements OnInit {
       (materiasApi) => (this.listaMaterias = materiasApi),
       (error) => console.log(error)
     );
+  }
+
+  validarNombre(){
+    this.obtenerMaterias();
+    let nombre:string = this.formGroup.get('nombre').value;
+    let nombreMaterias = this.listaMaterias.map(m => m.nombre.trim().toLowerCase());
+    
+    if(nombreMaterias.includes(nombre.trim().toLowerCase()))
+      this.nombreExiste = true; 
+    
   }
 }
