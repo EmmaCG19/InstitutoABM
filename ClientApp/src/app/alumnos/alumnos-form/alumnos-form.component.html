@@ -127,9 +127,11 @@
                     <span class="text-danger" *ngIf="formGroup.get('email').errors?.required">
                         El campo es requerido
                     </span>
+                    <span class="text-danger" *ngIf="formGroup.get('email').dirty && !mailValido()">
+                        El formato del email no es valido
+                    </span>
                 </span>
-
-
+                
 
             </div>
 
@@ -173,11 +175,11 @@
             ) } ">
 
             <!-- LABEL -->
-            <label class="col-md-2-control-label" for="contacto">Tel:</label>
+            <label class="col-md-2-control-label" for="contacto">Nro. Contacto:</label>
 
             <!-- INPUT -->
             <div class="col-md-8">
-                <input class="form-control" id="contacto" type="text" required formControlName="contacto" />
+                <input class="form-control" id="contacto" type="text" formControlName="contacto" />
 
                 <!-- VALIDADOR -->
                 <span class="help-block" *ngIf="( formGroup.get('contacto').touched || formGroup.get('contacto').dirty 

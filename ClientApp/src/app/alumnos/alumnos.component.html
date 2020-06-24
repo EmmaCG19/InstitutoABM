@@ -20,6 +20,7 @@
                 <th>DNI</th>
                 <th>Fecha de Nacimiento</th>
                 <th>Email</th>
+                <th>Contacto</th>
                 <th colspan="2"></th>
             </tr>
         </thead>
@@ -30,6 +31,10 @@
                 <td>{{ alumno.nroDocumento }}</td>
                 <td>{{ alumno.fechaDeNacimiento | date: 'dd/MM/yyyy'}}</td>
                 <td>{{ alumno.email }}</td>
+                <td>{{ (alumno.contacto)? alumno.contacto : "No se ha cargado" }}</td>
+
+
+
                 <td><button class="btn btn-danger" (click)="eliminarAlumno(alumno.nroLegajo)">Eliminar</button></td>
                 <td><button class="btn btn-info" [routerLink]='["/alumnos-editar/" + alumno.nroLegajo]'>Editar</button>
                 </td>

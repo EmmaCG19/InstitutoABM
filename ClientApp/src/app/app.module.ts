@@ -21,6 +21,7 @@ import { CarrerasComponent } from './carreras/carreras.component';
 import { AlumnosService } from "./alumnos/alumnos.service";
 import { CarrerasService } from "./carreras/carreras.service";
 import { DatePipe } from '@angular/common';
+import { MateriasService } from "./materias/materias.service";
 
 @NgModule({
   declarations: [
@@ -49,10 +50,11 @@ import { DatePipe } from '@angular/common';
       { path: "alumnos-agregar", component: AlumnosFormComponent },
       { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
       { path: "materias", component: MateriasComponent },
+      { path: "carreras", component: CarrerasComponent },
       
     ]),
   ],
-  providers: [AlumnosService, CarrerasService, DatePipe],
+  providers: [AlumnosService, CarrerasService, MateriasService, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

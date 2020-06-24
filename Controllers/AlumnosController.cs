@@ -121,15 +121,12 @@ namespace IntranetInstituto.Controllers
         public IActionResult ObtenerMateriasInscriptas(int id)
         {
             //Para que un alumno curse una materia tiene que estar en un curso
-            var materias =  _context.Inscripciones.Include("Materia")
+            var materiasInscriptas = _context.Inscripciones.Include("Materia")
                                                 .Where(c => c.NroLegajo == id)
                                                 .Select(c => c.Materia)
                                                 .ToList<Materia>();
 
-            if(materias.Count != 0)
-                return Ok(materias);
-            else
-                return NotFound();
+            return Ok(materiasInscriptas);
 
         }
 
@@ -138,6 +135,6 @@ namespace IntranetInstituto.Controllers
             return _context.Alumnos.Any(e => e.NroLegajo == id);
         }
 
-        
+
     }
 }

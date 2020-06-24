@@ -1,4 +1,6 @@
+
 import { Component, OnInit } from '@angular/core';
+import { MateriasService} from './materias.service'
 
 @Component({
   selector: 'app-materias',
@@ -7,9 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MateriasComponent implements OnInit {
 
-  constructor() { }
+  
+constructor() { }
 
   ngOnInit() {
   }
-
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { IAlumno } from "../IAlumno";
 import { typeofExpr, THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { FormGroup, FormBuilder } from "@angular/forms";
+import { Validators} from "@angular/forms";
 
 import { DatePipe } from "@angular/common";
 import { AlumnosService } from "../alumnos.service";
@@ -43,8 +44,8 @@ export class AlumnosFormComponent implements OnInit {
       fechaDeNacimiento: "",
       email: "",
       contacto: "",
-      fechaIngreso: "",
       codCarrera: "",
+      fechaIngreso: "",
     });
   }
 
@@ -82,7 +83,7 @@ export class AlumnosFormComponent implements OnInit {
       //Edicion
       this.alumnosService.actualizarAlumno(this.legajo, nuevoAlumno).subscribe(
         (alumnoApi) => {
-          window.alert("Alumno guardado!");
+          console.log("Alumno guardado");
           this.router.navigate(["/alumnos"]);
         },
         (error) => console.log(error)
@@ -91,7 +92,7 @@ export class AlumnosFormComponent implements OnInit {
       //Carga
       this.alumnosService.crearAlumno(nuevoAlumno).subscribe(
         (alumnoApi) => {
-          window.alert("Alumno cargado!");
+          console.log("Alumno cargado");
           this.router.navigate(["/alumnos"]);
         },
         (error) => console.log(error)
@@ -139,5 +140,15 @@ export class AlumnosFormComponent implements OnInit {
     
   }
 
+  mailValido():boolean{
+
+    let email:string = this.formGroup.get('email').value;
+
+    debugger;
+    if(email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$") != -1)
+      return true;
+
+    return false;
+  }
   //Al editar, tengo que traer el codigo de la carrera y que sea cargado como seleccionado en la select list
 }

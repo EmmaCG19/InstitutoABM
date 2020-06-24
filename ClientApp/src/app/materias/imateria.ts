@@ -1,4 +1,5 @@
 export interface IMateria {
-    codigo:number;
+    codMateria:number;
     nombre:string;    
+    precio:number;
 }

@@ -113,16 +113,12 @@ namespace IntranetInstituto.Controllers
 
             var materiasDeCarrera = _context.CarrerasMaterias
                                                     .Include("Materia")
-                                                    .Include("Carrera")
                                                     .Where(cm => cm.CodCarrera == codCarrera)
-                                                    .Select(cm => cm.Materia.Nombre)
-                                                    .ToList<string>();
-                                                    
+                                                    .Select(cm => cm.Materia)
+                                                    .ToList();
 
-            if(materiasDeCarrera.Count == 0)
-                return NotFound();                                                
-            else
-                return Ok(materiasDeCarrera);   
+
+            return Ok(materiasDeCarrera);
         }
     }
 }

@@ -33,9 +33,6 @@ namespace IntranetInstituto.Controllers
         {
             List<Inscripcion> inscripcionesPorAlumno = _context.Inscripciones.Where(i => i.NroLegajo == nroLegajo).ToList();
 
-            if(inscripcionesPorAlumno.Count == 0)
-                return NotFound();
-            
             return Ok(inscripcionesPorAlumno);
         }
 
@@ -44,9 +41,6 @@ namespace IntranetInstituto.Controllers
         public IActionResult GetInscripcionesPorMateria(int codMateria)
         {
             List<Inscripcion> inscripcionesPorMateria = _context.Inscripciones.Where(i => i.CodMateria == codMateria).ToList();
-
-            if(inscripcionesPorMateria.Count == 0)
-                return NotFound();
                 
                 return Ok(inscripcionesPorMateria);
             
@@ -58,9 +52,6 @@ namespace IntranetInstituto.Controllers
             Inscripcion inscripcion = _context.Inscripciones.Where(i => i.CodMateria == codMateria && i.NroLegajo == nroLegajo)
                                                             .FirstOrDefault();
 
-            if(inscripcion is null)
-                return NotFound();
-            
             return Ok(inscripcion);
         }        
         

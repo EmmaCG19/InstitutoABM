@@ -1,1 +1,42 @@
-<p>carreras works!</p>
+<!-- COMBOBOX DE CARRERAS -->
+<div class="form-group">
+    <select class="form-control" id="comboCarreras" required name="comboCarreras" [ngModel]="carreraSeleccionada"
+        [ngModelOptions]="{standalone: true}" (change)="mostrarListaMaterias($event)">
+        <option value="0">--Seleccione una opcion--</option>
+        <option *ngFor="let carrera of listaCarreras" [value]="carrera.codCarrera">
+            {{carrera.nombre | uppercase}}
+        </option>
+    </select>
+</div>
+
+<!-- MUESTRA UNA TABLA DE MATERIAS EN BASE A LA OPCION SELECCIONADA EN EL COMBO -->
+<div *ngIf="carreraSeleccionada == 0">
+    <h3 class="text-info">No se ha seleccionado ninguna carrera</h3>
+</div>
+
+<div *ngIf="(!listaMaterias || listaMaterias.length == 0) && carreraSeleccionada != 0">
+    <h3 class="text-info">No existen materias cargadas para esta carrera</h3>
+</div>
+
+<div *ngIf="(listaMaterias && listaMaterias.length)">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Materia</th>
+                <th>Precio</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let materia of listaMaterias">
+                <td>{{materia.codMateria}}</td>
+                <td>{{materia.nombre}}</td>
+                <td>{{materia.precio | currency}}</td>
+                <td><button class="btn btn-danger" (click)="alert('Se elimino el alumno!')">Eliminar</button></td>
+                <td><button class="btn btn-info" [routerLink]='["/"]'>Editar</button>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
