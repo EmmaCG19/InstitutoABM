@@ -45,14 +45,19 @@ export class CarrerasComponent implements OnInit {
 
   //Mostrar o no la dropdownlist de materias a asignar
   verificarCargaMaterias() {
-    
-      if (this.materiasPorCarrera.length <= this.listaMaterias.length - 1 && !this.llegoTope) {
+        // console.log("Tope antes?: ", this.llegoTope);
+        // console.log("Se puede cargar antes?", this.sePuedeCargar);
+
+      if (this.materiasPorCarrera.length == this.listaMaterias.length-1  && !this.llegoTope) {
         this.llegoTope = true;
         this.sePuedeCargar = false;
       }
 
       if (this.materiasPorCarrera.length == this.listaMaterias.length)
         this.sePuedeCargar = true;
+
+        // console.log("Tope despues?: ", this.llegoTope);
+        // console.log("Se puede cargar despues?", this.sePuedeCargar);
     
   }
   cargarCarreras() {

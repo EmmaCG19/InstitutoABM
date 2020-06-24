@@ -5,6 +5,7 @@ import { Validators } from "@angular/forms";
 import { IMateria } from "../imateria";
 import { MateriasService } from "../materias.service";
 
+
 @Component({
   selector: "app-materias-form",
   templateUrl: "./materias-form.component.html",
@@ -103,7 +104,8 @@ export class MateriasFormComponent implements OnInit {
     let nombreMaterias = this.listaMaterias.map(m => m.nombre.trim().toLowerCase());
     
     if(nombreMaterias.includes(nombre.trim().toLowerCase()))
-      this.nombreExiste = true; 
-    
+      this.nombreExiste = true;
+    else     
+      this.nombreExiste = false;
   }
 }

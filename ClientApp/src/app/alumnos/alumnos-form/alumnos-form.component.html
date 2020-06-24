@@ -96,8 +96,6 @@
             formGroup.get('email').touched || formGroup.get('email').dirty && !formGroup.get('email').valid  
             ) } ">
 
-
-
             <label class="col-md-2-control-label" for="email">Mail:<span class="text-danger"> (*)</span></label>
 
             <div class="col-md-8">
@@ -114,10 +112,7 @@
                         El formato del email no es valido
                     </span>
                 </span>
-
-
             </div>
-
         </div>
         <!--EMAIL END-->
 
@@ -128,8 +123,6 @@
             (
                 formGroup.get('fechaDeNacimiento').touched || formGroup.get('fechaDeNacimiento').dirty && !formGroup.get('fechaDeNacimiento').valid  
                 ) } ">
-
-
 
             <label class="col-md-2-control-label" for="fechaDeNacimiento">Fecha de nacimiento:<span class="text-danger">
                     (*)</span></label>
@@ -179,6 +172,7 @@
 
 
         <legend>Datos académicos:</legend>
+
         <!--CARRERAS BEGIN-->
         <div class="form-group">
             <label class="col-md-2-control-label" for="comboCarreras">Carrera:<span class="text-danger">
@@ -194,15 +188,15 @@
                     </option>
                 </select>
 
-                <span class="help-block" *ngIf="carreraSeleccionada.touched && !carreraSeleccionada">
+                <span class="help-block" *ngIf="!carreraSeleccionada">
                     <span class="text-danger">
                         El campo es requerido
                     </span>
                 </span>
             </div>
         </div>
-
         <!--CARRERAS END-->
+
 
         <!--FECHA INGRESO BEGIN-->
         <div class="form-group" [ngClass]="{ 'has-error': 

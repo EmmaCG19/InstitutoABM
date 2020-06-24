@@ -2,7 +2,7 @@ import { Component, OnInit, Type } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IAlumno } from "../IAlumno";
 import { typeofExpr, THIS_EXPR } from "@angular/compiler/src/output/output_ast";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { Validators} from "@angular/forms";
 
 import { DatePipe } from "@angular/common";

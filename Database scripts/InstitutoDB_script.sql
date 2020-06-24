@@ -6,17 +6,14 @@ GO
 --RESET TABLES
 DELETE FROM Alumnos
 DELETE FROM Materias
-DELETE FROM Cursos
-DELETE FROM CodMateria
--- DELETE FROM Profesores
+DELETE FROM Carreras
+DELETE FROM Inscripciones
+DELETE FROM CarrerasMaterias
 
 --RESEED THE IDENTITY COLUMN
 DBCC CHECKIDENT ('Alumnos', RESEED, 0)  
 DBCC CHECKIDENT ('Materias', RESEED, 0)  
-DBCC CHECKIDENT ('Cursos', RESEED, 0)  
 DBCC CHECKIDENT ('Carreras', RESEED, 0)  
--- DBCC CHECKIDENT ('Profesores', RESEED, 0)  
-  
 
 --CARRERA
 INSERT INTO Carreras(Nombre) VALUES(N'Desarrollo de Software') 
@@ -25,27 +22,13 @@ INSERT INTO Carreras(Nombre) VALUES(N'Analisis de Sistemas')
 GO
 
 --MATERIAS
-INSERT INTO Materias(Nombre) VALUES(N'Matematica I') --1
-INSERT INTO Materias(Nombre) VALUES(N'Programacion I') 
-INSERT INTO Materias(Nombre) VALUES(N'Filosofia') 
-INSERT INTO Materias(Nombre) VALUES(N'Redes')
+INSERT INTO Materias(Nombre, Precio) VALUES(N'Matematica I', 1200) --1
+INSERT INTO Materias(Nombre, Precio) VALUES(N'Programacion I', 4500) 
+INSERT INTO Materias(Nombre, Precio) VALUES(N'Filosofia', 1500) 
+INSERT INTO Materias(Nombre, Precio) VALUES(N'Redes', 3200)
 -- INSERT INTO Materias(Nombre) VALUES(N'Sistemas Operativos') --2
 -- INSERT INTO Materias(Nombre) VALUES(N'Probabilidad y Estadistica') --5
 -- INSERT INTO Materias(Nombre) VALUES(N'Arquitectura de las computadoras') --6
-GO
-
---PROFESORES
--- INSERT INTO Profesores(Nombre, Apellido, NroDocumento, Contacto, CodMateria, Email, FechaDeNacimiento) VALUES(N'Maria',N'Estevez',32121982,N'1123456789',1 ,N'estevez.maria@gmail.com', N'01/01/1991') 
--- INSERT INTO Profesores(Nombre, Apellido, NroDocumento, Contacto, CodMateria, Email, FechaDeNacimiento) VALUES(N'Osvaldo',N'Laport',23121701,N'1123456789',2 ,N'osvalaport@gmail.com',N'02/12/1985') 
--- INSERT INTO Profesores(Nombre, Apellido, NroDocumento, Contacto, CodMateria, Email, FechaDeNacimiento) VALUES(N'Franco',N'Segovai',37502312,N'1123456789',3 ,N'fran.segovia@gmail.com',N'06/15/1994') 
--- INSERT INTO Profesores(Nombre, Apellido, NroDocumento, Contacto, CodMateria, Email, FechaDeNacimiento) VALUES(N'Lorena',N'Tropano',30232101,N'1123456789',4 ,N'loretropano@gmail.com',N'11/19/1990') 
--- GO
-
--- --CURSOS
--- INSERT INTO Cursos(ProfesorId, FechaInicio) VALUES(1,N'03/15/2020') 
--- INSERT INTO Cursos(ProfesorId, FechaInicio) VALUES(2,N'03/22/2020') 
--- INSERT INTO Cursos(ProfesorId, FechaInicio) VALUES(3,N'04/01/2020') 
--- INSERT INTO Cursos(ProfesorId, FechaInicio) VALUES(4,N'03/18/2020') 
 GO
 
 --ALUMNOS
@@ -74,19 +57,17 @@ INSERT INTO CarrerasMaterias(CodCarrera, CodMateria) VALUES(3,1)
 GO
 
 --CURSOS
-INSERT INTO Cursos(NroLegajo, CodMateria, FechaInicio, FechaFin) VALUES(1,1,N'03/15/2020',N'05/15/2020')
-INSERT INTO Cursos(NroLegajo, CodMateria, FechaInicio, FechaFin) VALUES(1,2,N'03/18/2020', N'07/15/2020')
-INSERT INTO Cursos(NroLegajo, CodMateria, FechaInicio, FechaFin) VALUES(2,2,N'03/11/2020', N'07/15/2020')
-INSERT INTO Cursos(NroLegajo, CodMateria, FechaInicio, FechaFin) VALUES(3,4,N'03/20/2020', N'07/12/2020')
-INSERT INTO Cursos(NroLegajo, CodMateria, FechaInicio, FechaFin) VALUES(4,2,N'03/12/2020', N'07/15/2020')
-INSERT INTO Cursos(NroLegajo, CodMateria, FechaInicio, FechaFin) VALUES(5,1,N'03/14/2020', N'05/15/2020')
+INSERT INTO Inscripciones(NroLegajo, CodMateria, FechaInscripcion, Pagado) VALUES(1,1,N'03/15/2020', 0)
+INSERT INTO Inscripciones(NroLegajo, CodMateria, FechaInscripcion, Pagado) VALUES(2,1,N'03/15/2020', 1)
+INSERT INTO Inscripciones(NroLegajo, CodMateria, FechaInscripcion, Pagado) VALUES(2,4,N'03/18/2020', 0)
+INSERT INTO Inscripciones(NroLegajo, CodMateria, FechaInscripcion, Pagado) VALUES(3,3,N'03/20/2020', 1)
+INSERT INTO Inscripciones(NroLegajo, CodMateria, FechaInscripcion, Pagado) VALUES(4,3,N'04/01/2020', 0)
+INSERT INTO Inscripciones(NroLegajo, CodMateria, FechaInscripcion, Pagado) VALUES(5,1,N'03/15/2020', 1)
 GO
 
  --SELECT * FROM Alumnos
  --SELECT * FROM Materias
  --SELECT * FROM Carreras
- --SELECT * FROM Profesores
- --SELECT * FROM Cursos
  --SELECT * FROM CarrerasMaterias
- --SELECT * FROM Cursos
+
 

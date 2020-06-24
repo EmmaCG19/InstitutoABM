@@ -2,6 +2,7 @@ import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { IMateria } from "./imateria";
+import { ICarrera } from "../carreras/icarrera";
 
 @Injectable({
   providedIn: "root",
@@ -40,5 +41,10 @@ export class MateriasService {
   deleteMateria(codMateria: number): Observable<IMateria> {
     console.log(this.apiUrl);
     return this.http.delete<IMateria>(this.apiUrl + "/" + codMateria);
+  }
+
+  getCarrerasPorMateria(codMateria:number):Observable<ICarrera[]>{
+    console.log(this.apiUrl);
+    return this.http.get<ICarrera[]>(this.apiUrl + "/" + codMateria + "/carreras");
   }
 }
