@@ -25,11 +25,11 @@
 
 <div *ngIf="(materiasPorCarrera && materiasPorCarrera.length)">
     <table class="table table-hover table-striped">
-        <thead>
+        <thead class="thead thead-dark">
             <tr>
-                <th>Codigo</th>
-                <th>Materia</th>
-                <th>Precio</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Materia</th>
+                <th scope="col">Precio</th>
                 <th colspan="2"></th>
             </tr>
         </thead>
@@ -46,7 +46,14 @@
 
 <hr />
 
-<div class="form-group" *ngIf="carreraSeleccionada && !estaCompleto">
+<div *ngIf="carreraSeleccionada && !sePuedeCargar">
+    <span>
+        <h3 class="text-info">Ya no quedan materias por agregar</h3>
+    </span>
+</div>
+
+
+<div class="form-group" *ngIf="carreraSeleccionada && sePuedeCargar">
     <label for="comboDisponibles">Asigne una materia a la carrera: </label>
     <select class="form-control" id="comboDisponibles" required name="comboDisponibles" [ngModel]="materiaSeleccionada"
         [ngModelOptions]="{standalone: true}" (change)="getMateriaSeleccionada($event)">
@@ -56,7 +63,7 @@
         </option>
     </select>
     <div>
-        <button class="btn btn-primary" [disabled]="!materiaSeleccionada" (click)="cargarMateria()">Cargar
+        <button class="btn btn-primary mt-2" [disabled]="!materiaSeleccionada" (click)="cargarMateria()">Cargar
             Materia</button>
     </div>
 </div>

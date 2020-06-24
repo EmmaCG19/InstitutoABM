@@ -15,7 +15,7 @@ export class CarrerasComponent implements OnInit {
   carreraSeleccionada: number;
   materiaSeleccionada: number;
   sePuedeCargar: boolean;
-  estaCompleto: boolean;
+  llegoTope:boolean;
   listaCarreras: ICarrera[];
   listaMaterias: IMateria[];
   materiasPorCarrera: IMateria[];
@@ -29,17 +29,32 @@ export class CarrerasComponent implements OnInit {
   ngOnInit() {
     this.cargarCarreras();
     this.cargarMaterias();
+    this.llegoTope = false;
+    this.sePuedeCargar = true;
     this.carreraSeleccionada = 0;
     this.materiaSeleccionada = 0;
   }
 
-  resetear() {
-    //Vuelvo a resetear el combobox
+  actualizarInfo() {
+    //Vuelvo a actualizar el combobox
+
     this.getMateriasCarrera(this.carreraSeleccionada);
     this.materiaSeleccionada = 0;
-    // this.sePuedeCargar = false;
+    this.verificarCargaMaterias();
   }
 
+  //Mostrar o no la dropdownlist de materias a asignar
+  verificarCargaMaterias() {
+    
+      if (this.materiasPorCarrera.length <= this.listaMaterias.length - 1 && !this.llegoTope) {
+        this.llegoTope = true;
+        this.sePuedeCargar = false;
+      }
+
+      if (this.materiasPorCarrera.length == this.listaMaterias.length)
+        this.sePuedeCargar = true;
+    
+  }
   cargarCarreras() {
     this.carrerasService.getCarreras().subscribe(
       (carrerasApi) => (this.listaCarreras = carrerasApi),
@@ -84,19 +99,19 @@ export class CarrerasComponent implements OnInit {
   }
 
   eliminarMateria(codMateria: number) {
+    setTimeout((f) => this.actualizarInfo(), 1000);
+
+    //ASYNC REQUEST - llega luego
     this.carrerasService
       .eliminarMateriaDeCarrera(this.carreraSeleccionada, codMateria)
       .subscribe(
         (materiaCarreraApi) => console.log(materiaCarreraApi),
         (error) => console.log(error)
       );
-
-    this.resetear();
   }
 
   getMateriaSeleccionada(event) {
     this.materiaSeleccionada = parseInt(event.target.value);
-    // this.sePuedeCargar = this.materiaSeleccionada ? true : false;
   }
 
   //Tengo que obtener el codigo de la materia de la select list de materias disponibles
@@ -106,10 +121,7 @@ export class CarrerasComponent implements OnInit {
       codMateria: this.materiaSeleccionada,
     };
 
+    setTimeout((f) => this.actualizarInfo(), 1000);
     this.carrerasService.cargarMateriaEnCarrera(nuevaMateria).subscribe();
-    console.log("long materias carrera", this.materiasPorCarrera.length);
-    console.log("long materias total", this.listaMaterias.length);
-
-    this.resetear();
   }
 }
