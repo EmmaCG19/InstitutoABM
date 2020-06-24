@@ -19,7 +19,7 @@ export class CarrerasComponent implements OnInit {
     private materiasService: MateriasService
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {  
     this.cargarCarreras();
     this.carreraSeleccionada = 0;
   }

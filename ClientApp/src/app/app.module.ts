@@ -50,6 +50,8 @@ import { MateriasService } from "./materias/materias.service";
       { path: "alumnos-agregar", component: AlumnosFormComponent },
       { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
       { path: "materias", component: MateriasComponent },
+      // { path: "materias-agregar", component: MateriasFormComponent}
+      // { path: "materias-editar", component: MateriasFormComponent}
       { path: "carreras", component: CarrerasComponent },
       
     ]),
