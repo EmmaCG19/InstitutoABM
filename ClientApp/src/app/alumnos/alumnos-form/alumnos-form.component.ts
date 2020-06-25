@@ -156,23 +156,23 @@ export class AlumnosFormComponent implements OnInit {
 
   //Validar el formato del mail
   validarMail() {
-    this.mailValido = false;
-
     let email: string = this.formGroup.get("email").value;
 
     if (email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$") != -1)
       this.mailValido = true;
+    else
+      this.mailValido = false;  
   }
 
   //Validar la existencia del DNI
   validarDNI() {
-    this.dniExistente = false;
-    
     let dni: number = this.formGroup.get("nroDocumento").value;
     let dniCargados = this.alumnosCargados.map((a) => a.nroDocumento);
 
     if (dniCargados.includes(dni)) 
       this.dniExistente = true;
+    else
+      this.dniExistente = false;  
     
   }
 
