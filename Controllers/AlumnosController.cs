@@ -117,18 +117,18 @@ namespace IntranetInstituto.Controllers
 
         // }
 
-        [HttpGet, Route("{id:int}/materias")]
-        public IActionResult ObtenerMateriasInscriptas(int id)
-        {
-            //Para que un alumno curse una materia tiene que estar en un curso
-            var materiasInscriptas = _context.Inscripciones.Include("Materia")
-                                                .Where(c => c.NroLegajo == id)
-                                                .Select(c => c.Materia)
-                                                .ToListAsync();
+        // [HttpGet, Route("{id:int}/materias")]
+        // public IActionResult ObtenerMateriasInscriptas(int id)
+        // {
+        //     //Para que un alumno curse una materia tiene que estar en un curso
+        //     var materiasInscriptas = _context.Inscripciones.Include("Materia")
+        //                                         .Where(c => c.NroLegajo == id)
+        //                                         .Select(c => c.Materia)
+        //                                         .ToListAsync();
 
-            return Ok(materiasInscriptas);
+        //     return Ok(materiasInscriptas);
 
-        }
+        // }
 
         private bool AlumnoExists(int id)
         {

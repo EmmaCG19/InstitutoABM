@@ -16,7 +16,10 @@ namespace IntranetInstituto.Models
         [Required]
         public float Precio { get; set; }
 
-        public ICollection<Inscripcion> Inscripciones { get; set; }
+        [Required]
+        public bool EsPromocionable { get; set; }
+
         public ICollection<CarreraMateria> CarrerasMaterias { get; set; }
+        public ICollection<Profesor> Profesores { get; set; }
     }
 }
