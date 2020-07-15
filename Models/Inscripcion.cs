@@ -14,22 +14,12 @@ namespace IntranetInstituto.Models
         public int NroLegajo { get; set; }
         public Alumno Alumno { get; set; }
 
-        [Required]
-        public byte NotaPrimerParcial{get;set;}
-
-        [Required]
-        public DateTime FechaPrimerParcial{get;set;}
-
-        [Required]
-        public byte NotaSegundoParcial{get;set;}
-
-        [Required]
-        public DateTime FechaSegundoParcial{get;set;}
-
-        //Puede ser nulleable ya que la materia puede ser promocionable y no tener nota
+        public byte? NotaPrimerParcial{get;set;}
+        public byte? NotaSegundoParcial{get;set;}
         public byte? NotaFinal{get;set;}
 
-        public DateTime? FechaFinal{get;set;}
+        [NotMapped]
+        public bool EsRegular { get; set; }   
 
         [Required]
         public DateTime FechaInscripcion { get; set; }
