@@ -8,8 +8,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
 //Components
 import { AlumnosComponent } from './alumnos/alumnos.component';
@@ -30,8 +28,6 @@ import { MateriasService } from "./materias/materias.service";
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     AlumnosComponent,
     AlumnosFormComponent,
     MateriasComponent,
@@ -46,8 +42,6 @@ import { MateriasService } from "./materias/materias.service";
     FormsModule,
     RouterModule.forRoot([
       { path: "", component: HomeComponent, pathMatch: "full" },
-      { path: "counter", component: CounterComponent },
-      { path: "fetch-data", component: FetchDataComponent },
       
       //Paths personalizados
       { path: "alumnos", component: AlumnosComponent },

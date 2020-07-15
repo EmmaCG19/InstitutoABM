@@ -24,7 +24,9 @@ namespace IntranetInstituto.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Curso>>> GetCursos()
         {
-            return await _context.Cursos.ToListAsync();
+            return await _context.Cursos.Include("Profesor")
+                                        .Include("Materia")
+                                        .ToListAsync();
         }
 
         // GET: api/Cursos/5
