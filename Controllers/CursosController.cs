@@ -103,9 +103,31 @@ namespace IntranetInstituto.Controllers
             return curso;
         }
 
+        
+        //Retornar los alumnos que estan inscriptos a un curso
+        [HttpGet, Route("{codCurso}/alumnos")]
+        public async Task<ActionResult<ICollection<Alumno>>> GetAlumnosPorCurso(int codCurso)
+        {
+            return await _context.Inscripciones
+                                                .Include(i => i.Alumno)
+                                                .Where(i => i.CodCurso == codCurso)
+                                                .Select(i => i.Alumno)
+                                                .ToListAsync<Alumno>();
+
+        }
+
         private bool CursoExists(int id)
         {
             return _context.Cursos.Any(e => e.CodCurso == id);
         }
     }
 }
+
+
+/*
+Rutas:
+    GET: api/cursos
+    GET: api/cursos/{codCurso}
+    GET: api/cursos/{codCurso}/alumnos
+    POST: api/cursos
+*/

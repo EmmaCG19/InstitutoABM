@@ -64,5 +64,7 @@ namespace IntranetInstituto.Controllers
             return Ok(inscripcion);
         }        
 
+        
+
     }
 }
