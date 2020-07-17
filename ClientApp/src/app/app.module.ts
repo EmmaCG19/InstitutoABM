@@ -13,19 +13,21 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 
 //Components
+import { FooterComponent } from './footer/footer.component';
 import { AlumnosComponent } from './alumnos/alumnos.component';
 import { AlumnosFormComponent } from './alumnos/alumnos-form/alumnos-form.component';
 import { MateriasComponent } from './materias/materias.component';
 import { MateriasFormComponent } from './materias/materias-form/materias-form.component';
 import { CarrerasComponent } from './carreras/carreras.component';
 import { CarrerasMateriasComponent } from './carreras/carreras-materias/carreras-materias.component';
+import { ProfesoresComponent } from './profesores/profesores.component';
 
 //Services
 import { AlumnosService } from "./alumnos/alumnos.service";
 import { CarrerasService } from "./carreras/carreras.service";
-import { DatePipe } from '@angular/common';
 import { MateriasService } from "./materias/materias.service";
-import { FooterComponent } from './footer/footer.component';
+import { ProfesoresService } from "./profesores/profesores.service";
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { FooterComponent } from './footer/footer.component';
     MateriasFormComponent,
     CarrerasMateriasComponent,
     FooterComponent,
+    ProfesoresComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -57,12 +60,13 @@ import { FooterComponent } from './footer/footer.component';
       { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
       { path: "materias", component: MateriasComponent },
       { path: "materias-agregar", component: MateriasFormComponent},
+      { path: "profesores", component: ProfesoresComponent },
       { path: "materias-editar/:codMateria", component: MateriasFormComponent},
       { path: "carreras", component: CarrerasComponent },
       
     ]),
   ],
-  providers: [AlumnosService, CarrerasService, MateriasService, DatePipe],
+  providers: [AlumnosService, CarrerasService, MateriasService, ProfesoresService, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

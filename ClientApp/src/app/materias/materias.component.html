@@ -18,6 +18,7 @@
                 <th>Codigo</th>
                 <th>Nombre</th>
                 <th>Precio</th>
+                <th>Promocionable?</th>
                 <th colspan="2"></th>
             </tr>
         </thead >
@@ -26,6 +27,7 @@
                 <td>{{ materia.codMateria}}</td>
                 <td>{{ materia.nombre}}</td>
                 <td>{{ materia.precio| currency}}</td>
+                <td><strong>{{ materia.esPromocionable? "SI":"NO"}}</strong></td>
                 <td><button class="btn btn-danger" (click)="eliminarMateria(materia.codMateria)">Eliminar</button></td>
                 <td><button class="btn btn-info"
                         [routerLink]='["/materias-editar/" + materia.codMateria]'>Editar</button>

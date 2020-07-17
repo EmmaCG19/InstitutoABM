@@ -1,5 +1,6 @@
 export interface IMateria {
-    codMateria:number;
-    nombre:string;    
-    precio:number;
+  codMateria: number;
+  nombre: string;
+  precio: number;
+  esPromocionable: boolean;
 }

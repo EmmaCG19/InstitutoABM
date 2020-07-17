@@ -102,6 +102,18 @@ namespace IntranetInstituto.Controllers
             return profesor;
         }
 
+        [HttpGet, Route("{codProfesor:int}/materia")]
+        public async Task<ActionResult<Materia>> GetMateriaByProfesor(int codProfesor)
+        {
+              return await _context.Profesores
+                                            .Include(p => p.Materia)
+                                            .Where(p => p.ProfesorId == codProfesor)
+                                            .Select(p => p.Materia)
+                                            .FirstOrDefaultAsync<Materia>();
+
+        }
+
+
         private bool ProfesorExists(int id)
         {
             return _context.Profesores.Any(e => e.ProfesorId == id);
