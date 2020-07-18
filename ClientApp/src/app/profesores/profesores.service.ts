@@ -26,6 +26,25 @@ export class ProfesoresService {
   }
 
   getMateriaProfesor(codProfesor: number): Observable<IMateria> {
-    return this.http.get<IMateria>(this.apiUrl + "/" + codProfesor + "/materia");
+    return this.http.get<IMateria>(
+      this.apiUrl + "/" + codProfesor + "/materia"
+    );
+  }
+
+  agregarProfesor(profesor: IProfesor): Observable<IProfesor> {
+    profesor.profesorId = 0;
+    return this.http.post<IProfesor>(this.apiUrl, profesor);
+  }
+
+  actualizarProfesor(
+    codProfesor: number,
+    profesor: IProfesor
+  ): Observable<IProfesor> {
+    profesor.profesorId = +codProfesor;
+    return this.http.put<IProfesor>(this.apiUrl + "/" + codProfesor, profesor);
+  }
+
+  eliminarProfesor(codProfesor: number): Observable<IProfesor> {
+    return this.http.delete<IProfesor>(this.apiUrl + "/" + codProfesor);
   }
 }

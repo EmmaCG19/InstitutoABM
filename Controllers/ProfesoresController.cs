@@ -48,7 +48,7 @@ namespace IntranetInstituto.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfesor(int id, Profesor profesor)
         {
-            if (id != profesor.ProfesorId)
+            if (!ModelState.IsValid || profesor.ProfesorId != id)
             {
                 return BadRequest();
             }

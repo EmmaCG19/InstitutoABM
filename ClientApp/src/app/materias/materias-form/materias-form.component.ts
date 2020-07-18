@@ -14,6 +14,7 @@ import { MateriasService } from "../materias.service";
 export class MateriasFormComponent implements OnInit {
   modoEdicion: boolean = false;
   nombreExiste:boolean;
+  esPromocionable:boolean;
   codMateria: number;
   formGroup: FormGroup;
   listaMaterias: IMateria[];
@@ -34,6 +35,7 @@ export class MateriasFormComponent implements OnInit {
       codMateria: "",
       nombre: "",
       precio: "",
+      esPromocionable: ""
     });
   }
 
@@ -88,6 +90,7 @@ export class MateriasFormComponent implements OnInit {
       codMateria: materia.codMateria,
       nombre: materia.nombre,
       precio: materia.precio,
+      esPromocionable: materia.esPromocionable
     });
   }
 

@@ -146,6 +146,41 @@
           }
         }
       }
+    },
+    "DniExistenteValidator": {
+      "projectType": "library",
+      "root": "projects/dni-existente-validator",
+      "sourceRoot": "projects/dni-existente-validator/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/dni-existente-validator/tsconfig.lib.json",
+            "project": "projects/dni-existente-validator/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dni-existente-validator/src/test.ts",
+            "tsConfig": "projects/dni-existente-validator/tsconfig.spec.json",
+            "karmaConfig": "projects/dni-existente-validator/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/dni-existente-validator/tsconfig.lib.json",
+              "projects/dni-existente-validator/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "IntranetInstituto"

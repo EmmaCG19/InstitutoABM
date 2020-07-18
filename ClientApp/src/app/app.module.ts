@@ -21,6 +21,7 @@ import { MateriasFormComponent } from './materias/materias-form/materias-form.co
 import { CarrerasComponent } from './carreras/carreras.component';
 import { CarrerasMateriasComponent } from './carreras/carreras-materias/carreras-materias.component';
 import { ProfesoresComponent } from './profesores/profesores.component';
+import { ProfesoresFormComponent } from './profesores/profesores-form/profesores-form.component';
 
 //Services
 import { AlumnosService } from "./alumnos/alumnos.service";
@@ -42,6 +43,7 @@ import { DatePipe } from '@angular/common';
     CarrerasMateriasComponent,
     FooterComponent,
     ProfesoresComponent,
+    ProfesoresFormComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -60,8 +62,10 @@ import { DatePipe } from '@angular/common';
       { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
       { path: "materias", component: MateriasComponent },
       { path: "materias-agregar", component: MateriasFormComponent},
-      { path: "profesores", component: ProfesoresComponent },
       { path: "materias-editar/:codMateria", component: MateriasFormComponent},
+      { path: "profesores", component: ProfesoresComponent },
+      { path: "profesores-agregar", component: ProfesoresFormComponent },
+      { path: "profesores-editar/:profesorId", component: ProfesoresFormComponent },
       { path: "carreras", component: CarrerasComponent },
       
     ]),

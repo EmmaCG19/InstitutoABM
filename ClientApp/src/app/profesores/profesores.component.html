@@ -45,11 +45,10 @@
           <td>{{ profesor.email }}</td>
           <td>{{ profesor.contacto ? profesor.contacto : "No se ha cargado" }}</td>
           <td>{{ profesor.materia.nombre}}</td>
-            
           <td>
             <button
               class="btn btn-danger rounded-pill"
-              (click)="eliminarProfesor(profesor.nroLegajo)"
+              (click)="eliminarProfesor(profesor.profesorId)"
             >
               Eliminar
             </button>
@@ -57,7 +56,7 @@
           <td>
             <button
               class="btn btn-info rounded-pill"
-              [routerLink]="['/profesores-editar/' + profesor.nroLegajo]"
+              [routerLink]="['/profesores-editar/' + profesor.profesorId]"
             >
               Editar
             </button>

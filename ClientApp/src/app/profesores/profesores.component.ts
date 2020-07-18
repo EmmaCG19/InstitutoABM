@@ -14,7 +14,6 @@ export class ProfesoresComponent implements OnInit {
   constructor(private profesoresService: ProfesoresService) {}
 
   ngOnInit() {
-    debugger;
     this.getProfesores();
   }
 
@@ -33,5 +32,15 @@ export class ProfesoresComponent implements OnInit {
     );
 
     return nombreMateria;
+  }
+
+  //FALTA DELETE PROFESOR
+  eliminarProfesor(codProfesor: number) {
+    this.profesoresService.eliminarProfesor(codProfesor).subscribe(
+      (profesorEliminado) => {
+        console.dir(profesorEliminado);
+      },
+      (error) => console.log(error)
+    );
   }
 }

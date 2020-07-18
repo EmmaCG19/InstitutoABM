@@ -1,4 +1,4 @@
-import {IPersona} from "../IPersona";
+import {IPersona} from "../ipersona";
 
 export interface IAlumno extends IPersona {
     nroLegajo:number;

@@ -16,6 +16,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "dni-existente-validator": [
+        "dist/dni-existente-validator"
+      ],
+      "dni-existente-validator/*": [
+        "dist/dni-existente-validator/*"
+      ]
+    }
   }
 }
