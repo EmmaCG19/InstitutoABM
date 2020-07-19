@@ -5,7 +5,6 @@ import {
 } from "@angular/forms";
 import { IProfesor } from "../IProfesor";
 import { IMateria } from "src/app/materias/imateria";
-import { dniExistenteValidator } from "src/app/dni-existente-validator";
 import { Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -94,16 +93,16 @@ export class ProfesoresFormComponent implements OnInit {
   guardarProfesor() {
     //Necesito crear un profesor en base a los valores del form
     let nuevoProfesor: IProfesor = Object.assign({}, this.formGroup.value);
-    debugger;
+    
     nuevoProfesor.contacto = nuevoProfesor.contacto
       ? "11" + nuevoProfesor.contacto
       : null;
      
 
     nuevoProfesor.codMateria = this.formGroup.get('materias').value;  
+    console.table(nuevoProfesor);
 
-    console.dir(nuevoProfesor);
-    debugger;
+    
 
     if (this.modoEdicion) {
       

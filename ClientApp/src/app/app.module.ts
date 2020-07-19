@@ -6,14 +6,14 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { CollapseModule} from 'ngx-bootstrap/collapse';
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+//Components
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-
-//Components
 import { FooterComponent } from './footer/footer.component';
+import { HomeComponent } from './home/home.component';
 import { AlumnosComponent } from './alumnos/alumnos.component';
 import { AlumnosFormComponent } from './alumnos/alumnos-form/alumnos-form.component';
 import { MateriasComponent } from './materias/materias.component';
@@ -22,14 +22,16 @@ import { CarrerasComponent } from './carreras/carreras.component';
 import { CarrerasMateriasComponent } from './carreras/carreras-materias/carreras-materias.component';
 import { ProfesoresComponent } from './profesores/profesores.component';
 import { ProfesoresFormComponent } from './profesores/profesores-form/profesores-form.component';
+import { CursosComponent } from './cursos/cursos.component';
+import { CursosFormComponent } from './cursos/cursos-form/cursos-form.component';
 
 //Services
 import { AlumnosService } from "./alumnos/alumnos.service";
 import { CarrerasService } from "./carreras/carreras.service";
 import { MateriasService } from "./materias/materias.service";
 import { ProfesoresService } from "./profesores/profesores.service";
+import { CursosService } from "./cursos/cursos.service";
 import { DatePipe } from '@angular/common';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +46,8 @@ import { DatePipe } from '@angular/common';
     FooterComponent,
     ProfesoresComponent,
     ProfesoresFormComponent,
+    CursosComponent,
+    CursosFormComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -53,6 +57,7 @@ import { DatePipe } from '@angular/common';
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
     RouterModule.forRoot([
       { path: "", component: HomeComponent, pathMatch: "full" },
       
@@ -60,17 +65,20 @@ import { DatePipe } from '@angular/common';
       { path: "alumnos", component: AlumnosComponent },
       { path: "alumnos-agregar", component: AlumnosFormComponent },
       { path: "alumnos-editar/:nroLegajo", component: AlumnosFormComponent },
+      { path: "carreras", component: CarrerasComponent },
       { path: "materias", component: MateriasComponent },
       { path: "materias-agregar", component: MateriasFormComponent},
       { path: "materias-editar/:codMateria", component: MateriasFormComponent},
       { path: "profesores", component: ProfesoresComponent },
       { path: "profesores-agregar", component: ProfesoresFormComponent },
       { path: "profesores-editar/:profesorId", component: ProfesoresFormComponent },
-      { path: "carreras", component: CarrerasComponent },
+      { path: "cursos", component: CursosComponent },
+      { path: "cursos-agregar", component: CursosFormComponent },
+      { path: "cursos-editar/:codCurso", component: CursosFormComponent },
       
     ]),
   ],
-  providers: [AlumnosService, CarrerasService, MateriasService, ProfesoresService, DatePipe],
+  providers: [AlumnosService, CarrerasService, MateriasService, ProfesoresService, CursosService, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

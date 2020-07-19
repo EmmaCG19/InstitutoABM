@@ -36,6 +36,7 @@ export class ProfesoresComponent implements OnInit {
 
   //FALTA DELETE PROFESOR
   eliminarProfesor(codProfesor: number) {
+    setTimeout( () => this.getProfesores(), 2000);
     this.profesoresService.eliminarProfesor(codProfesor).subscribe(
       (profesorEliminado) => {
         console.dir(profesorEliminado);

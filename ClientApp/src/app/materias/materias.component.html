@@ -28,7 +28,7 @@
                 <td>{{ materia.nombre}}</td>
                 <td>{{ materia.precio| currency}}</td>
                 <!--Resaltar con verde o rojo dependiendo si es promocionable o no-->
-                <td [ngClass]="{'text-danger': !materia.esPromocionable, 'text-info': materia.esPromocionable}">
+                <td class="text-center" [ngClass]="{'text-danger': !materia.esPromocionable, 'text-info': materia.esPromocionable}">
                     <strong>{{ materia.esPromocionable? "SI":"NO"}}</strong>
                 </td>
                 <td><button class="btn btn-danger" (click)="eliminarMateria(materia.codMateria)">Eliminar</button></td>

@@ -3,7 +3,7 @@ import { CarrerasService } from "./carreras.service";
 import { MateriasService } from "../materias/materias.service";
 import { IMateria } from "../materias/imateria";
 import { ICarrera } from "./icarrera";
-import { ICarreraMateria } from "../icarrera-materia";
+import { ICarreraMateria } from "./carreras-materias/icarrera-materia";
 import { ThrowStmt } from "@angular/compiler";
 
 @Component({

@@ -24,16 +24,16 @@ namespace IntranetInstituto.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Curso>>> GetCursos()
         {
-            return await _context.Cursos.Include("Profesor")
-                                        .Include("Materia")
+            return await _context.Cursos.Include(c => c.Profesor)
+                                            .ThenInclude(p => p.Materia)
                                         .ToListAsync();
         }
 
         // GET: api/Cursos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Curso>> GetCurso(int id)
+        [HttpGet("{codCurso}")]
+        public async Task<ActionResult<Curso>> GetCurso(int codCurso)
         {
-            var curso = await _context.Cursos.FindAsync(id);
+            var curso = await _context.Cursos.FindAsync(codCurso);
 
             if (curso == null)
             {
@@ -46,10 +46,10 @@ namespace IntranetInstituto.Controllers
         // PUT: api/Cursos/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCurso(int id, Curso curso)
+        [HttpPut("{codCurso}")]
+        public async Task<IActionResult> PutCurso(int codCurso, Curso curso)
         {
-            if (id != curso.CodCurso)
+            if (!ModelState.IsValid || codCurso != curso.CodCurso)
             {
                 return BadRequest();
             }
@@ -62,7 +62,7 @@ namespace IntranetInstituto.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CursoExists(id))
+                if (!CursoExists(codCurso))
                 {
                     return NotFound();
                 }
@@ -84,14 +84,14 @@ namespace IntranetInstituto.Controllers
             _context.Cursos.Add(curso);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCurso", new { id = curso.CodCurso }, curso);
+            return CreatedAtAction("GetCurso", new { codCurso = curso.CodCurso }, curso);
         }
 
         // DELETE: api/Cursos/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Curso>> DeleteCurso(int id)
+        [HttpDelete("{codCurso}")]
+        public async Task<ActionResult<Curso>> DeleteCurso(int codCurso)
         {
-            var curso = await _context.Cursos.FindAsync(id);
+            var curso = await _context.Cursos.FindAsync(codCurso);
             if (curso == null)
             {
                 return NotFound();
@@ -116,9 +116,9 @@ namespace IntranetInstituto.Controllers
 
         }
 
-        private bool CursoExists(int id)
+        private bool CursoExists(int codCurso)
         {
-            return _context.Cursos.Any(e => e.CodCurso == id);
+            return _context.Cursos.Any(e => e.CodCurso == codCurso);
         }
     }
 }
@@ -129,5 +129,7 @@ Rutas:
     GET: api/cursos
     GET: api/cursos/{codCurso}
     GET: api/cursos/{codCurso}/alumnos
+    PUT: api/cursos/{codCurso}
     POST: api/cursos
+    DELETE: api/cursos
 */

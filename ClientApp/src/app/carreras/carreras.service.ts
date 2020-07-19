@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ICarrera } from "./icarrera";
 import { IMateria } from "../materias/imateria";
-import { ICarreraMateria } from "../icarrera-materia";
+import { ICarreraMateria } from "./carreras-materias/icarrera-materia";
 
 @Injectable()
 export class CarrerasService {
