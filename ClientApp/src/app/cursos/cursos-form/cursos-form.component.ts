@@ -18,12 +18,10 @@ export class CursosFormComponent implements OnInit {
   modoEdicion: boolean = false;
   codCurso: number;
   profesorSeleccionado: number;
-
-  capacidadMax: number = 30;
-  fechaInicioValida: boolean;
-  fechaFinValida: boolean;
   listaProfesores: IProfesor[];
-
+  
+  capacidadMax: number = 30;
+  fechaFinValida: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -96,7 +94,6 @@ export class CursosFormComponent implements OnInit {
     }
   }
 
-  //Cargar datos del profesor en el form
   cargarCurso(curso: ICurso) {
     this.formGroup.patchValue({
       codCurso: curso.codCurso,

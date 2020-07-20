@@ -123,17 +123,15 @@
             </div>
             <!--CAPACIDAD END-->
     
-            <h4>Fecha Inicio : {{ formGroup.controls['fechaInicio']?.value | date: "dd-MM-yyyy" }}</h4>
-            <h4>Fecha Fin : {{ formGroup.controls['fechaFin']?.value | date: "dd-MM-yyyy" }}</h4>
-            
             <!---ACCIONES-->
             <div class="form-group mt-4 ml-1">
                 <!--Validaciones del form-->
                 <span>
                     <button class="btn btn-lg rounded-pill" type="submit" 
-                        [ngClass]="{'btn-dark': !formGroup.valid || !fechaFinValida,
+                        [ngClass]="{'btn-dark': 
+                                      formGroup.pristine || (!formGroup.valid || !fechaFinValida),
                                      'btn-primary': formGroup.valid}"
-                        [disabled]="!formGroup.valid || !fechaFinValida">
+                        [disabled]="formGroup.pristine || (!formGroup.valid || !fechaFinValida)">
                         Guardar
                     </button>
                 </span>
@@ -143,8 +141,13 @@
                     </button>
                 </span>
             </div>
+
+            <!-- <h3>
+                Form valido?: {{ formGroup.status }} <br/>
+                Hubo cambios?: {{ !formGroup.pristine }} <br/>
+                Fecha Fin: {{ formGroup.get('fechaFin').value |date: 'dd-MM-yyyy' }} <br/>
+                Fecha Fin Valida?: {{ fechaFinValida }}
+            </h3> -->
         </fieldset>
-    
-    
     </form>
     </div>

@@ -19,7 +19,7 @@ export class CursosComponent implements OnInit {
     { nombre: "profesor", selected: false, id: 2 },
   ];
 
-  existeChecked: boolean;
+  filtrosOn: boolean = false; 
   filtroActivo: number;
   nombreFiltroActivo: string;
   cursosFiltrados: ICurso [] = [];
@@ -74,9 +74,9 @@ export class CursosComponent implements OnInit {
     this.formSearch.controls["searchCurso"].disable();
     this.filtroActivo = null;
     this.nombreFiltroActivo = null;
-    this.existeChecked = this.existeFiltroChecked();
+    this.filtrosOn = !this.filtrosOn;
 
-    if (this.existeChecked) {
+    if (this.existeFiltroChecked()) {
       //Habilito la busqueda
       this.formSearch.controls["searchCurso"].enable();
       
@@ -92,7 +92,7 @@ export class CursosComponent implements OnInit {
     console.log(this.formSearch.controls["searchCurso"].value);
 
     //Deshabilito o habilito los checkboxes dependiendo si existe o no algun checkbox checked
-    this.setCheckboxes(this.existeChecked);
+    this.setCheckboxes(this.filtrosOn);
   }
 
   //Deshabilita los checkboxes que no están chequeados
