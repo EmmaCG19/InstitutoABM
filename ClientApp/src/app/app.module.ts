@@ -34,6 +34,7 @@ import { CursosService } from "./cursos/cursos.service";
 import { JsonPipe } from "@angular/common"
 import { DatePipe } from '@angular/common';
 import { FilterPipe } from './cursos/filter.pipe';
+import { LogPipe } from './log.pipe';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { FilterPipe } from './cursos/filter.pipe';
     ProfesoresFormComponent,
     CursosComponent,
     CursosFormComponent,
-    FilterPipe
+    FilterPipe,
+    LogPipe
   ],
   imports: [
     ReactiveFormsModule,

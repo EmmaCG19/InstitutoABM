@@ -1,1 +1,150 @@
-<p>cursos-form works!</p>
+<div class="container">
+
+    <div *ngIf="modoEdicion">
+        <h2>Editar Curso</h2>
+    </div>
+    <div *ngIf="!modoEdicion">
+        <h2>Cargar Curso</h2>
+    </div>
+    
+    <form class="form-horizontal" novalidate [formGroup]="formGroup" (submit)="guardarCurso()" autocomplete="off">
+    
+        <fieldset>
+            <legend>Profesor:</legend>
+            
+            <!-- PROFESOR -->
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="profesores">Profesor:<span class="text-danger">
+                        (*)</span></label>
+    
+                <div class="col-md-8">
+                    <select class="form-control" formControlName="profesores">
+                        <option [ngValue]="null">--Seleccione un profesor--</option>
+                        <option [ngValue]="profesor.profesorId" *ngFor="let profesor of listaProfesores">
+                            {{profesor.nombre.concat(' ',profesor.apellido)  | uppercase}} - {{profesor.materia.nombre | uppercase}}
+                        </option>
+                    </select>
+    
+                    
+                    <span class="help-block" *ngIf="(formGroup.get('profesores').touched || 
+                                                    formGroup.get('profesores').dirty) &&
+                                                    !formGroup.get('profesores').valid">
+                        <span class="text-danger" *ngIf="formGroup.controls['profesores'].hasError('required')">
+                            El campo es requerido
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <!--FECHA INICIO BEGIN-->
+            <div class="form-group" [ngClass]="{ 'has-error': 
+                (
+                    formGroup.get('fechaInicio').touched || formGroup.get('fechaInicio').dirty && !formGroup.get('fechaInicio').valid  
+                    ) } ">
+    
+                <label class="col-md-2 control-label" for="fechaInicio">Fecha de Inicio:<span class="text-danger">
+                        (*)</span>
+                </label>
+    
+                <div class="col-md-6">
+                    <input class="form-control" id="fechaInicio" type="date" required
+                        formControlName="fechaInicio" 
+                        (change)="validarFechaFin()" 
+                    />
+    
+                    <span class="help-block" *ngIf="( formGroup.get('fechaInicio').touched || 
+                                                      formGroup.get('fechaInicio').dirty && 
+                                                      !formGroup.valid) ">
+                        <span class="text-danger" *ngIf="formGroup.controls['fechaInicio'].hasError('required')">
+                            El campo es requerido
+                        </span>
+                    </span>
+    
+                </div>
+    
+            </div>
+            <!--FECHA INICIO END-->
+
+            <!--FECHA FIN BEGIN-->
+            <div class="form-group" [ngClass]="{ 'has-error': 
+                (
+                    formGroup.get('fechaFin').touched || formGroup.get('fechaFin').dirty && !formGroup.get('fechaFin').valid  
+                    ) } ">
+    
+                <label class="col-md-2 control-label" for="fechaFin">Fecha de Finalización:<span class="text-danger">
+                        (*)</span>
+                </label>
+    
+                <div class="col-md-6">
+                    <input class="form-control" id="fechaFin" type="date" required
+                        formControlName="fechaFin"
+                        (change)="validarFechaFin()" />
+    
+                    <span class="help-block" *ngIf="( formGroup.get('fechaFin').touched || 
+                                                      formGroup.get('fechaFin').dirty && 
+                                                      (!formGroup.valid || !fechaFinValida)
+                                                    )">
+                        <span class="text-danger" *ngIf="formGroup.controls['fechaFin'].hasError('required')">
+                            El campo es requerido
+                        </span>
+                        <span class="text-danger" *ngIf="!fechaFinValida">
+                            La fecha de fin no puede ser menor que la fecha de inicio
+                        </span>
+                    </span>
+    
+                </div>
+    
+            </div>
+            <!--FECHA FIN END-->
+            
+            <!--CAPACIDAD BEGIN-->
+    
+            <div class="form-group" [ngClass]="{ 'has-error': 
+                    (
+                        formGroup.get('capacidad').touched || formGroup.get('capacidad').dirty && !formGroup.get('capacidad').valid  
+                        ) } ">
+    
+                <label class="col-md-2 control-label" for="capacidad">Cupos Disponibles:<span class="text-danger"> (*)</span></label>
+    
+                <div class="col-md-6">
+                    <input class="form-control" id="capacidad" type="number" formControlName="capacidad"
+                        placeholder="Ingrese los cupos disponibles"/>
+    
+                    <span class="help-block" *ngIf="( formGroup.get('capacidad').touched || formGroup.get('capacidad').dirty 
+                    && !formGroup.valid ) ">
+                        <span class="text-danger" *ngIf="formGroup.get('capacidad').errors?.required">
+                            El campo es requerido
+                        </span>
+                        <span class="text-danger" *ngIf="formGroup.get('capacidad').hasError('max')">
+                            La capacidad no puede superar los {{this.capacidadMax}} alumnos
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <!--CAPACIDAD END-->
+    
+            <h4>Fecha Inicio : {{ formGroup.controls['fechaInicio']?.value | date: "dd-MM-yyyy" }}</h4>
+            <h4>Fecha Fin : {{ formGroup.controls['fechaFin']?.value | date: "dd-MM-yyyy" }}</h4>
+            
+            <!---ACCIONES-->
+            <div class="form-group mt-4 ml-1">
+                <!--Validaciones del form-->
+                <span>
+                    <button class="btn btn-lg rounded-pill" type="submit" 
+                        [ngClass]="{'btn-dark': !formGroup.valid || !fechaFinValida,
+                                     'btn-primary': formGroup.valid}"
+                        [disabled]="!formGroup.valid || !fechaFinValida">
+                        Guardar
+                    </button>
+                </span>
+                <span>
+                    <button class="btn btn-danger btn-lg rounded-pill ml-3" [routerLink]='["/cursos"]'>
+                        Cancelar
+                    </button>
+                </span>
+            </div>
+        </fieldset>
+    
+    
+    </form>
+    </div>
