@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder, FormControl, FormArray } from "@angular/forms";
+import { Validators } from "@angular/forms";
+import { FilterPipe } from "./filter.pipe";
 import { ICurso } from "./icurso";
 import { CursosService } from "./cursos.service";
 import { IMateria } from "../materias/imateria";
-import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
-import { Validators } from "@angular/forms";
 
 @Component({
   selector: "app-cursos",
@@ -11,23 +12,29 @@ import { Validators } from "@angular/forms";
   styleUrls: ["./cursos.component.css"],
 })
 export class CursosComponent implements OnInit {
-  ListaCursos: ICurso[];
   formSearch: FormGroup;
+  ListaCursos: ICurso[];
+  ListaFiltros = [
+    { nombre: "materia", selected: false, id: 1 },
+    { nombre: "profesor", selected: false, id: 2 },
+  ];
+
+  existeChecked: boolean;
+  filtroActivo: number;
+  nombreFiltroActivo: string;
+  cursosFiltrados: ICurso [] = [];
 
   constructor(
     private profesoresService: CursosService,
     private formBuilder: FormBuilder
-  ) {
-    this.formSearch = this.formBuilder.group({
-      searchCurso: [""],
-      filtroProfesor: [],
-      filtroMateria: [],
-      filtroCursoActivo: [],
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.getCursos();
+    this.formSearch = this.formBuilder.group({
+      searchCurso: [{value:"", disabled: true}],
+      filtros: this.generarFiltros(),
+    });
   }
 
   getCursos() {
@@ -45,5 +52,62 @@ export class CursosComponent implements OnInit {
       },
       (error) => console.log(error)
     );
+  }
+
+  //Crear un array con los filtros
+  generarFiltros() {
+    let arr: FormControl[] = this.ListaFiltros.map((f) => {
+      return this.formBuilder.control(f.selected || false);
+    });
+
+    return this.formBuilder.array(arr);
+  }
+
+  //Get filtros accessor property
+  get filtros() {
+    return this.formSearch.get("filtros") as FormArray;
+  }
+
+  setFiltroActivo(index) {
+    
+    //Reset FORM state
+    this.formSearch.controls["searchCurso"].disable();
+    this.filtroActivo = null;
+    this.nombreFiltroActivo = null;
+    this.existeChecked = this.existeFiltroChecked();
+
+    if (this.existeChecked) {
+      //Habilito la busqueda
+      this.formSearch.controls["searchCurso"].enable();
+      
+      //Me guardo el index del filtro
+      this.filtroActivo = index;
+
+      //Me guardo el nombre
+      this.nombreFiltroActivo = this.ListaFiltros[index].nombre || null;
+    }
+    else
+      this.formSearch.controls["searchCurso"].setValue(''); 
+
+    console.log(this.formSearch.controls["searchCurso"].value);
+
+    //Deshabilito o habilito los checkboxes dependiendo si existe o no algun checkbox checked
+    this.setCheckboxes(this.existeChecked);
+  }
+
+  //Deshabilita los checkboxes que no están chequeados
+  setCheckboxes(checkStatus: boolean) {
+    let filtros: any = this.filtros.controls;
+    filtros.forEach((f) => {
+      if (checkStatus && filtros.indexOf(f) != this.filtroActivo)
+        f.disable();
+      else 
+        f.enable();
+    });
+  }
+
+  //Verifica si algun checkbox fue checked
+  existeFiltroChecked(): boolean {
+    return this.filtros.controls.some((f) => f.value);
   }
 }

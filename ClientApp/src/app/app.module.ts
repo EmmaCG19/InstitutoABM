@@ -31,7 +31,10 @@ import { CarrerasService } from "./carreras/carreras.service";
 import { MateriasService } from "./materias/materias.service";
 import { ProfesoresService } from "./profesores/profesores.service";
 import { CursosService } from "./cursos/cursos.service";
+import { JsonPipe } from "@angular/common"
 import { DatePipe } from '@angular/common';
+import { FilterPipe } from './cursos/filter.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +50,8 @@ import { DatePipe } from '@angular/common';
     ProfesoresComponent,
     ProfesoresFormComponent,
     CursosComponent,
-    CursosFormComponent
+    CursosFormComponent,
+    FilterPipe
   ],
   imports: [
     ReactiveFormsModule,
@@ -78,7 +82,7 @@ import { DatePipe } from '@angular/common';
       
     ]),
   ],
-  providers: [AlumnosService, CarrerasService, MateriasService, ProfesoresService, CursosService, DatePipe],
+  providers: [AlumnosService, CarrerasService, MateriasService, ProfesoresService, CursosService, DatePipe, JsonPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

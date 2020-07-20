@@ -10,89 +10,149 @@
     </div>
   </div>
 
-  <div *ngIf="!ListaCursos || !ListaCursos.length" class="row">
-    <h3 class="text-info">No existen cursos cargados</h3>
-  </div>
-
-  <div class="row" *ngIf="ListaCursos && ListaCursos.length">
-    <form class="form-horizontal" [formGroup]="formSearch">
-      <div class="form-group">
-        <!--Search bar con filtros???-->
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Ingrese su búsqueda..."
-            formControlName ="searchCurso"
-          />
-          <div class="input-group-append">
-            <span class="input-group-text material-icons">
-              search
-            </span>
+  <div class="row mb-3">
+    <!--Search bar con filtros-->
+    <form class="form-inline" [formGroup]="formSearch">
+      <div class="col-md-6 pl-0 mb-1">
+        <div class="form-group">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Ingrese su búsqueda..."
+              formControlName="searchCurso"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text material-icons">
+                search
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label class="checkbox-inline">
-          <input type="checkbox" value="" formControlName="filtroProfesor" />
-          Por Materia
-        </label>
-        <!-- <label class="radio-inline">
-          <input
-            type="radio"
-            value="inactivo"
-            formControlName="estadoUsuario"
-          />
-          Por Profesor
-        </label> -->
+
+      <div class="col-md-6 pl-0">
+        <div class="form-group">
+          <div
+            class="form-check form-check-inline"
+            *ngFor="let filtro of filtros.controls; let i = index"
+          >
+            <input
+              type="checkbox"
+              class="form-check-input"
+              (change)="setFiltroActivo(i)"
+              [formControl]="filtro"
+            />
+            <label class="form-check-label">
+              Por {{ ListaFiltros[i].nombre }}
+            </label>
+          </div>
+        </div>
       </div>
     </form>
   </div>
 
-  <table class="table table-striped table-hover table-responsive">
-    <thead class="thead thead-dark">
-      <tr>
-        <th>Codigo</th>
-        <th>Materia</th>
-        <th>Profesor</th>
-        <th>Fecha Inicio</th>
-        <th>Fecha Fin</th>
-        <th>Capacidad</th>
-        <th colspan="2"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let curso of ListaCursos">
-        <td>{{ curso.codCurso }}</td>
-        <td>{{ curso.profesor.materia.nombre }}</td>
-        <td>{{ curso.profesor.nombre + " " + curso.profesor.apellido }}</td>
-        <td>{{ curso.fechaInicio | date: "dd/MM/yyyy" }}</td>
-        <td>{{ curso.fechaFin | date: "dd/MM/yyyy" }}</td>
-        <td class="text-center">{{ curso.capacidad }}</td>
-        <!--Indicar disponibilidad?-->
-        <td>
-          <button
-            class="btn"
-            placement="top"
-            tooltip="Eliminar"
-            (click)="eliminarCurso(curso.codCurso)"
-          >
-            <span class="material-icons text-danger">
-              delete
-            </span>
-          </button>
-        </td>
-        <td>
-          <button
-            class="btn"
-            placement="top"
-            tooltip="Editar"
-            [routerLink]="['/cursos-editar/' + curso.codCurso]"
-          >
-            Editar
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="!ListaCursos || !ListaCursos.length" class="row">
+    <h3 class="text-info">No existen cursos cargados</h3>
+  </div>
+
+  <!-- <div
+    *ngIf="existeChecked && (!cursosFiltrados || !cursosFiltrados.length)"
+    class="row"
+  > -->
+    <!-- <h3 class="text-info">No se encontraron resultados</h3>
+    </div>  -->
+
+    
+    
+  <!--Si hay cursos filtrados-->
+  <div>
+    <div
+      *ngIf="
+        ListaCursos
+          | filter
+            : nombreFiltroActivo
+            : formSearch.get('searchCurso').value as cursosFiltrados
+      "
+    >
+      <!--TABLA BEGIN-->
+      <div class="row">
+        <table class="table table-striped table-hover table-responsive">
+          <thead class="thead thead-dark">
+            <tr>
+              <th>Codigo</th>
+              <th>Materia</th>
+              <th>Profesor</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Fin</th>
+              <th>Capacidad</th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let curso of cursosFiltrados; let i = index">
+              <td>{{ curso.codCurso }}</td>
+              <td>{{ curso.profesor.materia.nombre }}</td>
+              <td>
+                {{ curso.profesor.nombre + " " + curso.profesor.apellido }}
+              </td>
+              <td>{{ curso.fechaInicio | date: "dd/MM/yyyy" }}</td>
+              <td>{{ curso.fechaFin | date: "dd/MM/yyyy" }}</td>
+              <td class="text-center">{{ curso.capacidad }}</td>
+              <!--Indicar disponibilidad?-->
+              <td>
+                <button
+                  class="btn"
+                  placement="top"
+                  tooltip="Eliminar"
+                  (click)="eliminarCurso(curso.codCurso)"
+                >
+                  <span class="material-icons text-danger">
+                    delete
+                  </span>
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn"
+                  placement="top"
+                  tooltip="Editar"
+                  [routerLink]="['/cursos-editar/' + curso.codCurso]"
+                >
+                  <span class="material-icons text-success">
+                    edit
+                  </span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--TABLA END-->
+
+      <!--TEST RESULTADOS ENCONTRADOS BEGIN-->
+      <div>
+        <span
+          class="display-3 text-info"
+          *ngIf="
+            existeChecked &&
+            formSearch.get('searchCurso').dirty &&
+              formSearch.get('searchCurso').value &&
+            cursosFiltrados.length
+          "
+        >
+          Resultados encontrados: {{ cursosFiltrados.length }}
+        </span>
+        <div>
+          <span class="text-danger">
+            Busqueda activa: {{ formSearch.get("searchCurso").dirty }}
+            <hr />
+            Valor Busqueda: {{ formSearch.get("searchCurso")?.value }}
+          </span>
+        </div>
+      </div>
+      <!--TEST RESULTADOS ENCONTRADOS END-->
+
+    </div>
+  </div>
 </div>
