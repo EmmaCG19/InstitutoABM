@@ -24,7 +24,10 @@ namespace IntranetInstituto.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Inscripcion>>> GetInscripciones()
         {
-            return await _context.Inscripciones.ToListAsync();
+            return await _context.Inscripciones
+                                                .Include(i => i.Alumno)
+                                                .Include(i => i.Curso)                                                             
+                                                .ToListAsync<Inscripcion>();
         }
 
 
@@ -32,9 +35,7 @@ namespace IntranetInstituto.Controllers
         public async Task<ActionResult<ICollection<Inscripcion>>> GetInscripcionesPorAlumno(int nroLegajo)
         {
             return await _context.Inscripciones
-                                                .Include(i => i.Curso)
-                                                    .ThenInclude(c => c.Profesor)
-                                                    .ThenInclude(p => p.Materia)
+                                                .Include(i => i.Alumno)
                                                 .Where(i => i.NroLegajo == nroLegajo)
                                                 .ToListAsync<Inscripcion>();
 
@@ -44,8 +45,10 @@ namespace IntranetInstituto.Controllers
         [HttpGet, Route("cursos/{codCurso:int}")]
         public async Task<ActionResult<IEnumerable<Inscripcion>>> GetInscripcionesPorCurso(int codCurso)
         {
-            return await _context.Inscripciones.Where(i => i.CodCurso == codCurso)
-                                               .ToListAsync<Inscripcion>();
+            return await _context.Inscripciones
+                                                .Include(i => i.Curso)
+                                                .Where(i => i.CodCurso == codCurso)
+                                                .ToListAsync<Inscripcion>();
                 
         }        
 
@@ -64,7 +67,76 @@ namespace IntranetInstituto.Controllers
             return Ok(inscripcion);
         }        
 
-        
+        [HttpPost, Route("") ]
+        public async Task<IActionResult> CargarInscripcion(Inscripcion inscripcion)
+        {
+            if(!ModelState.IsValid)    
+                return BadRequest(ModelState);
+
+            _context.Inscripciones.Add(inscripcion);    
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut, Route("cursos/{codCurso:int}/alumnos/{nroLegajo:int}") ]
+        public async Task<IActionResult> ActualizarInscripcion(int codCurso, int nroLegajo, Inscripcion inscripcion)
+        {
+            if(!ModelState.IsValid)    
+                return BadRequest(ModelState);
+
+            if(nroLegajo != inscripcion.NroLegajo || codCurso != inscripcion.CodCurso)   
+                return BadRequest("El nroLegajo o el codCurso ingresado no coincide con los datos de la inscripcion"); 
+
+            Inscripcion inscripcionDB = await _context.Inscripciones
+                                                                    .Where(i => i.NroLegajo == nroLegajo && 
+                                                                                i.CodCurso == codCurso )
+                                                                    .FirstOrDefaultAsync<Inscripcion>();
+            
+            if(inscripcionDB is null)
+                return NotFound();
+
+            //Modificar campos
+            inscripcionDB.NotaPrimerParcial = inscripcion.NotaPrimerParcial;
+            inscripcionDB.NotaSegundoParcial = inscripcion.NotaSegundoParcial;
+            inscripcionDB.NotaFinal = inscripcion.NotaFinal;
+            inscripcionDB.FechaInscripcion = inscripcion.FechaInscripcion;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpDelete, Route("cursos/{codCurso:int}/alumnos/{nroLegajo:int}")]
+        public async Task<IActionResult> DeleteInscripcion(int codCurso, int nroLegajo)
+        {
+            Inscripcion inscripcionDB = await _context.Inscripciones
+                                                                    .Where(i => i.NroLegajo == nroLegajo && 
+                                                                                i.CodCurso == codCurso )
+                                                                    .FirstOrDefaultAsync<Inscripcion>();
+
+            if(inscripcionDB is null)
+                return NotFound();
+
+            _context.Inscripciones.Remove(inscripcionDB);
+            await _context.SaveChangesAsync();    
+
+            return Ok();
+        }
+
 
     }
 }
+
+/*
+API ROUTES:
+GET: api/inscripciones - Obtener todas las inscripciones
+GET: api/inscripciones/alumnos/{nroLegajo}/cursos/{codCurso} - Obtener una inscripcion
+GET: api/inscripciones/alumnos/{nroLegajo} - Obtener las inscripciones del alumno
+GET: api/inscripciones/cursos/{codCurso} - Obtener las inscripciones a ese curso
+
+PUT: api/inscripciones/alumnos/{nroLegajo}/cursos/{codCurso} - Actualizar una inscripcion
+POST: api/inscripciones - Cargar una inscripcion
+DELETE: api/inscripciones/alumnos/{nroLegajo}/cursos/{codCurso} - Eliminar una inscripcion
+
+*/
