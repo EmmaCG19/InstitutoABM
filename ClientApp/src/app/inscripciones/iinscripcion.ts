@@ -1,7 +1,7 @@
 import { IAlumno } from "../alumnos/IAlumno";
 import { ICurso } from "../cursos/icurso";
 
-export interface Iinscripcion {
+export interface IInscripcion {
   codCurso: number;
   curso: ICurso;
   nroLegajo: number;

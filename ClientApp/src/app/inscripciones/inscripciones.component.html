@@ -19,7 +19,10 @@
     <div class="col-md-6 col-xs-12 mb-2">
       <button
         class="btn btn-block text-white"
-        [ngClass]="{'btn-warning': !alumnosCollapsed, 'btn-dark': alumnosCollapsed }"
+        [ngClass]="{
+          'btn-warning': !alumnosCollapsed,
+          'btn-dark': alumnosCollapsed
+        }"
         [disabled]="!cursosCollapsed"
         [attr.aria-expanded]="!alumnosCollapsed"
         (click)="alumnosCollapsed = !alumnosCollapsed"
@@ -33,7 +36,10 @@
     <div class="col-md-6 col-xs-12 mb-2">
       <button
         class="btn btn-block text-white"
-        [ngClass]="{'btn-warning': !cursosCollapsed, 'btn-dark': cursosCollapsed }"
+        [ngClass]="{
+          'btn-warning': !cursosCollapsed,
+          'btn-dark': cursosCollapsed
+        }"
         [disabled]="!alumnosCollapsed"
         [attr.aria-expanded]="!cursosCollapsed"
         (click)="cursosCollapsed = !cursosCollapsed"
@@ -43,27 +49,29 @@
       </button>
     </div>
   </div>
+</div>
 
-  <!--ALUMNOS SECTION-->
-  <div id="alumnosCollapse" [collapse]="alumnosCollapsed" [isAnimated]="false">
-    <div class="row mb-3">
-      <div class="col-md-12">
-        <span class="alert alert-info" role="alert">
-          Seccion alumnos
-        </span>
-      </div>
+<!--ALUMNOS SECTION-->
+<div
+  class="container"
+  id="alumnosCollapse"
+  [collapse]="alumnosCollapsed"
+  [isAnimated]="false">
+    <app-inscripcion-alumnos></app-inscripcion-alumnos>
+</div>
+
+<!--CURSOS SECTION-->
+<div
+  class="container"
+  id="cursosCollapse"
+  [collapse]="cursosCollapsed"
+  [isAnimated]="false"
+>
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <span class="alert alert-info" role="alert">
+        Seccion cursos
+      </span>
     </div>
   </div>
-
-  <!--CURSOS SECTION-->
-  <div id="cursosCollapse" [collapse]="cursosCollapsed" [isAnimated]="false">
-    <div class="row mb-3">
-      <div class="col-md-12">
-        <span class="alert alert-info" role="alert">
-          Seccion cursos
-        </span>
-      </div>
-    </div>
-  </div>
-
 </div>

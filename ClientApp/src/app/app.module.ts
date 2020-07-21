@@ -37,6 +37,8 @@ import { JsonPipe } from "@angular/common";
 import { DatePipe } from "@angular/common";
 import { FilterPipe } from "./cursos/filter.pipe";
 import { LogPipe } from "./log.pipe";
+import { InscripcionAlumnosComponent } from './inscripciones/inscripcion-alumnos/inscripcion-alumnos.component';
+import { InscripcionesCursosComponent } from './inscripciones/inscripciones-cursos/inscripciones-cursos.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { LogPipe } from "./log.pipe";
     InscripcionesComponent,
     LogPipe,
     FilterPipe,
+    InscripcionAlumnosComponent,
+    InscripcionesCursosComponent,
   ],
   imports: [
     ReactiveFormsModule,

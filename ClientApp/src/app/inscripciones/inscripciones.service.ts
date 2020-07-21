@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Iinscripcion } from "./iinscripcion";
+import { IInscripcion } from "./iinscripcion";
 
 @Injectable({
   providedIn: "root",
@@ -14,46 +14,46 @@ export class InscripcionesService {
     @Inject("BASE_URL") private baseUrl: string
   ) {}
 
-  getInscripciones(): Observable<Iinscripcion[]> {
+  getInscripciones(): Observable<IInscripcion[]> {
     console.log("HTTP GET: ", this.apiUrl);
-    return this.http.get<Iinscripcion[]>(this.apiUrl);
+    return this.http.get<IInscripcion[]>(this.apiUrl);
   }
 
   getInscripcionById(
     codCurso: number,
     nroLegajo: number
-  ): Observable<Iinscripcion> {
+  ): Observable<IInscripcion> {
     console.log("HTTP GET: ", this.apiUrl);
-    return this.http.get<Iinscripcion>(
+    return this.http.get<IInscripcion>(
       this.apiUrl + "/cursos/" + codCurso + "/alumnos/" + nroLegajo
     );
   }
 
-  getInscripcionesPorAlumno(nroLegajo: number): Observable<Iinscripcion[]> {
+  getInscripcionesPorAlumno(nroLegajo: number): Observable<IInscripcion[]> {
     console.log("HTTP GET: ", this.apiUrl);
-    return this.http.get<Iinscripcion[]>(this.apiUrl + "/alumnos/" + nroLegajo);
+    return this.http.get<IInscripcion[]>(this.apiUrl + "/alumnos/" + nroLegajo);
   }
 
-  getInscripcionesPorCurso(codCurso: number): Observable<Iinscripcion[]> {
+  getInscripcionesPorCurso(codCurso: number): Observable<IInscripcion[]> {
     console.log("HTTP GET: ", this.apiUrl);
-    return this.http.get<Iinscripcion[]>(this.apiUrl + "/cursos/" + codCurso);
+    return this.http.get<IInscripcion[]>(this.apiUrl + "/cursos/" + codCurso);
   }
 
-  agregarInscripcion(inscripcion: Iinscripcion): Observable<Iinscripcion> {
+  agregarInscripcion(inscripcion: IInscripcion): Observable<IInscripcion> {
     console.log("HTTP POST: ", this.apiUrl);
     console.log(this.apiUrl);
-    return this.http.post<Iinscripcion>(this.apiUrl, inscripcion);
+    return this.http.post<IInscripcion>(this.apiUrl, inscripcion);
   }
 
   actualizarInscripcion(
     codCurso: number,
     nroLegajo: number,
-    inscripcion: Iinscripcion
-  ): Observable<Iinscripcion> {
+    inscripcion: IInscripcion
+  ): Observable<IInscripcion> {
     console.log("HTTP PUT: ", this.apiUrl);
     inscripcion.codCurso = +codCurso;
     inscripcion.nroLegajo = +nroLegajo;
-    return this.http.put<Iinscripcion>(
+    return this.http.put<IInscripcion>(
       this.apiUrl + "/cursos/" + codCurso + "/alumnos/" + nroLegajo,
       inscripcion
     );
@@ -62,9 +62,9 @@ export class InscripcionesService {
   eliminarInscripcion(
     codCurso: number,
     nroLegajo: number
-  ): Observable<Iinscripcion> {
+  ): Observable<IInscripcion> {
     console.log("HTTP DELETE: ", this.apiUrl);
-    return this.http.delete<Iinscripcion>(
+    return this.http.delete<IInscripcion>(
       this.apiUrl + "/cursos/" + codCurso + "/alumnos/" + nroLegajo
     );
   }
