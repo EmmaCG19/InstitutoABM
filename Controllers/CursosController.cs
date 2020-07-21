@@ -105,7 +105,7 @@ namespace IntranetInstituto.Controllers
 
         
         //Retornar los alumnos que estan inscriptos a un curso
-        [HttpGet, Route("{codCurso}/alumnos")]
+        [HttpGet, Route("{codCurso:int}/alumnos")]
         public async Task<ActionResult<ICollection<Alumno>>> GetAlumnosPorCurso(int codCurso)
         {
             return await _context.Inscripciones
@@ -115,6 +115,19 @@ namespace IntranetInstituto.Controllers
                                                 .ToListAsync<Alumno>();
 
         }
+
+        //Obtener la materia que se dicta en ese curso
+        [HttpGet, Route("{codCurso:int}/materia")]
+        public async Task<ActionResult<Materia>> ObtenerMateria(int codCurso){
+
+             return await _context.Cursos
+                                        .Include(i => i.Profesor)
+                                            .ThenInclude(p => p.Materia)
+                                        .Where(i => i.CodCurso == codCurso)
+                                        .Select(i => i.Profesor.Materia)
+                                        .FirstOrDefaultAsync<Materia>();
+        }
+
 
         private bool CursoExists(int codCurso)
         {
@@ -130,6 +143,7 @@ Rutas:
     GET: api/cursos/{codCurso}
     GET: api/cursos/{codCurso}/alumnos
     PUT: api/cursos/{codCurso}
+    GET: api/carrera/{codCarrera}/cursos
     POST: api/cursos
     DELETE: api/cursos
 */

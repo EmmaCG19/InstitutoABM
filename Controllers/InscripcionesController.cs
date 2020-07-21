@@ -35,7 +35,7 @@ namespace IntranetInstituto.Controllers
         public async Task<ActionResult<IEnumerable<Inscripcion>>> GetInscripcionesPorAlumno(int nroLegajo)
         {
             return await _context.Inscripciones
-                                                .Include(i => i.Alumno)
+                                                .Include(i => i.Curso)
                                                 .Where(i => i.NroLegajo == nroLegajo)
                                                 .ToListAsync<Inscripcion>();
 
@@ -46,7 +46,7 @@ namespace IntranetInstituto.Controllers
         public async Task<ActionResult<IEnumerable<Inscripcion>>> GetInscripcionesPorCurso(int codCurso)
         {
             return await _context.Inscripciones
-                                                .Include(i => i.Curso)
+                                                .Include(i => i.Alumno)
                                                 .Where(i => i.CodCurso == codCurso)
                                                 .ToListAsync<Inscripcion>();
                 

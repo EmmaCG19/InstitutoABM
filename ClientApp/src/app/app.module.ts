@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { CollapseModule } from "ngx-bootstrap/collapse";
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { TooltipModule } from "ngx-bootstrap/tooltip";
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 //Components
@@ -25,6 +26,9 @@ import { ProfesoresFormComponent } from "./profesores/profesores-form/profesores
 import { CursosComponent } from "./cursos/cursos.component";
 import { CursosFormComponent } from "./cursos/cursos-form/cursos-form.component";
 import { InscripcionesComponent } from "./inscripciones/inscripciones.component";
+import { InscripcionAlumnosComponent } from './inscripciones/inscripcion-alumnos/inscripcion-alumnos.component';
+import { InscripcionesCursosComponent } from './inscripciones/inscripciones-cursos/inscripciones-cursos.component';
+import { InscripcionesFormComponent } from './inscripciones/inscripciones-form/inscripciones-form.component';
 
 //Services
 import { AlumnosService } from "./alumnos/alumnos.service";
@@ -37,10 +41,9 @@ import { JsonPipe } from "@angular/common";
 import { DatePipe } from "@angular/common";
 import { FilterPipe } from "./cursos/filter.pipe";
 import { LogPipe } from "./log.pipe";
-import { InscripcionAlumnosComponent } from './inscripciones/inscripcion-alumnos/inscripcion-alumnos.component';
-import { InscripcionesCursosComponent } from './inscripciones/inscripciones-cursos/inscripciones-cursos.component';
 
 @NgModule({
+  entryComponents:[InscripcionesFormComponent],
   declarations: [
     AppComponent,
     NavMenuComponent,
@@ -57,10 +60,11 @@ import { InscripcionesCursosComponent } from './inscripciones/inscripciones-curs
     CursosComponent,
     CursosFormComponent,
     InscripcionesComponent,
-    LogPipe,
-    FilterPipe,
     InscripcionAlumnosComponent,
     InscripcionesCursosComponent,
+    InscripcionesFormComponent,
+    LogPipe,
+    FilterPipe,
   ],
   imports: [
     ReactiveFormsModule,
@@ -71,6 +75,7 @@ import { InscripcionesCursosComponent } from './inscripciones/inscripciones-curs
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
+    ModalModule.forRoot(),
     RouterModule.forRoot([
       { path: "", component: HomeComponent, pathMatch: "full" },
 

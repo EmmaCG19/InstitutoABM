@@ -1,0 +1,142 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ title }}</h4>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalForm.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!--FORM BEGIN-->
+<form
+  class="form-horizontal"
+  novalidate
+  [formGroup]="formGroup"
+  (submit)="guardarInscripcion()"
+  autocomplete="off"
+>
+  <div class="modal-body">
+    <!--LISTA ALUMNOS BEGIN-->
+    <div class="form-group">
+      <label class="col-md-6 control-label" for="alumnos">
+        Seleccione un alumno:
+      </label>
+      <div class="col-md-8">
+        <select
+          class="form-control"
+          formControlName="alumnos"
+          (change)="getCursosDisponibles()"
+          [disabled]="formGroup.controls['alumnos'].pristine && nroLegajo"
+        >
+          <option [ngValue]="null">-- Seleccione un alumno --</option>
+          <option
+            [ngValue]="alumno.nroLegajo"
+            *ngFor="let alumno of ListaAlumnos"
+          >
+            {{ alumno.nroLegajo }} |
+            {{ alumno.nombre + " " + alumno.apellido | uppercase }}
+          </option>
+        </select>
+        <span
+          class="help-block"
+          *ngIf="
+            (formGroup.get('alumnos').touched ||
+              formGroup.get('alumnos').dirty) &&
+            !formGroup.get('alumnos').valid
+          "
+        >
+          <span
+            class="text-danger"
+            *ngIf="formGroup.controls['alumnos'].hasError('required')"
+          >
+            El campo es requerido
+          </span>
+        </span>
+      </div>
+    </div>
+    <!--LISTA ALUMNOS END-->
+
+    <!--SI SE SELECCIONO UN ALUMNO-->
+    <div *ngIf="nroLegajo">
+      <!--LISTA CURSOS DISPONIBLES BEGIN-->
+      <div class="form-group">
+        <label class="col-md-6 control-label" for="cursosDisponibles">
+          Cursos disponibles:
+        </label>
+        <div class="col-md-8">
+          <select
+            class="form-control"
+            formControlName="cursosDisponibles"
+            (change)="codCurso = formGroup.controls['cursosDisponibles'].value"
+            [disabled]="
+              formGroup.controls['cursosDisponibles'].pristine && codCurso
+            "
+          >
+            <option [ngValue]="null">-- Seleccione un curso --</option>
+            <option
+              [ngValue]="curso.codCurso"
+              *ngFor="let curso of ListaCursosDisponibles"
+            >
+              {{ curso.codCurso }} |
+              {{
+                curso.profesor.nombre + " " + curso.profesor.nombre | uppercase
+              }}
+              |
+              {{ curso.profesor.materia.nombre | uppercase }}
+            </option>
+          </select>
+          <span
+            class="help-block"
+            *ngIf="
+              (formGroup.get('cursosDisponibles').touched ||
+                formGroup.get('cursosDisponibles').dirty) &&
+              !formGroup.get('cursosDisponibles').valid
+            "
+          >
+            <span
+              class="text-danger"
+              *ngIf="
+                formGroup.controls['cursosDisponibles'].hasError('required')
+              "
+            >
+              El campo es requerido
+            </span>
+          </span>
+        </div>
+      </div>
+      <!--LISTA CURSOS DISPONIBLES END-->
+      
+    </div>
+</div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      [disabled]="formGroup.pristine || !formGroup.get('alumnos').valid"
+      class="btn btn-md rounded-pill"
+      [ngClass]="{
+        'btn-dark': formGroup.pristine || !formGroup.get('alumnos').valid,
+        'btn-primary': formGroup.get('alumnos').valid
+      }"
+    >
+      Guardar
+    </button>
+    <button type="button" class="btn btn-default" (click)="modalForm.hide()">
+      Cerrar
+    </button>
+  </div>
+</form>
+<!--FORM END-->
+
+<!-- TEST MODAL
+<ul>
+    <li>Titulo: {{ title }}</li>
+    <li>Modo Edicion?: {{ modoEdicion }}</li>
+    <li>Legajo: {{ nroLegajo? nroLegajo: 'Valor nulo' }}</li>
+    <li>CodCurso: {{ codCurso? codCurso: 'Valor nulo'}}</li>
+    <li>Hay cursos cargados?: {{ ListaCursos?.length? 'SI':'NO' }}</li>    
+    <li>Hay materias disponibles?: {{ ListaMateriasDisponibles.length? 'SI':'NO' }}</li>    
+    <li>Hay cursos disponibles?: {{ ListaCursosDisponibles.length? 'SI':'NO' }}</li>    
+</ul> -->

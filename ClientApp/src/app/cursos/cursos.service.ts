@@ -25,6 +25,11 @@ export class CursosService {
     return this.http.get<ICurso>(this.apiUrl + "/" + codCurso);
   }
 
+  getMateriaCurso(codCurso:number):Observable<IMateria>{
+    console.log(this.apiUrl);
+    return this.http.get<IMateria>(this.apiUrl + "/" + codCurso + "/materia");
+  }
+
   agregarCurso(curso: ICurso): Observable<ICurso> {
     curso.codCurso = 0;
     return this.http.post<ICurso>(this.apiUrl, curso);

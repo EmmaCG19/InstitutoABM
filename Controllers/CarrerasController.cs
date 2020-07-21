@@ -108,17 +108,15 @@ namespace IntranetInstituto.Controllers
 
 
         [HttpGet, Route("{codCarrera:int}/materias")]
-        public async Task<IActionResult> ObtenerMaterias(int codCarrera)
+        public async Task<ActionResult<IEnumerable<Materia>>> ObtenerMaterias(int codCarrera)
         {
 
-            var materiasDeCarrera = await _context.CarrerasMaterias
-                                                    .Include("Materia")
+            return await _context.CarrerasMaterias
+                                                    .Include(cm => cm.Materia)
                                                     .Where(cm => cm.CodCarrera == codCarrera)
                                                     .Select(cm => cm.Materia)
-                                                    .ToListAsync();
+                                                    .ToListAsync<Materia>();
 
-
-            return Ok(materiasDeCarrera);
         }
 
 
