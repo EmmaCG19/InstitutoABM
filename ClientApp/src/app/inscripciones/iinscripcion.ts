@@ -6,8 +6,8 @@ export interface Iinscripcion {
   curso: ICurso;
   nroLegajo: number;
   alumno: IAlumno;
-  notaPrimerParcial: number;
-  notaSegundoParcial: number;
-  notaFinal: number;
+  notaPrimerParcial: number | null;
+  notaSegundoParcial: number | null;
+  notaFinal: number | null;
   fechaInscripcion: Date;
 }

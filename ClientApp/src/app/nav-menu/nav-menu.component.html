@@ -3,11 +3,11 @@
     class="navbar navbar-expand-lg fixed-top navbar-dark bg-main solid text-light mb-5">
     <div class="container-fluid">
 
+      <!-- (blur) = "collapse()" -->
       <a class="navbar-brand" [routerLink]="['/']">Intranet</a>
       <button
         type="button"
         class="navbar-toggler"
-        (blur) = "collapse()"
         (click)="collapse()"
         [attr.aria-expanded]="isCollapsed"
         aria-controls="collapseExample"
@@ -28,31 +28,36 @@
             [routerLinkActive]="['link-active']"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <a class="nav-link text-light" [routerLink]="['/']">Home</a>
+            <a class="nav-link text-light" (click)="collapse()" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['/alumnos']"
+            <a class="nav-link text-light" (click)="collapse()" [routerLink]="['/alumnos']"
               >Alumnos</a
             >
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['/materias']"
+            <a class="nav-link text-light" (click)="collapse()" [routerLink]="['/materias']"
               >Materias</a
             >
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['/carreras']"
+            <a class="nav-link text-light" (click)="collapse()" [routerLink]="['/carreras']"
               >Carreras</a
             >
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['/profesores']"
+            <a class="nav-link text-light" (click)="collapse()" [routerLink]="['/profesores']"
               >Profesores</a
             >
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['/cursos']"
+            <a class="nav-link text-light" (click)="collapse()" [routerLink]="['/cursos']"
               >Cursos</a
+            >
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" (click)="collapse()" [routerLink]="['/inscripciones']"
+              >Inscripciones</a
             >
           </li>
         </ul>

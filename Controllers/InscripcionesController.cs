@@ -32,7 +32,7 @@ namespace IntranetInstituto.Controllers
 
 
         [HttpGet, Route("alumnos/{nroLegajo:int}")]
-        public async Task<ActionResult<ICollection<Inscripcion>>> GetInscripcionesPorAlumno(int nroLegajo)
+        public async Task<ActionResult<IEnumerable<Inscripcion>>> GetInscripcionesPorAlumno(int nroLegajo)
         {
             return await _context.Inscripciones
                                                 .Include(i => i.Alumno)
@@ -72,6 +72,17 @@ namespace IntranetInstituto.Controllers
         {
             if(!ModelState.IsValid)    
                 return BadRequest(ModelState);
+
+            //Verificar si existe el nro de legajo y codCurso???
+
+            var inscripcionDB = await _context.Inscripciones
+                                                            .Where(
+                                                                 i => i.CodCurso == inscripcion.CodCurso && 
+                                                                      i.NroLegajo == inscripcion.NroLegajo )
+                                                            .FirstOrDefaultAsync<Inscripcion>();
+
+            if(inscripcionDB != null)
+                return BadRequest("Ya existe una inscripcion cargada con ese codCurso y nroLegajo.");
 
             _context.Inscripciones.Add(inscripcion);    
             await _context.SaveChangesAsync();
