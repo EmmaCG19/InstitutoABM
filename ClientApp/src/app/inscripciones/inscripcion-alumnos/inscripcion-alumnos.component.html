@@ -45,7 +45,8 @@
       <table class="table table-striped table-hover table-responsive">
         <thead class="thead thead-dark">
           <tr class="text-center">
-            <th>Curso</th>
+            <th>Cod.Curso</th>
+            <th>Materia</th>
             <th>Primer Parcial</th>
             <th>Segundo Parcial</th>
             <th>Final</th>
@@ -56,18 +57,19 @@
         <tbody>
           <tr class="text-center" *ngFor="let insc of InscripcionesAlumno">
             <td>{{ insc.codCurso }}</td>
+            <td>{{ insc.curso.profesor.materia.nombre}}</td>
             <td>
               {{
-                insc.notaPrimerParcial ? insc.notaPrimerParcial : "No cargado"
+                insc.notaPrimerParcial ? insc.notaPrimerParcial : "-"
               }}
             </td>
             <td>
               {{
-                insc.notaSegundoParcial ? insc.notaSegundoParcial : "No cargado"
+                insc.notaSegundoParcial ? insc.notaSegundoParcial : "-"
               }}
             </td>
             <td>
-              {{ insc.notaFinal ? insc.notaFinal : "No cargado" }}
+              {{ insc.notaFinal ? insc.notaFinal : "-" }}
             </td>
             <td>{{ insc.fechaInscripcion | date: "dd/MM/yyyy" }}</td>
             <td>
@@ -87,7 +89,7 @@
                 class="btn"
                 placement="top"
                 tooltip="Editar"
-                [routerLink]="['/']"
+                (click)="openModalForm(insc.nroLegajo, insc.codCurso)"
               >
                 <span class="material-icons text-success">
                   edit

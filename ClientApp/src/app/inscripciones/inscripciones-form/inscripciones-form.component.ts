@@ -9,6 +9,7 @@ import { CarrerasService } from "src/app/carreras/carreras.service";
 import { IMateria } from "src/app/materias/imateria";
 import { IInscripcion } from "../iinscripcion";
 import { InscripcionesService } from "../inscripciones.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-inscripciones-form",
@@ -27,15 +28,15 @@ export class InscripcionesFormComponent implements OnInit {
   ListaCursos: ICurso[];
   ListaMateriasInscriptas: IMateria[];
   ListaMateriasDisponibles: IMateria[];
-  ListaCursosDisponibles: ICurso[];
-
+  ListaCursosDisponibles: ICurso[] = [];
   alumnoSeleccionado: IAlumno;
+
   notas: number[] = [];
   notaPrimerParcial: number;
   notaSegundoParcial: number;
   notaFinal: number;
   hayResultados: boolean = true;
-  mensajeBusqueda:string;
+  mensajeBusqueda: string;
 
   constructor(
     private fb: FormBuilder,
@@ -43,16 +44,16 @@ export class InscripcionesFormComponent implements OnInit {
     private alumnosService: AlumnosService,
     private cursosService: CursosService,
     private carrerasService: CarrerasService,
-    private inscripcionesService: InscripcionesService
+    private inscripcionesService: InscripcionesService,
+    private datePipe: DatePipe
   ) {
     this.getAlumnos();
     this.getCursos();
     this.cargarNotas();
+    
   }
 
   ngOnInit() {
-    
-
     this.formGroup = this.fb.group({
       alumnos: [this.nroLegajo, Validators.required],
       cursosDisponibles: [this.codCurso, Validators.required],
@@ -62,9 +63,14 @@ export class InscripcionesFormComponent implements OnInit {
       fechaInscripcion: [, Validators.required],
     });
 
-    //CARGAR FORM SI MODO EDICION
+    //Si hay que editar
     if (this.modoEdicion) {
-      this.cargarForm();
+      //Dehabilitar las listas de alumnos y cursos
+      this.formGroup.get("alumnos").disable();
+      this.formGroup.get("cursosDisponibles").disable();
+    
+      //Obtener la inscripcion y cargar el form
+      this.getInscripcion();
     }
   }
 
@@ -83,7 +89,14 @@ export class InscripcionesFormComponent implements OnInit {
 
   getCursos() {
     this.cursosService.getCursos().subscribe(
-      (cursosApi) => (this.ListaCursos = cursosApi),
+      (cursosApi) => {
+        this.ListaCursos = cursosApi
+        
+        if(this.modoEdicion)
+            this.ListaCursosDisponibles = this.ListaCursos
+        
+        console.log(this.ListaCursosDisponibles);    
+      },
       (error) => console.log(error)
     );
   }
@@ -127,11 +140,10 @@ export class InscripcionesFormComponent implements OnInit {
         //Habilito la lista
         this.formGroup.controls["cursosDisponibles"].enable();
 
-        if (this.ListaCursosDisponibles.length) 
-            this.hayResultados = true;
-        else  
-            this.mensajeBusqueda = "No existen cursos disponibles para este alumno";      
-        
+        if (this.ListaCursosDisponibles.length) this.hayResultados = true;
+        else
+          this.mensajeBusqueda =
+            "No existen cursos disponibles para este alumno";
       }, 2000);
 
       this.getMateriasCarrera();
@@ -164,34 +176,58 @@ export class InscripcionesFormComponent implements OnInit {
     );
   }
 
-  cargarForm() {
-    this.formGroup;
+  //Obtengo la inscripcion en base al nroLegajo y codCurso
+  getInscripcion() {
+    this.inscripcionesService
+      .getInscripcionById(this.codCurso, this.nroLegajo)
+      .subscribe(
+        (inscripcionApi) => this.cargarForm(inscripcionApi),
+        (error) => console.log(error)
+      );
+  }
+
+  cargarForm(inscripcion: IInscripcion) {
+    console.dir(inscripcion);
+
+    this.formGroup.patchValue({
+      alumnos: this.nroLegajo,
+      cursosDisponibles: this.codCurso,
+      notaPrimerParcial: inscripcion.notaPrimerParcial,
+      notaSegundoParcial: inscripcion.notaSegundoParcial,
+      notaFinal: inscripcion.notaFinal,
+      fechaInscripcion: this.datePipe.transform(
+        inscripcion.fechaInscripcion,
+        "yyyy-MM-dd"
+      ),
+    });
   }
 
   //Carga o modifica una inscripcion
   guardarInscripcion() {
-    let nuevaInscripcion: IInscripcion = Object.assign(
-      {},
-      this.formGroup.value
-    );
+    let nuevaInscripcion: IInscripcion = Object.assign({}, this.formGroup.value);
 
     //Cargar el codigo del curso y el nro legajo
     nuevaInscripcion.nroLegajo = this.nroLegajo;
     nuevaInscripcion.codCurso = this.formGroup.get("cursosDisponibles").value;
 
     console.dir(nuevaInscripcion);
-    debugger;
 
-    if (this.modoEdicion) console.log("Inscripcion editada");
-    else {
+    if (this.modoEdicion) {
+      this.inscripcionesService
+        .actualizarInscripcion(this.codCurso, this.nroLegajo, nuevaInscripcion)
+        .subscribe(
+          (inscripcionApi) => console.log("Inscripcion actualizada"),
+          (error) => console.log(error)
+        );
+    } else {
       this.inscripcionesService.agregarInscripcion(nuevaInscripcion).subscribe(
         (inscripcionApi) => console.log("Inscripcion creada"),
         (error) => console.log(error)
       );
-
-      //Hide modal
-      this.modalForm.hide();
     }
+
+    //Hide modal
+    this.modalForm.hide();
   }
 
   //Deshabilito la lista de cursos hasta que se hayan cargado

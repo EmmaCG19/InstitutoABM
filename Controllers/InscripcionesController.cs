@@ -34,8 +34,11 @@ namespace IntranetInstituto.Controllers
         [HttpGet, Route("alumnos/{nroLegajo:int}")]
         public async Task<ActionResult<IEnumerable<Inscripcion>>> GetInscripcionesPorAlumno(int nroLegajo)
         {
+            //Fix temporal para mostrar la materia del alumno en la tabla
             return await _context.Inscripciones
                                                 .Include(i => i.Curso)
+                                                    .ThenInclude(c => c.Profesor)
+                                                        .ThenInclude(p => p.Materia)
                                                 .Where(i => i.NroLegajo == nroLegajo)
                                                 .ToListAsync<Inscripcion>();
 

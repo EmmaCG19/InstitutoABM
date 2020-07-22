@@ -18,8 +18,8 @@
                 *ngFor="let curso of ListaCursos"
               >
                 {{ curso.codCurso }} |
-                {{ curso.profesor.nombre + " " + curso.profesor.apellido | uppercase }} |
-                {{ curso.profesor.materia.nombre | uppercase}}
+                {{ curso.profesor.materia.nombre | uppercase}} |
+                {{ curso.profesor.nombre + " " + curso.profesor.apellido | uppercase }} 
               </option>
             </select>
           </div>
@@ -46,7 +46,7 @@
         <table class="table table-striped table-hover table-responsive">
           <thead class="thead thead-dark">
             <tr class="text-center">
-              <th>Nro. Legajo</th>
+              <th>Nro.Legajo</th>
               <th>Alumno</th>
               <th>Primer Parcial</th>
               <th>Segundo Parcial</th>
@@ -61,16 +61,16 @@
               <td>{{ insc.alumno.nombre + " " + insc.alumno.apellido }}</td>
               <td>
                 {{
-                  insc.notaPrimerParcial ? insc.notaPrimerParcial : "No cargado"
+                  insc.notaPrimerParcial ? insc.notaPrimerParcial : "-"
                 }}
               </td>
               <td>
                 {{
-                  insc.notaSegundoParcial ? insc.notaSegundoParcial : "No cargado"
+                  insc.notaSegundoParcial ? insc.notaSegundoParcial : "-"
                 }}
               </td>
               <td>
-                {{ insc.notaFinal ? insc.notaFinal : "No cargado" }}
+                {{ insc.notaFinal ? insc.notaFinal : "-" }}
               </td>
               <td>{{ insc.fechaInscripcion | date: "dd/MM/yyyy" }}</td>
               <td>
@@ -90,7 +90,7 @@
                   class="btn"
                   placement="top"
                   tooltip="Editar"
-                  [routerLink]="['/']"
+                  (click)="openModalForm(insc.nroLegajo, insc.codCurso)"
                 >
                   <span class="material-icons text-success">
                     edit
