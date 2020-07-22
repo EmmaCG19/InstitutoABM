@@ -101,11 +101,7 @@ namespace IntranetInstituto.Controllers
             return materia;
         }
 
-        private bool MateriaExists(int id)
-        {
-            return _context.Materias.Any(e => e.CodMateria == id);
-        }
-
+        
 
         [HttpGet, Route("{codMateria:int}/carreras")]
         public async Task<IActionResult> ObtenerCarrerasPorMateria(int codMateria){
@@ -118,5 +114,12 @@ namespace IntranetInstituto.Controllers
 
              return Ok(carrerasMateria);  
         }
+
+        private bool MateriaExists(int id)
+        {
+            return _context.Materias.Any(e => e.CodMateria == id);
+        }
+
+
     }
 }

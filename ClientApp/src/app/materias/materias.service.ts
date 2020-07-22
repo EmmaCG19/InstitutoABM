@@ -47,4 +47,6 @@ export class MateriasService {
     console.log(this.apiUrl);
     return this.http.get<ICarrera[]>(this.apiUrl + "/" + codMateria + "/carreras");
   }
+
+  
 }

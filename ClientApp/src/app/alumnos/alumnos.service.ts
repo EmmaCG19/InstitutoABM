@@ -2,6 +2,7 @@ import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { IAlumno } from "./ialumno";
+import { IMateria } from "../materias/imateria";
 
 @Injectable()
 export class AlumnosService {
@@ -37,5 +38,10 @@ export class AlumnosService {
   deleteAlumno(nroLegajo: number): Observable<IAlumno> {
     console.log(this.apiUrl);
     return this.http.delete<IAlumno>(this.apiUrl + "/" + nroLegajo);
+  }
+
+  getMateriasAlumno(nroLegajo:number):Observable<IMateria[]>{
+    console.log(this.apiUrl);
+    return this.http.get<IMateria[]>(this.apiUrl + "/"+ nroLegajo + "/materias");
   }
 }

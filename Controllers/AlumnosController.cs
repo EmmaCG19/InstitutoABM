@@ -101,34 +101,19 @@ namespace IntranetInstituto.Controllers
             return alumno;
         }
 
-        // [HttpGet, Route("{id:int}/materias")]
-        // public async Task<ActionResult<IEnumerable<Materia>>> ObtenerMateriasCursadas(int id)
-        // {
-        //     //Para que un alumno curse una materia tiene que estar en un curso
-        //     return await _context.Cursos.Include("Materia")
-        //                                         .Where(c => c.NroLegajo == id)
-        //                                         .Select(c => c.Materia)
-        //                                         .ToListAsync();
+        //Retorna las materias en la que está inscripto el alumno
+        [HttpGet, Route("{id:int}/materias")]
+        public async Task<ActionResult<IEnumerable<Materia>>> ObtenerMateriasCursadas(int id)
+        {
+            return await _context.Inscripciones
+                                            .Include(i => i.Curso)
+                                                .ThenInclude(c => c.Profesor)
+                                                    .ThenInclude(p => p.Materia)
+                                            .Where(i => i.NroLegajo == id)
+                                            .Select(i => i.Curso.Profesor.Materia)
+                                            .ToListAsync<Materia>();
 
-        //     // // if(materias.Count != 0)
-        //     //     return Ok(materias);
-        //     // // else
-        //     // //     return NotFound();
-
-        // }
-
-        // [HttpGet, Route("{id:int}/materias")]
-        // public IActionResult ObtenerMateriasInscriptas(int id)
-        // {
-        //     //Para que un alumno curse una materia tiene que estar en un curso
-        //     var materiasInscriptas = _context.Inscripciones.Include("Materia")
-        //                                         .Where(c => c.NroLegajo == id)
-        //                                         .Select(c => c.Materia)
-        //                                         .ToListAsync();
-
-        //     return Ok(materiasInscriptas);
-
-        // }
+        }
 
         private bool AlumnoExists(int id)
         {

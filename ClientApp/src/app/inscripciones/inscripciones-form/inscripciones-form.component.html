@@ -22,14 +22,13 @@
     <!--LISTA ALUMNOS BEGIN-->
     <div class="form-group">
       <label class="col-md-6 control-label" for="alumnos">
-        Seleccione un alumno:
+        Seleccione un alumno: <span class="text-danger"> (*)</span>
       </label>
-      <div class="col-md-8">
+      <div class="col-12">
         <select
           class="form-control"
           formControlName="alumnos"
           (change)="getCursosDisponibles()"
-          [disabled]="formGroup.controls['alumnos'].pristine && nroLegajo"
         >
           <option [ngValue]="null">-- Seleccione un alumno --</option>
           <option
@@ -59,66 +58,162 @@
     </div>
     <!--LISTA ALUMNOS END-->
 
+
+    <div class="col-12" *ngIf="!nroLegajo">
+        <span class="text-info">No se ha seleccionado un alumno </span>
+    </div>
+
     <!--SI SE SELECCIONO UN ALUMNO-->
     <div *ngIf="nroLegajo">
-      <!--LISTA CURSOS DISPONIBLES BEGIN-->
-      <div class="form-group">
-        <label class="col-md-6 control-label" for="cursosDisponibles">
-          Cursos disponibles:
-        </label>
-        <div class="col-md-8">
-          <select
-            class="form-control"
-            formControlName="cursosDisponibles"
-            (change)="codCurso = formGroup.controls['cursosDisponibles'].value"
-            [disabled]="
-              formGroup.controls['cursosDisponibles'].pristine && codCurso
-            "
-          >
-            <option [ngValue]="null">-- Seleccione un curso --</option>
-            <option
-              [ngValue]="curso.codCurso"
-              *ngFor="let curso of ListaCursosDisponibles"
-            >
-              {{ curso.codCurso }} |
-              {{
-                curso.profesor.nombre + " " + curso.profesor.nombre | uppercase
-              }}
-              |
-              {{ curso.profesor.materia.nombre | uppercase }}
-            </option>
-          </select>
-          <span
-            class="help-block"
-            *ngIf="
-              (formGroup.get('cursosDisponibles').touched ||
-                formGroup.get('cursosDisponibles').dirty) &&
-              !formGroup.get('cursosDisponibles').valid
-            "
-          >
+
+      <div class="col-12" *ngIf="!hayResultados">
+        <span class="text-info">{{mensajeBusqueda}}</span>
+      </div>
+
+      <div *ngIf="hayResultados">
+        <!--LISTA CURSOS DISPONIBLES BEGIN-->
+        <div class="form-group">
+          <label class="col-md-6 control-label" for="cursosDisponibles">
+            Cursos disponibles: <span class="text-danger"> (*)</span>
+          </label>
+          <div class="col-12">
+            <select class="form-control" formControlName="cursosDisponibles">
+              <option [ngValue]="null">-- Seleccione un curso --</option>
+              <option
+                [ngValue]="curso.codCurso"
+                *ngFor="let curso of ListaCursosDisponibles"
+              >
+                {{ curso.codCurso }} |
+                {{ curso.profesor.materia.nombre | uppercase }} |
+                {{
+                  curso.profesor.nombre + " " + curso.profesor.apellido
+                    | uppercase
+                }}
+              </option>
+            </select>
             <span
-              class="text-danger"
+              class="help-block"
               *ngIf="
-                formGroup.controls['cursosDisponibles'].hasError('required')
+                (formGroup.get('cursosDisponibles').touched ||
+                  formGroup.get('cursosDisponibles').dirty) &&
+                !formGroup.get('cursosDisponibles').valid
               "
             >
-              El campo es requerido
+              <span
+                class="text-danger"
+                *ngIf="
+                  formGroup.controls['cursosDisponibles'].hasError('required')
+                "
+              >
+                El campo es requerido
+              </span>
             </span>
-          </span>
+          </div>
         </div>
+        <!--LISTA CURSOS DISPONIBLES END-->
+
+        <!--NOTA PRIMER PARCIAL BEGIN-->
+        <div class="form-group">
+          <label class="col-md-6 control-label-inline" for="notaPrimerParcial">
+            Nota Primer Parcial:
+          </label>
+          <div class="col-12">
+            <select class="form-control" formControlName="notaPrimerParcial">
+              <option [ngValue]="null">-- Seleccione una nota --</option>
+              <option [ngValue]="nota" *ngFor="let nota of notas">
+                {{ nota }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!--NOTA PRIMER PARCIAL END-->
+
+        <!--NOTA PRIMER SEGUNDO BEGIN-->
+        <div class="form-group">
+          <label class="col-md-6 control-label-inline" for="notaSegundoParcial">
+            Nota Segundo Parcial:
+          </label>
+          <div class="col-12">
+            <select class="form-control" formControlName="notaSegundoParcial">
+              <option [ngValue]="null">-- Seleccione una nota --</option>
+              <option [ngValue]="nota" *ngFor="let nota of notas">
+                {{ nota }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!--NOTA PRIMER SEGUNDO END-->
+
+        <!--NOTA PRIMER FINAL BEGIN-->
+        <div class="form-group">
+          <label class="col-md-6 control-label-inline" for="notaFinal">
+            Nota Final:
+          </label>
+          <div class="col-12">
+            <select class="form-control" formControlName="notaFinal">
+              <option [ngValue]="null">-- Seleccione una nota --</option>
+              <option [ngValue]="nota" *ngFor="let nota of notas">
+                {{ nota }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!--NOTA PRIMER FINAL END-->
+
+        <!--FECHA INSCRIPCION BEGIN-->
+        <div
+          class="form-group"
+          [ngClass]="{
+            'has-error':
+              formGroup.get('fechaInscripcion').touched ||
+              (formGroup.get('fechaInscripcion').dirty &&
+                !formGroup.get('fechaInscripcion').valid)
+          }"
+        >
+          <label class="col-md-6 control-label" for="fechaInscripcion"
+            >Fecha de Inscripcion:<span class="text-danger"> (*)</span></label
+          >
+
+          <div class="col-md-6">
+            <input
+              class="form-control"
+              id="fechaInscripcion"
+              type="date"
+              required
+              formControlName="fechaInscripcion"
+            />
+
+            <span
+              class="help-block"
+              *ngIf="
+                formGroup.get('fechaInscripcion').touched ||
+                (formGroup.get('fechaInscripcion').dirty && formGroup.valid)
+              "
+            >
+              <span
+                class="text-danger"
+                *ngIf="formGroup.get('fechaInscripcion').errors?.required"
+              >
+                El campo es requerido
+              </span>
+            </span>
+          </div>
+        </div>
+        <!--FECHA INSCRIPCION END-->
+
       </div>
-      <!--LISTA CURSOS DISPONIBLES END-->
-      
     </div>
-</div>
+
+
+  </div>
   <div class="modal-footer">
     <button
       type="submit"
-      [disabled]="formGroup.pristine || !formGroup.get('alumnos').valid"
       class="btn btn-md rounded-pill"
+      [disabled]="!formGroup.valid || formGroup.pristine"
       [ngClass]="{
-        'btn-dark': formGroup.pristine || !formGroup.get('alumnos').valid,
-        'btn-primary': formGroup.get('alumnos').valid
+        'btn-dark': formGroup.pristine || !formGroup.valid,
+        'btn-primary': formGroup.valid
       }"
     >
       Guardar
@@ -131,7 +226,7 @@
 <!--FORM END-->
 
 <!-- TEST MODAL
-<ul>
+  <ul>
     <li>Titulo: {{ title }}</li>
     <li>Modo Edicion?: {{ modoEdicion }}</li>
     <li>Legajo: {{ nroLegajo? nroLegajo: 'Valor nulo' }}</li>
@@ -139,4 +234,8 @@
     <li>Hay cursos cargados?: {{ ListaCursos?.length? 'SI':'NO' }}</li>    
     <li>Hay materias disponibles?: {{ ListaMateriasDisponibles.length? 'SI':'NO' }}</li>    
     <li>Hay cursos disponibles?: {{ ListaCursosDisponibles.length? 'SI':'NO' }}</li>    
-</ul> -->
+  </ul> -->
+
+<!-- [disabled]="
+    formGroup.pristine || !formGroup.valid || !ListaCursosDisponibles.length
+  " -->
