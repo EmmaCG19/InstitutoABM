@@ -25,10 +25,10 @@ INSERT INTO Carreras(Nombre) VALUES(N'Analisis de Sistemas')
 GO
 
 --MATERIAS
-INSERT INTO Materias(Nombre, Precio) VALUES(N'Matematica I', 1200) --1
-INSERT INTO Materias(Nombre, Precio) VALUES(N'Programacion I', 4500) 
-INSERT INTO Materias(Nombre, Precio) VALUES(N'Filosofia', 1500) 
-INSERT INTO Materias(Nombre, Precio) VALUES(N'Redes', 3200)
+INSERT INTO Materias(Nombre, Precio, EsPromocionable) VALUES(N'Matematica I', 1200,0) --1
+INSERT INTO Materias(Nombre, Precio, EsPromocionable) VALUES(N'Programacion I', 4500,0) 
+INSERT INTO Materias(Nombre, Precio, EsPromocionable) VALUES(N'Filosofia', 1500,1) 
+INSERT INTO Materias(Nombre, Precio, EsPromocionable) VALUES(N'Redes', 3200,1)
 -- INSERT INTO Materias(Nombre) VALUES(N'Sistemas Operativos') --2
 -- INSERT INTO Materias(Nombre) VALUES(N'Probabilidad y Estadistica') --5
 -- INSERT INTO Materias(Nombre) VALUES(N'Arquitectura de las computadoras') --6

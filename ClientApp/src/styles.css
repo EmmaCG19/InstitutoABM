@@ -13,7 +13,10 @@ body{
   'Nunito Sans', sans-serif;
   'Poppins', sans-serif;
   'Roboto', sans-serif; */
+  /* padding-top: 3.5rem; */
 }
+
+
 
 code {
   color: #e01a76;
@@ -27,11 +30,10 @@ code {
 
 .btn-primary:hover{
   color: #fff;
-  background-color: #2f374c;
-  border-color: #2f374c;
+  background-color: #203055;
+  border-color: #1f2841;
 }
 
 .bg-main{
   background-color: #2f374c;
 }
-

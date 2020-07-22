@@ -12,69 +12,64 @@
     </button>
     </div>
   </div> -->
-  
-  <div class="row mb-3">
+
+  <div class="row mb-4">
     <div class="col pl-3 mb-1">
       <h1 class="text-primary text-left">Inscripciones</h1>
     </div>
     <div class="col-md-12 pl-3">
       <!--El boton cargar tiene que llamar al componente inscripciones-form-->
-      <button
-        
-        class="btn btn-primary btn-lg"
-        (click)="openModalForm()"
-      >
-        Cargar Inscipcion
+      <button class="btn btn-primary btn-lg" (click)="openModalForm()">
+        Cargar Inscripcion
       </button>
     </div>
   </div>
 
   <!--TOGGLE ALUMNOS-->
-  <div class="row mb-3 border border-danger">
-    
-    <div class="col-md-2 col-12  "></div>
-    <div class="col-md-4 col-12  ">
+  <div class="row mb-3 h-50-custom">
+    <!-- <div class="col-md-6 col-12"></div> -->
+    <div class="col-md-6 col-12 mb-3">
       <button
-      class="btn btn-block text-white"
-      [ngClass]="{
-        'btn-success': !alumnosCollapsed,
-        'btn-dark': alumnosCollapsed
-      }"
-      [disabled]="!cursosCollapsed"
-      [attr.aria-expanded]="!alumnosCollapsed"
+        class="btn btn-block text-white"
+        [ngClass]="{
+          'btn-success': !alumnosCollapsed,
+          'btn-dark': alumnosCollapsed
+        }"
+        [disabled]="!cursosCollapsed"
+        [attr.aria-expanded]="!alumnosCollapsed"
         (click)="alumnosCollapsed = !alumnosCollapsed"
         aria-controls="alumnosCollapse"
-        >
+      >
         <span><i class="material-icons">account_circle</i>Alumnos</span>
       </button>
     </div>
-    
+
     <!--TOGGLE CURSOS-->
-    <div class="col-md-4 col-12 ">
+    <div class="col-md-6 col-12 mb-3">
       <button
-      class="btn btn-block text-white"
-      [ngClass]="{
-        'btn-success': !cursosCollapsed,
-        'btn-dark': cursosCollapsed
+        class="btn btn-block text-white"
+        [ngClass]="{
+          'btn-success': !cursosCollapsed,
+          'btn-dark': cursosCollapsed
         }"
         [disabled]="!alumnosCollapsed"
         [attr.aria-expanded]="!cursosCollapsed"
         (click)="cursosCollapsed = !cursosCollapsed"
         aria-controls="cursosCollapse"
-        >
+      >
         <span><i class="material-icons">assignment_ind</i>Cursos</span>
       </button>
     </div>
-    <div class="col-md-2 col-12  "></div>
+    <!-- <div class="col-md-2 col-12"></div> -->
   </div>
 </div>
 
 <!--ALUMNOS SECTION-->
 <div
-class="container"
-id="alumnosCollapse"
-[collapse]="alumnosCollapsed"
-[isAnimated]="false"
+  class="container"
+  id="alumnosCollapse"
+  [collapse]="alumnosCollapsed"
+  [isAnimated]="false"
 >
   <app-inscripcion-alumnos></app-inscripcion-alumnos>
 </div>
