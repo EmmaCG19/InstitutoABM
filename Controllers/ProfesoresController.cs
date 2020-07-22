@@ -113,6 +113,17 @@ namespace IntranetInstituto.Controllers
 
         }
 
+        //Obtener los cursos que dicta un profesor
+        [HttpGet, Route("{codProfesor:int}/cursos")]
+        public async Task<ActionResult<IEnumerable<Curso>>> GetCursosProfesor(int codProfesor){
+
+              return await _context.Cursos
+                                        .Include(c => c.Profesor)
+                                        .Where(c => c.ProfesorId == codProfesor)
+                                        .ToListAsync<Curso>();   
+
+        }
+
 
         private bool ProfesorExists(int id)
         {

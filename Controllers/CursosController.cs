@@ -129,6 +129,7 @@ namespace IntranetInstituto.Controllers
         }
 
 
+        
         private bool CursoExists(int codCurso)
         {
             return _context.Cursos.Any(e => e.CodCurso == codCurso);
@@ -144,6 +145,7 @@ Rutas:
     GET: api/cursos/{codCurso}/alumnos
     PUT: api/cursos/{codCurso}
     GET: api/carrera/{codCarrera}/cursos
+    GET: api/profesor/{codProfesor}/cursos
     POST: api/cursos
     DELETE: api/cursos
 */
