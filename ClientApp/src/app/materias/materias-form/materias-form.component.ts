@@ -1,10 +1,9 @@
 import { Component, OnInit, Type } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, FormArray, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { IMateria } from "../imateria";
 import { MateriasService } from "../materias.service";
-
 
 @Component({
   selector: "app-materias-form",
@@ -13,11 +12,17 @@ import { MateriasService } from "../materias.service";
 })
 export class MateriasFormComponent implements OnInit {
   modoEdicion: boolean = false;
-  nombreExiste:boolean;
-  esPromocionable:boolean;
+  nombreExiste: boolean;
+  esPromocionable: boolean;
   codMateria: number;
   formGroup: FormGroup;
   listaMaterias: IMateria[];
+  nombreMateria: string;
+
+  // opcionesPromocion: any[] = [
+  //   { valor: false, texto: "NO", nombre: "rbtnUno" },
+  //   { valor: true, texto: "SI", nombre: "rbtnDos" },
+  // ];
 
   constructor(
     private route: ActivatedRoute,
@@ -35,9 +40,19 @@ export class MateriasFormComponent implements OnInit {
       codMateria: "",
       nombre: "",
       precio: "",
-      esPromocionable: ""
+      opcionesPromocion: [true, Validators.required],
     });
+
+    console.log(this.formGroup);
   }
+
+  // generarOpciones() {
+  //   let arrPromocion: FormControl[] = this.opcionesPromocion.map((o) => {
+  //     return this.formBuilder.control(o.valor || false, [Validators.required]);
+  //   });
+
+  //   return this.formBuilder.array(arrPromocion);
+  // }
 
   cargarFormMateria() {
     //Me trae el nro de codMateria de la otra view
@@ -64,6 +79,9 @@ export class MateriasFormComponent implements OnInit {
   guardarMateria() {
     //Necesito crear un Materia en base a los valores del form
     let nuevaMateria: IMateria = Object.assign({}, this.formGroup.value);
+    nuevaMateria.esPromocionable = this.formGroup.get(
+      "opcionesPromocion"
+    ).value;
 
     if (this.modoEdicion) {
       //Edicion
@@ -90,8 +108,10 @@ export class MateriasFormComponent implements OnInit {
       codMateria: materia.codMateria,
       nombre: materia.nombre,
       precio: materia.precio,
-      esPromocionable: materia.esPromocionable
+      opcionesPromocion: materia.esPromocionable,
     });
+
+    this.nombreMateria = materia.nombre;
   }
 
   obtenerMaterias() {
@@ -101,14 +121,26 @@ export class MateriasFormComponent implements OnInit {
     );
   }
 
-  validarNombre(){
+  validarNombre() {
+    this.nombreExiste = false;
+
     this.obtenerMaterias();
-    let nombre:string = this.formGroup.get('nombre').value;
-    let nombreMaterias = this.listaMaterias.map(m => m.nombre.trim().toLowerCase());
-    
-    if(nombreMaterias.includes(nombre.trim().toLowerCase()))
-      this.nombreExiste = true;
-    else     
-      this.nombreExiste = false;
+    let nombre: string = this.formGroup.get("nombre").value;
+    let nombreMaterias = this.listaMaterias.map((m) =>
+      m.nombre.trim().toLowerCase()
+    );
+
+    //Las materias incluyen al nombre
+    if (nombreMaterias.includes(nombre.trim().toLowerCase())) {
+      
+      //Verificar si esta en modo edicion
+      if (this.modoEdicion) {
+        if (nombre.toLowerCase() != this.nombreMateria.toLowerCase()) {
+          this.nombreExiste = true;
+        }
+      } else this.nombreExiste = true;
+    }
   }
+
+
 }

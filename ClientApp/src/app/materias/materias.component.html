@@ -1,42 +1,75 @@
 <div class="container">
-<div class="row mb-3">
-    <div class="col pl-0">
-        <h1 class="text-primary text-left">Seccion de Materias:</h1>
+  <div class="row mb-3">
+    <div class="col pl-0 mb-1">
+      <h1 class="text-primary text-left">Materias</h1>
     </div>
     <div class="col-md-12 pl-0">
-        <button class="btn btn-primary btn-lg" [routerLink]='["/materias-agregar"]'>Cargar Materia</button>
+      <button
+        class="btn btn-primary btn-lg"
+        [routerLink]="['/materias-agregar']"
+      >
+        Cargar Materia
+      </button>
     </div>
-</div>
+  </div>
 
-<div *ngIf="!listadoMaterias || !listadoMaterias.length">
-    <h3 class="text-info">No existen materias cargadas</h3>
-</div>
-<div class="row" *ngIf="(listadoMaterias && listadoMaterias.length)">
-    <table class="table table-striped table-hover table-responsive">
-        <thead class="thead thead-dark">
-            <tr>
-                <th>Codigo</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Promocionable?</th>
-                <th colspan="2"></th>
-            </tr>
-        </thead >
-        <tbody>
-            <tr *ngFor="let materia of listadoMaterias">
-                <td>{{ materia.codMateria}}</td>
-                <td>{{ materia.nombre}}</td>
-                <td>{{ materia.precio| currency}}</td>
-                <!--Resaltar con verde o rojo dependiendo si es promocionable o no-->
-                <td class="text-center" [ngClass]="{'text-danger': !materia.esPromocionable, 'text-info': materia.esPromocionable}">
-                    <strong>{{ materia.esPromocionable? "SI":"NO"}}</strong>
-                </td>
-                <td><button class="btn btn-danger" (click)="eliminarMateria(materia.codMateria)">Eliminar</button></td>
-                <td><button class="btn btn-info"
-                        [routerLink]='["/materias-editar/" + materia.codMateria]'>Editar</button>
-                </td>
-            </tr>
-        </tbody>
+  <div *ngIf="!listadoMaterias || !listadoMaterias.length">
+    <div class="row mb-3">
+      <div class="col pl-0 mb-1">
+        <h3 class="text-info">No existen materias cargadas</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="listadoMaterias && listadoMaterias.length">
+    <table class="table text-center table-striped table-hover table-responsive">
+      <thead class="thead thead-dark">
+        <tr>
+          <th>Codigo</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Promocionable?</th>
+          <th colspan="2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let materia of listadoMaterias">
+          <td><strong>{{ materia.codMateria }}</strong></td>
+          <td>{{ materia.nombre }}</td>
+          <td>{{ materia.precio | currency }}</td>
+          <!--Resaltar con verde o rojo dependiendo si es promocionable o no-->
+          <td
+            [ngClass]="{
+              'text-danger': !materia.esPromocionable,
+              'text-info': materia.esPromocionable
+            }"
+          >
+            <strong>{{ materia.esPromocionable ? "SI" : "NO" }}</strong>
+          </td>
+          <td class="pt-1">
+            <button
+              class="btn"
+              tooltip="Eliminar"
+              (click)="eliminarMateria(materia.codMateria)"
+            >
+              <span class="material-icons text-danger">
+                delete
+              </span>
+            </button>
+          </td>
+          <td class="pt-1">
+            <button
+              class="btn"
+              tooltip="Editar"
+              [routerLink]="['/materias-editar/' + materia.codMateria]"
+            >
+              <span class="material-icons text-success">
+                edit
+              </span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
-</div>
+  </div>
 </div>

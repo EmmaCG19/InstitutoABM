@@ -41,7 +41,7 @@ export class CursosFormComponent implements OnInit {
       codCurso: [],
       fechaInicio: [, Validators.required],
       fechaFin: [, Validators.required],
-      capacidad: [, [Validators.required, Validators.max(this.capacidadMax)]],
+      capacidad: [, [Validators.required, Validators.max(this.capacidadMax), Validators.min(1)]],
       profesores: [null, [Validators.required]],
     });
   }
