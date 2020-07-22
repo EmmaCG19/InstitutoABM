@@ -1,5 +1,57 @@
-.mt-custom{
-    margin-top: -17px;
+.mt-custom {
+  margin-top: -17px;
 }
 
-  
+/* .jumbotron {
+  background-image: url(/img/Jumbotron.jpg);
+  background-image: url("https://lh3.googleusercontent.com/-8aFQm43GQXw/Xmsahxw5jMI/AAAAAAAAAOI/xfXThUFI848gb5d_mgYlaj8AXQNhpsLgACLcBGAsYHQ/s1280-fcrop64=1,201a54d8df7baa6b/ProgramacionIII.jpg");
+  background-image: url("https://lh3.googleusercontent.com/-5RfFUwrcMHo/XU7G9aOBrOI/AAAAAAAADj4/rkU50QGOT50SrQiXbIL-HpEOVbQ54LiEQCLcBGAs/s1280-fcrop64=1,202e434adf85bbf9/Taller.jpg");
+  background-image: url(/ClientApp//images//bg-banner.jpg);
+  background-size: cover;
+  height: 100%;
+  color: whitesmoke;
+} */
+
+/* .tinted-image {
+  background-image: 
+      top, transparent red
+       linear-gradient(
+    rgba(71, 60, 60, 0.45).45),
+    rgba(71, 56, 56, 0.45)
+  ), 
+  url('https://lh3.googleusercontent.com/-5RfFUwrcMHo/XU7G9aOBrOI/AAAAAAAADj4/rkU50QGOT50SrQiXbIL-HpEOVbQ54LiEQCLcBGAs/s1280-fcrop64=1,202e434adf85bbf9/Taller.jpg');
+  background-size: cover;
+  height: 100%;
+} */
+
+
+.background {
+    background-size: cover;
+    background-image: url('https://lh3.googleusercontent.com/-5RfFUwrcMHo/XU7G9aOBrOI/AAAAAAAADj4/rkU50QGOT50SrQiXbIL-HpEOVbQ54LiEQCLcBGAs/s1280-fcrop64=1,202e434adf85bbf9/Taller.jpg');
+    height: 100%;
+    display: block;
+    position: relative;
+}
+
+.background::after {
+    content: "";
+    background: rgba(109, 48, 48, 0.294);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.background > * {
+    z-index: 10;
+}
+
+.bienvenida{
+    background: -webkit-linear-gradient(rgb(255, 217, 1), rgb(236, 95, 194));
+    background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: Helvetica, sans-serif;
+}
