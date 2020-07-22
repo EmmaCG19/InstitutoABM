@@ -160,10 +160,11 @@ export class InscripcionesFormComponent implements OnInit {
       this.carrerasService
         .getMateriasCarrera(this.alumnoSeleccionado.codCarrera)
         .subscribe(
-          (materiasApi) => (this.ListaMateriasDisponibles = materiasApi),
+          (materiasApi) =>(this.ListaMateriasDisponibles = materiasApi),
           (error) => console.log(error)
         );
-    }, 1000);
+        
+    }, 1500);
 
     this.getAlumnoSeleccionado();
   }
@@ -171,7 +172,10 @@ export class InscripcionesFormComponent implements OnInit {
   //Obtengo los datos del alumno
   getAlumnoSeleccionado() {
     this.alumnosService.getAlumno(this.nroLegajo).subscribe(
-      (alumnoApi) => (this.alumnoSeleccionado = alumnoApi),
+      (alumnoApi) => {
+        this.alumnoSeleccionado = alumnoApi
+        console.log(this.alumnoSeleccionado);
+      },
       (error) => console.log(error)
     );
   }
