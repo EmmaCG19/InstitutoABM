@@ -164,7 +164,7 @@ export class InscripcionesFormComponent implements OnInit {
           (error) => console.log(error)
         );
         
-    }, 1500);
+    }, 1000);
 
     this.getAlumnoSeleccionado();
   }
