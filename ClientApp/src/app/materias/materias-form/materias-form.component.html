@@ -143,7 +143,7 @@
         <!--Validaciones del form-->
         <span>
           <button
-            class="btn btn-lg"
+            class="btn btn-lg rounded-pill"
             type="submit"
             [ngClass]="{
               'btn-primary': formGroup.valid && !nombreExiste,
@@ -156,7 +156,7 @@
         </span>
         <span>
           <button
-            class="btn btn-danger btn-lg ml-3"
+            class="btn btn-danger btn-lg rounded-pill ml-3"
             [routerLink]="['/materias']"
           >
             Cancelar

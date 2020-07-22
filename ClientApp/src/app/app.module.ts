@@ -41,9 +41,10 @@ import { JsonPipe } from "@angular/common";
 import { DatePipe } from "@angular/common";
 import { FilterPipe } from "./cursos/filter.pipe";
 import { LogPipe } from "./log.pipe";
+import { NoDeleteModalComponent } from './no-delete-modal/no-delete-modal.component';
 
 @NgModule({
-  entryComponents:[InscripcionesFormComponent],
+  entryComponents:[InscripcionesFormComponent, NoDeleteModalComponent],
   declarations: [
     AppComponent,
     NavMenuComponent,
@@ -65,6 +66,7 @@ import { LogPipe } from "./log.pipe";
     InscripcionesFormComponent,
     LogPipe,
     FilterPipe,
+    NoDeleteModalComponent,
   ],
   imports: [
     ReactiveFormsModule,

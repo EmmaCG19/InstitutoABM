@@ -94,7 +94,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let curso of cursosFiltrados; let i = index">
-                <td>{{ curso.codCurso }}</td>
+                <td><strong>{{ curso.codCurso }}</strong></td>
                 <td>{{ curso.profesor.materia.nombre }}</td>
                 <td>
                   {{ curso.profesor.nombre + " " + curso.profesor.apellido }}
@@ -108,7 +108,7 @@
                     class="btn"
                     placement="top"
                     tooltip="Eliminar"
-                    (click)="eliminarCurso(curso.codCurso)"
+                    (click)="eliminarCursoValido(curso.codCurso)"
                   >
                     <span class="material-icons text-danger">
                       delete

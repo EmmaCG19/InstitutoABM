@@ -18,18 +18,14 @@ import { MateriasService } from "src/app/materias/materias.service";
 })
 export class ProfesoresFormComponent implements OnInit {
   formGroup: FormGroup;
-  profesorId: number;
-  dniProfesor: number;
-
   modoEdicion: boolean = false;
-
+  profesorId: number;
+  
   listaMaterias: IMateria[];
   listaProfesores: IProfesor[];
-
   
-  materiaSeleccionada: number;
   dniExistente: boolean;
-  mailValido: boolean;
+  dniProfesor: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -100,9 +96,7 @@ export class ProfesoresFormComponent implements OnInit {
      
 
     nuevoProfesor.codMateria = this.formGroup.get('materias').value;  
-    console.table(nuevoProfesor);
-
-    
+    console.dir(nuevoProfesor);
 
     if (this.modoEdicion) {
       

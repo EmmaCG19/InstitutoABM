@@ -22,9 +22,6 @@ export class CarrerasComponent implements OnInit {
   ListaMateriasCarrera: IMateria[] = [];
   ListaMateriasDisponibles: IMateria[] = [];
 
-  llegoTope: boolean;
-  sePuedeCargar: boolean;
-
   constructor(
     private carrerasService: CarrerasService,
     private materiasService: MateriasService,
@@ -39,41 +36,11 @@ export class CarrerasComponent implements OnInit {
       carreras: [{value: null, disabled: true}],
       materiasDisponibles: [{value: null, disabled: true}],
     });
-
-    this.llegoTope = false;
-    this.sePuedeCargar = true;
-  }
-
-  actualizarInfo() {
-    //Vuelvo a actualizar el combobox
-    this.listarMateriasCarrera();
-    // this.verificarCargaMaterias();
-  }
-
-  //Mostrar o no la dropdownlist de materias a asignar
-  verificarCargaMaterias() {
-    // console.log("Tope antes?: ", this.llegoTope);
-    // console.log("Se puede cargar antes?", this.sePuedeCargar);
-
-    if (
-      this.ListaMateriasCarrera.length == this.ListaMaterias.length - 1 &&
-      !this.llegoTope
-    ) {
-      this.llegoTope = true;
-      this.sePuedeCargar = false;
-    }
-
-    if (this.ListaMateriasCarrera.length == this.ListaMaterias.length)
-      this.sePuedeCargar = true;
-
-    // console.log("Tope despues?: ", this.llegoTope);
-    // console.log("Se puede cargar despues?", this.sePuedeCargar);
   }
 
   cargarCarreras() {
     this.carrerasService.getCarreras().subscribe(
       (carrerasApi) => {
-        // debugger;
         this.ListaCarreras = carrerasApi;
         this.formGroup.get("carreras").enable();
       },
@@ -131,8 +98,7 @@ export class CarrerasComponent implements OnInit {
   }
 
   eliminarMateria(codMateria:number) {
-    debugger;
-    setTimeout((f) => this.actualizarInfo(), 1500);
+    setTimeout(() => this.listarMateriasCarrera(), 2000);
 
     this.carrerasService
       .eliminarMateriaDeCarrera(
@@ -140,7 +106,9 @@ export class CarrerasComponent implements OnInit {
         codMateria
       )
       .subscribe(
-        (materiaCarreraApi) => console.log("Materia eliminada"),
+        (materiaCarreraApi) => {
+          console.log("Materia eliminada")
+        },
         (error) => console.log(error)
       );
   }
@@ -152,7 +120,7 @@ export class CarrerasComponent implements OnInit {
       codMateria: this.materiaSeleccionada,
     };
 
-    setTimeout((f) => this.actualizarInfo(), 1500);
+    setTimeout(() => this.listarMateriasCarrera(), 2000);
 
     this.carrerasService.cargarMateriaEnCarrera(nuevaMateria).subscribe(
       () => console.log("Materia agregada"),

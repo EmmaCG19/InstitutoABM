@@ -5,6 +5,9 @@ import { FilterPipe } from "./filter.pipe";
 import { ICurso } from "./icurso";
 import { CursosService } from "./cursos.service";
 import { IMateria } from "../materias/imateria";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { NoDeleteModalComponent } from "../no-delete-modal/no-delete-modal.component";
+import { InscripcionesService } from "../inscripciones/inscripciones.service";
 
 @Component({
   selector: "app-cursos",
@@ -12,6 +15,7 @@ import { IMateria } from "../materias/imateria";
   styleUrls: ["./cursos.component.css"],
 })
 export class CursosComponent implements OnInit {
+  modalError:BsModalRef;
   formSearch: FormGroup;
   ListaCursos: ICurso[];
   ListaFiltros = [
@@ -25,8 +29,10 @@ export class CursosComponent implements OnInit {
   cursosFiltrados: ICurso [] = [];
 
   constructor(
-    private profesoresService: CursosService,
-    private formBuilder: FormBuilder
+    private cursosService: CursosService,
+    private formBuilder: FormBuilder,
+    public modalService: BsModalService,
+    private inscripcionesService: InscripcionesService
   ) {}
 
   ngOnInit() {
@@ -38,21 +44,37 @@ export class CursosComponent implements OnInit {
   }
 
   getCursos() {
-    this.profesoresService.getCursos().subscribe(
+    this.cursosService.getCursos().subscribe(
       (profesor) => (this.ListaCursos = profesor),
       (error) => console.log(error)
     );
   }
 
-  eliminarCurso(codProfesor: number) {
+  eliminarCurso(codCurso: number) {
     setTimeout(() => this.getCursos(), 2000);
-    this.profesoresService.eliminarCurso(codProfesor).subscribe(
+    this.cursosService.eliminarCurso(codCurso).subscribe(
       (cursoEliminado) => {
         console.dir(cursoEliminado);
       },
       (error) => console.log(error)
     );
   }
+
+  eliminarCursoValido(codCurso: number){
+    this.inscripcionesService.getInscripcionesPorCurso(codCurso).subscribe(
+      (inscripcionApi) => {
+        console.log(inscripcionApi);
+
+        if (inscripcionApi.length) 
+          this.openModalError();
+        else 
+          this.eliminarCurso(codCurso);
+      },
+      (error) => console.log(error)
+    );
+
+  }
+
 
   //Crear un array con los filtros
   generarFiltros() {
@@ -109,5 +131,15 @@ export class CursosComponent implements OnInit {
   //Verifica si algun checkbox fue checked
   existeFiltroChecked(): boolean {
     return this.filtros.controls.some((f) => f.value);
+  }
+
+  openModalError() {
+    const initialState = {
+      mensajeError: "El curso tiene alumnos inscriptos"
+    };
+
+    this.modalError = this.modalService.show(NoDeleteModalComponent, {
+      initialState,
+    });
   }
 }

@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { IProfesor } from "./IProfesor";
 import { IMateria } from "../materias/imateria";
+import { ICurso } from "../cursos/icurso";
 
 @Injectable({
   providedIn: "root",
@@ -46,5 +47,11 @@ export class ProfesoresService {
 
   eliminarProfesor(codProfesor: number): Observable<IProfesor> {
     return this.http.delete<IProfesor>(this.apiUrl + "/" + codProfesor);
+  }
+
+  getCursosById(codProfesor: number): Observable<ICurso[]> {
+    return this.http.get<ICurso[]>(
+      this.apiUrl + "/" + codProfesor + "/cursos"
+    );
   }
 }

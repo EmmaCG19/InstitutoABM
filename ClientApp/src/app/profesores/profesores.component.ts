@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { IProfesor } from "./IProfesor";
 import { ProfesoresService } from "./profesores.service";
 import { IMateria } from "../materias/imateria";
+import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
+import { NoDeleteModalComponent } from "../no-delete-modal/no-delete-modal.component";
 
 @Component({
   selector: "app-profesores",
@@ -10,8 +12,10 @@ import { IMateria } from "../materias/imateria";
 })
 export class ProfesoresComponent implements OnInit {
   ListaProfesores: IProfesor[];
+  modalError: BsModalRef;
 
-  constructor(private profesoresService: ProfesoresService) {}
+  constructor(private profesoresService: ProfesoresService, 
+    public modalService: BsModalService) {}
 
   ngOnInit() {
     this.getProfesores();
@@ -34,14 +38,38 @@ export class ProfesoresComponent implements OnInit {
     return nombreMateria;
   }
 
-  //FALTA DELETE PROFESOR
   eliminarProfesor(codProfesor: number) {
-    setTimeout( () => this.getProfesores(), 2000);
+    setTimeout( () => this.getProfesores(), 1000);
+
     this.profesoresService.eliminarProfesor(codProfesor).subscribe(
       (profesorEliminado) => {
         console.dir(profesorEliminado);
       },
       (error) => console.log(error)
     );
+  }
+
+  eliminarProfesorValido(profesorId: number) {
+    this.profesoresService.getCursosById(profesorId).subscribe(
+      (cursosApi) => {
+        console.log(cursosApi);
+
+        if (cursosApi.length) 
+          this.openModalError();
+        else 
+          this.eliminarProfesor(profesorId);
+      },
+      (error) => console.log(error)
+    );
+  }
+
+  openModalError() {
+    const initialState = {
+      mensajeError: "El profesor está asignado a un curso"
+    };
+
+    this.modalError = this.modalService.show(NoDeleteModalComponent, {
+      initialState,
+    });
   }
 }

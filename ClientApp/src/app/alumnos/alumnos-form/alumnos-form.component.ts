@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { IAlumno } from "../IAlumno";
 import { typeofExpr, THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
-import { Validators} from "@angular/forms";
+import { Validators } from "@angular/forms";
 
 import { DatePipe } from "@angular/common";
 import { AlumnosService } from "../alumnos.service";
@@ -20,11 +20,12 @@ export class AlumnosFormComponent implements OnInit {
   modoEdicion: boolean = false;
   legajo: number;
   formGroup: FormGroup;
-  carreraSeleccionada: number;
-  listaCarreras: ICarrera[];
-  alumnosCargados: IAlumno[];
+
+  ListaCarreras: ICarrera[];
+  ListaAlumnos: IAlumno[];
+
   dniExistente: boolean;
-  mailValido:boolean;
+  dniAlumno: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,19 +42,18 @@ export class AlumnosFormComponent implements OnInit {
 
   ngOnInit() {
     //Inicializa los valores del form
-    this.mailValido = true;
     this.dniExistente = false;
 
     this.formGroup = this.formBuilder.group({
-      nroLegajo: "",
-      nombre: "",
-      apellido: "",
-      nroDocumento: "",
-      fechaDeNacimiento: "",
-      email: "",
-      contacto: "",
-      codCarrera: "",
-      fechaIngreso: "",
+      nroLegajo: [],
+      nombre: [, [Validators.required]],
+      apellido: [, [Validators.required]],
+      nroDocumento: [, [Validators.required]],
+      fechaDeNacimiento: [, [Validators.required]],
+      email: [, [Validators.required, Validators.email]],
+      contacto: [, [Validators.minLength(8), Validators.maxLength(8)]],
+      carreras: [null, [Validators.required]],
+      fechaIngreso: [, [Validators.required]],
     });
   }
 
@@ -61,7 +61,6 @@ export class AlumnosFormComponent implements OnInit {
     //Me trae el nro de legajo de la otra view
     this.route.paramMap.subscribe((params) => {
       this.legajo = +params.get("nroLegajo");
-      this.carreraSeleccionada = 0;
     });
 
     if (isNaN(this.legajo)) {
@@ -84,10 +83,10 @@ export class AlumnosFormComponent implements OnInit {
   guardarAlumno() {
     //Necesito crear un alumno en base a los valores del form
     let nuevoAlumno: IAlumno = Object.assign({}, this.formGroup.value);
-    nuevoAlumno.codCarrera = this.carreraSeleccionada;
+    nuevoAlumno.codCarrera = this.formGroup.get("carreras").value;
     nuevoAlumno.contacto = nuevoAlumno.contacto.trim().length
       ? "11" + nuevoAlumno.contacto
-      : ""; 
+      : null;
 
     console.dir(nuevoAlumno);
 
@@ -124,57 +123,47 @@ export class AlumnosFormComponent implements OnInit {
         "yyyy-MM-dd"
       ),
       nroDocumento: alumno.nroDocumento,
-      contacto: alumno.contacto.slice(2, alumno.contacto.length),
+      contacto: alumno.contacto? alumno.contacto.slice(2, alumno.contacto.length): null,
       email: alumno.email,
-      codCarrera: alumno.codCarrera,
+      carreras: alumno.codCarrera,
       fechaIngreso: this.datePipe.transform(alumno.fechaIngreso, "yyyy-MM-dd"),
     });
 
-    this.carreraSeleccionada = alumno.codCarrera;
+    this.dniAlumno = alumno.nroDocumento;
   }
 
   obtenerCarreras() {
     this.carrerasService.getCarreras().subscribe(
-      (carrerasApi) => (this.listaCarreras = carrerasApi),
+      (carrerasApi) => (this.ListaCarreras = carrerasApi),
       (error) => console.log(error)
     );
   }
-
-  //Obtiene el codigo de la carrera seleccionada del combobox de carreras
-  getCarreraSeleccionada(event) {
-    this.carreraSeleccionada = parseInt(event.target.value);
-  }
-
 
   obtenerAlumnos() {
     //Obtener todos los alumnos
     this.alumnosService.getAlumnos().subscribe(
-      (alumnosApi) => (this.alumnosCargados = alumnosApi),
+      (alumnosApi) => (this.ListaAlumnos = alumnosApi),
       (error) => console.log(error)
     );
-  }
-
-  //Validar el formato del mail
-  validarMail() {
-    let email: string = this.formGroup.get("email").value;
-
-    if (email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$") != -1)
-      this.mailValido = true;
-    else
-      this.mailValido = false;  
   }
 
   //Validar la existencia del DNI
   validarDNI() {
     let dni: number = this.formGroup.get("nroDocumento").value;
-    let dniCargados = this.alumnosCargados.map((a) => a.nroDocumento);
+    let dniCargados = this.ListaAlumnos.map((a) => a.nroDocumento);
 
-    if (dniCargados.includes(dni)) 
+    if (dniCargados.includes(dni) && dni != this.dniAlumno)
       this.dniExistente = true;
-    else
-      this.dniExistente = false;  
-    
+    else this.dniExistente = false;
   }
-
-  
 }
+
+//Validar el formato del mail
+// validarMail() {
+//   let email: string = this.formGroup.get("email").value;
+
+// }
+//   if (email.search("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$") != -1)
+//     this.mailValido = true;
+//   else
+//     this.mailValido = false;
