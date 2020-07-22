@@ -2,14 +2,13 @@
 
 /* Provide sufficient contrast against white background */
 
+/* html {
+  height: 100%;
+} */
+
 a {
   color: #0366d6;
 }
-
-/* body{
-  background-color: lightcyan; 
-  font-family: Verdana,sans-serif,Geneva;
-} */
 
 code {
   color: #e01a76;
