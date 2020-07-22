@@ -1,71 +1,124 @@
 <div class="container">
-<div>
+  <div>
     <h1 class="text-primary">Carreras</h1>
-</div>
+  </div>
 
-<!-- COMBOBOX DE CARRERAS -->
-<div class="form-group">
-    <label class="control-label" for="comboCarreras">Seleccione una carrera:</label>
-    <select class="form-control" id="comboCarreras" required name="comboCarreras" [ngModel]="carreraSeleccionada"
-        [ngModelOptions]="{standalone: true}" (change)="cargarInfoCarrera($event)">
-        <option value="0">--Seleccione una opcion--</option>
-        <option *ngFor="let carrera of listaCarreras" [value]="carrera.codCarrera">
-            {{carrera.nombre | uppercase}}
+  <form [formGroup]="formGroup" class="form-horizontal" novalidate>
+    <!-- SECCION CARRERAS -->
+    <div class="form-group">
+      <label class="control-label" for="carreras">
+        Seleccione una carrera:
+      </label>
+
+      <select
+        class="form-control"
+        formControlName="carreras"
+        (change)="listarMateriasCarrera()"
+      >
+        <option [ngValue]="null">-- Seleccione una carrera --</option>
+        <option
+          *ngFor="let carrera of ListaCarreras"
+          [ngValue]="carrera.codCarrera"
+        >
+          {{ carrera.nombre | uppercase }}
         </option>
-    </select>
-</div>
-
-<!-- MUESTRA UNA TABLA DE MATERIAS EN BASE A LA OPCION SELECCIONADA EN EL COMBO -->
-<div *ngIf="carreraSeleccionada == 0">
-    <h3 class="text-info">No se ha seleccionado ninguna carrera</h3>
-</div>
-
-<div *ngIf="(!materiasPorCarrera || materiasPorCarrera.length == 0) && carreraSeleccionada">
-    <h3 class="text-info">No existen materias cargadas para esta carrera</h3>
-</div>
-
-<div *ngIf="(materiasPorCarrera && materiasPorCarrera.length)">
-    <table class="table table-hover table-striped">
-        <thead class="thead thead-dark">
-            <tr>
-                <th scope="col">Codigo</th>
-                <th scope="col">Materia</th>
-                <th scope="col">Precio</th>
-                <th colspan="2"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let materia of materiasPorCarrera">
-                <td>{{materia.codMateria}}</td>
-                <td>{{materia.nombre}}</td>
-                <td>{{materia.precio | currency}}</td>
-                <td><button class="btn btn-danger" (click)="eliminarMateria(materia.codMateria)">Quitar</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<hr />
-
-<div *ngIf="carreraSeleccionada && !sePuedeCargar">
-    <span>
-        <h3 class="text-info">Ya no quedan materias por agregar</h3>
-    </span>
-</div>
-
-
-<div class="form-group" *ngIf="carreraSeleccionada && sePuedeCargar">
-    <label for="comboDisponibles">Asigne una materia a la carrera: </label>
-    <select class="form-control" id="comboDisponibles" required name="comboDisponibles" [ngModel]="materiaSeleccionada"
-        [ngModelOptions]="{standalone: true}" (change)="getMateriaSeleccionada($event)">
-        <option value="0">--Seleccione una opcion--</option>
-        <option *ngFor="let materia of materiasDisponibles" [value]="materia.codMateria">
-            {{materia.nombre | uppercase}}
-        </option>
-    </select>
-    <div>
-        <button class="btn btn-primary mt-2" [disabled]="!materiaSeleccionada" (click)="cargarMateria()">Cargar
-            Materia</button>
+      </select>
     </div>
-</div>
+
+    <div *ngIf="!carreraSeleccionada">
+      <h3 class="text-info">No se ha seleccionado ninguna carrera</h3>
+    </div>
+
+    <div *ngIf="carreraSeleccionada">
+      <div *ngIf="!ListaMateriasCarrera || !ListaMateriasCarrera.length">
+        <h3 class="text-info">
+          No existen materias cargadas para esta carrera
+        </h3>
+      </div>
+
+      <!--SECCION LISTA MATERIAS-CARRERA-->
+      <div *ngIf="ListaMateriasCarrera && ListaMateriasCarrera.length">
+        <table class="table text-center table-hover table-striped">
+          <thead class="thead thead-dark">
+            <tr>
+              <th scope="col">Codigo</th>
+              <th scope="col">Materia</th>
+              <th scope="col">Precio</th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let materia of ListaMateriasCarrera">
+              <td>{{ materia.codMateria }}</td>
+              <td>{{ materia.nombre }}</td>
+              <td>{{ materia.precio | currency }}</td>
+              <td class="pt-1">
+                <button
+                  class="btn"
+                  (click)="eliminarMateria(materia.codMateria)"
+                >
+                  <span class="material-icons text-danger">
+                    delete
+                  </span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr />
+
+      <!--SECCION MATERIAS DISPONIBLES-->
+      <div *ngIf="!ListaMateriasDisponibles.length && carreraSeleccionada">
+        <span>
+          <h3 class="text-info">
+            Ya no quedan materias por agregar
+          </h3>
+        </span>
+      </div>
+
+      <div *ngIf="ListaMateriasDisponibles.length && carreraSeleccionada">
+        <div class="form-group mb-2">
+          <label class="control-label" for="materiasDisponibles">
+            Asigne una materia a la carrera:
+          </label>
+          <select
+            class="form-control"
+            formControlName="materiasDisponibles"
+            (change)="
+              materiaSeleccionada =
+                formGroup.controls['materiasDisponibles'].value
+            "
+          >
+            <option [ngValue]="null">-- Seleccione una materia --</option>
+            <option
+              *ngFor="let materia of ListaMateriasDisponibles"
+              [ngValue]="materia.codMateria"
+            >
+              {{ materia.nombre | uppercase }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button
+            class="btn"
+            [disabled]="
+              !materiaSeleccionada ||
+              formGroup.get('materiasDisponibles').pristine
+            "
+            [ngClass]="{
+              'btn-dark':
+                !materiaSeleccionada ||
+                formGroup.get('materiasDisponibles').pristine,
+              'btn-primary': materiaSeleccionada
+            }"
+            (click)="cargarMateria()"
+          >
+            Cargar Materia
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
