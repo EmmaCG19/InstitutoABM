@@ -169,14 +169,13 @@
             placeholder="Ingrese su email"
             required
             formControlName="email"
-            (change)="validarMail()"
           />
 
           <span
             class="help-block"
             *ngIf="
-              formGroup.get('email').touched ||
-              (formGroup.get('email').dirty && !formGroup.valid)
+              (formGroup.get('email').touched ||
+              formGroup.get('email').dirty) && !formGroup.valid)
             "
           >
             <span
@@ -187,7 +186,7 @@
             </span>
             <span
               class="text-danger"
-              *ngIf="formGroup.get('email').dirty && !mailValido"
+              *ngIf="formGroup.get('email').hasError('email')"
             >
               El formato del email no es valido
             </span>
