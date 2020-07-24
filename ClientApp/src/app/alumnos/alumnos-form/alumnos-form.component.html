@@ -167,7 +167,6 @@
             id="email"
             type="email"
             placeholder="Ingrese su email"
-            required
             formControlName="email"
           />
 
@@ -175,12 +174,12 @@
             class="help-block"
             *ngIf="
               (formGroup.get('email').touched ||
-              formGroup.get('email').dirty) && !formGroup.valid)
+              formGroup.get('email').dirty) && !formGroup.valid
             "
           >
             <span
               class="text-danger"
-              *ngIf="formGroup.get('email').errors?.required"
+              *ngIf="formGroup.get('email').hasError('required')"
             >
               El campo es requerido
             </span>
